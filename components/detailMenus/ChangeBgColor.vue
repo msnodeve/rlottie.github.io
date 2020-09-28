@@ -1,14 +1,21 @@
 <template>
-  <div class="text-center mt-5">
-    <h2 class="mt-4" style="color: white">Change Background Color</h2>
+  <div class="text-center">
+    <div class="uploadBTN py-3" style="align-center">
+      <v-row align="center" justify="center">
+        <v-col class="pa-0" offset="2" cols="8">
+          <h3 style="color:white;">Chang Bacgkroun Color</h3>
+        </v-col>
+        <v-col  class="pa-0 pr-4" cols="2">
+          <v-btn color="rgba(0, 153, 204, 0)" :outlined="false" :depressed="true" fab x-small @click="closeSidebar()">
+            <v-icon color="#ffffff">mdi-close
+            </v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+    </div>
     <v-row>
       <v-col class="d-flex justify-center mt-5">
-        <v-color-picker
-          hide-mode-switch
-          style="background-color: transparent"
-          v-model="color"
-        >
-        </v-color-picker>
+        <v-color-picker flat style="background-color:transparent" v-model="color"> </v-color-picker>
       </v-col>
     </v-row>
     <div
@@ -36,7 +43,6 @@
             outlined
           ></v-text-field>
         </v-col>
-        <v-btn @click="resizeCanvas">Resize Canvas</v-btn>
       </v-row>
     </div>
     <div class="text-center mt-4">
@@ -82,43 +88,16 @@ module.exports = {
   name: "change-bg-color",
   data() {
     return {
-      type: "hexa",
-      hex: "#FF00FF",
-      hexa: "#FF00FFFF",
-      rgba: { r: 255, g: 0, b: 255, a: 1 },
-      hsla: { h: 300, s: 1, l: 0.5, a: 1 },
-      hsva: { h: 300, s: 1, v: 1, a: 1 },
-      inputHeight: undefined,
-      inputWidth: undefined,
-      canvas:{
-        x: document.getElementById("canvasBox").style.width,
-        y: document.getElementById("canvasBox").style.height
-      }
-    };
-  },
-  watch:{
-    canvas: function(){
-      console.log('hihi')
+        type: 'rgba',
+        rgba: { r: 255, g: 255, b: 255, a: 1 },
+        boxHeight: document.getElementById('canvasBox').style.height,
+        boxWidth: document.getElementById('canvasBox').style.width,
     }
   },
   methods: {
-    changeCanvasColor() {
-      document.getElementById("myCanvas").style.backgroundColor = this.color;
-      document.getElementById("canvasBox").style.backgroundColor = this.color;
-    },
-    changeBgColor() {
-      document.getElementById("content").style.backgroundColor = this.color;
-    },
-    resizeCanvas() {
-      document.getElementById("canvasBox").style.width = String(
-        this.inputWidth
-      ).concat("px");
-      document.getElementById("canvasBox").style.height = String(
-        this.inputHeight
-      ).concat("px");
-      this.inputHeight = undefined;
-      this.inputWidth = undefined;
-    },
+    closeSidebar(){
+      this.$emit('call-close-menu-parent');
+    }
   },
   computed: {
     color: {
@@ -141,8 +120,38 @@ module.exports = {
       );
     },
   },
+  watch:{
+    rgba() {
+      const r = this.rgba.r
+      const g = this.rgba.g
+      const b = this.rgba.b
+      const a = this.rgba.a
+      document.getElementById('content').style.backgroundColor = `rgba(${r},${g},${b},${a})`
+    },
+    boxHeight() {
+        document.getElementById('canvasBox').style.height = this.boxHeight;
+        document.getElementById('canvasBox').style.width = this.boxWidth;
+        this.boxHeight= document.getElementById('canvasBox').style.height;
+        this.boxWidth= document.getElementById('canvasBox').style.width;
+    },
+    boxWidth(){
+      document.getElementById('canvasBox').style.height = this.boxHeight;
+      document.getElementById('canvasBox').style.width = this.boxWidth;
+      this.boxHeight= document.getElementById('canvasBox').style.height;
+      this.boxWidth= document.getElementById('canvasBox').style.width;
+    }
+  },
 };
 </script>
 
-<style>
+<style scoped>
+
+input{
+  border: 1px solid white !important;
+  color: white;
+}
+span{
+  color:white !important;
+}
+
 </style>

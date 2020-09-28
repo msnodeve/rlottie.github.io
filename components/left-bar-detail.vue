@@ -5,7 +5,7 @@
         <transform-property v-if="selectedmenu==3" @call-close-menu-parent="closeSideBarFromChild"></transform-property>
         <change-bg-img v-if="selectedmenu==4"></change-bg-img>
         <resize-canvas v-if="selectedmenu==5"></resize-canvas>
-        <change-bg-color v-if="selectedmenu==6"></change-bg-color>
+        <change-bg-color v-if="selectedmenu==6" @call-close-menu-parent="closeSideBarFromChild"></change-bg-color>
     </div>
 </template>
 
@@ -44,6 +44,7 @@ module.exports = {
     height: 100%;
     background-color:#292c31;
     width: 20rem;
-    float:left
+    z-index: 99;
+    /* float:left */
 }
 </style>
