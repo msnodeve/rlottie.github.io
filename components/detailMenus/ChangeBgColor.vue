@@ -1,12 +1,11 @@
 <template>
-  <div class="text-center mt-5">   
+  <div class="text-center mt-5">
     <h2 class="mt-4" style="color: white">Change Background Color</h2>
-      <v-row>
-        <v-col class="d-flex justify-center mt-5">
-            <v-color-picker hide-mode-switch v-model="color">
-            </v-color-picker>
-        </v-col>
-      </v-row>
+    <v-row>
+      <v-col class="d-flex justify-center mt-5">
+        <v-color-picker hide-mode-switch v-model="color"> </v-color-picker>
+      </v-col>
+    </v-row>
     <v-btn @click="changeCanvasColor">Canvas</v-btn>
     <v-btn class="ml-5" @click="changeBgColor">Background</v-btn>
     <v-row class="justify-center">
@@ -33,7 +32,7 @@
 <script>
 module.exports = {
   name: "change-bg-color",
-  data(){
+  data() {
     return {
         type: 'hexa',
         hex: '#FF00FF',
@@ -43,15 +42,15 @@ module.exports = {
         hsva: { h: 300, s: 1, v: 1, a: 1 },
         inputHeight: undefined,
         inputWidth: undefined,
-        borderOn: true
+        borderOn: true,
     }
   },
-  methods:{
-    changeCanvasColor(){
-        document.getElementById('myCanvas').style.backgroundColor = this.color;
+  methods: {
+    changeCanvasColor() {
+      document.getElementById("myCanvas").style.backgroundColor = this.color;
     },
-    changeBgColor(){
-        document.getElementById('content').style.backgroundColor = this.color;
+    changeBgColor() {
+      document.getElementById("content").style.backgroundColor = this.color;
     },
     changeCanvasBorderColor(){
       if (this.borderOn){
@@ -71,22 +70,26 @@ module.exports = {
   },
   computed: {
     color: {
-      get () {
-        return this[this.type]
+      get() {
+        return this[this.type];
       },
-      set (v) {
-        this[this.type] = v
+      set(v) {
+        this[this.type] = v;
       },
     },
-    showColor () {
-      if (typeof this.color === 'string') return this.color
-      return JSON.stringify(Object.keys(this.color).reduce((color, key) => {
-        color[key] = Number(this.color[key].toFixed(2))
-        return color
-      }, {}), null, 2)
+    showColor() {
+      if (typeof this.color === "string") return this.color;
+      return JSON.stringify(
+        Object.keys(this.color).reduce((color, key) => {
+          color[key] = Number(this.color[key].toFixed(2));
+          return color;
+        }, {}),
+        null,
+        2
+      );
     },
-  }
-}
+  },
+};
 </script>
 
 <style>
@@ -96,7 +99,7 @@ input[type="range"] {
   height: 10px;
   background: transparent;
   cursor: pointer;
-  background: #92140C;
+  background: #92140c;
   border-radius: 3px; /* iOS */
 }
 input[type="range"]:focus {
@@ -106,10 +109,9 @@ input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 10px;
   height: 10px;
-  background: #92140C;
+  background: #92140c;
   box-shadow: -100vw 0 0 100vw #edb230;
   cursor: pointer;
   border-radius: 1px; /* iOS */
-
 }
 </style>
