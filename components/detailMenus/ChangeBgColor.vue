@@ -8,12 +8,7 @@
     </v-row>
     <v-btn @click="changeCanvasColor">Canvas</v-btn>
     <v-btn class="ml-5" @click="changeBgColor">Background</v-btn>
-    <v-row class="justify-center">
-      <v-col>
-        <v-btn @click="changeCanvasBorderColor" v-show="this.borderOn"> Hide Canvas BorderLine </v-btn>
-        <v-btn @click="changeCanvasBorderColor" v-show="!this.borderOn">Reveal Canvas BorderLine</v-btn>
-      </v-col>
-    </v-row>
+
     <div class="d-flex flex-column justify-content-center align-items-start mt-5 mb-3">
       <h2 class="mt-9" style="color: white">Resize Canvas</h2>
       <v-row class="justify-center">
@@ -42,7 +37,6 @@ module.exports = {
         hsva: { h: 300, s: 1, v: 1, a: 1 },
         inputHeight: undefined,
         inputWidth: undefined,
-        borderOn: true,
     }
   },
   methods: {
@@ -51,16 +45,6 @@ module.exports = {
     },
     changeBgColor() {
       document.getElementById("content").style.backgroundColor = this.color;
-    },
-    changeCanvasBorderColor(){
-      console.log(document.getElementById('myCanvas').style.borderStyle);
-      if (this.borderOn){
-        document.getElementById('canvasBox').style.borderStyle="none";
-        this.borderOn = false;
-      }else{
-        document.getElementById('canvasBox').style.border="1px solid black";
-        this.borderOn = true;
-      }
     },
     resizeCanvas(){
       document.getElementById('canvasBox').style.width = String(this.inputWidth).concat("px");
@@ -94,25 +78,4 @@ module.exports = {
 </script>
 
 <style>
-input[type="range"] {
-  -webkit-appearance: none;
-  overflow: hidden;
-  height: 10px;
-  background: transparent;
-  cursor: pointer;
-  background: #92140c;
-  border-radius: 3px; /* iOS */
-}
-input[type="range"]:focus {
-  outline: none;
-}
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 10px;
-  height: 10px;
-  background: #92140c;
-  box-shadow: -100vw 0 0 100vw #edb230;
-  cursor: pointer;
-  border-radius: 1px; /* iOS */
-}
 </style>

@@ -67,7 +67,7 @@ module.exports = {
       
       var img = document.createElement("img");
       img.id = "background";
-      img.style = "height:650px; max-width: 1400px;";
+      img.style = "max-height:650px; max-width: 90%; margin-left: auto; margin-right: auto; display: block;"
       var reader = new FileReader();
       reader.onload = (function (aImg) {
         return function (e) {
