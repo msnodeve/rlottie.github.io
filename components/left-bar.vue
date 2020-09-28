@@ -1,5 +1,5 @@
 <template>
-  <div id="l-bar">
+  <div id="l-bar" ref="leftBar">
     <div class="uploadBTN" style="align-center">
       <v-tooltip right class="tooltip-btn">
         <template v-slot:activator="{ on, attrs }">
@@ -183,6 +183,16 @@ module.exports = {
         }
       }
     }
+  },
+  mounted() {
+    var self = this;
+    self.$emit('child-event', this.$refs.leftBar.clientHeight);
+    window.addEventListener("resize", function(e) {
+      self.$emit('child-event', e.target.innerHeight);
+    });
+  },
+  beforeDestroy() {
+    // window.removeEventListener("resize");
   }
 }
 </script>
