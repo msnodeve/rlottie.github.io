@@ -3,7 +3,7 @@
     <h2 class="mt-4" style="color: white">Change Background Color</h2>
     <v-row>
       <v-col class="d-flex justify-center mt-5">
-        <v-color-picker hide-mode-switch style="background-color:transparent" v-model="color"> </v-color-picker>
+        <v-color-picker flat style="background-color:transparent" v-model="color"> </v-color-picker>
       </v-col>
     </v-row>
     <div class="d-flex flex-column justify-content-center align-items-start mt-5 mb-3">
@@ -26,12 +26,8 @@ module.exports = {
   name: "change-bg-color",
   data() {
     return {
-        type: 'hexa',
-        hex: '#FF00FF',
-        hexa: '#FF00FFFF',
-        rgba: { r: 255, g: 0, b: 255, a: 1 },
-        hsla: { h: 300, s: 1, l: 0.5, a: 1 },
-        hsva: { h: 300, s: 1, v: 1, a: 1 },
+        type: 'rgba',
+        rgba: { r: 255, g: 255, b: 255, a: 1 },
         inputHeight: undefined,
         inputWidth: undefined,
     }
@@ -72,8 +68,24 @@ module.exports = {
       );
     },
   },
+  watch:{
+    rgba() {
+      const r = this.rgba.r
+      const g = this.rgba.g
+      const b = this.rgba.b
+      const a = this.rgba.a
+      document.getElementById('content').style.backgroundColor = `rgba(${r},${g},${b},${a})`
+    }
+  },
 };
 </script>
 
-<style>
+<style scoped>
+
+input{
+  border: 1px solid white !important;
+  color: white;
+}
+
+
 </style>
