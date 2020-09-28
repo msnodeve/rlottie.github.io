@@ -37,8 +37,8 @@
     <v-app>
       <v-main class="main-window">
         <left-bar @child-event="setHeight" :selectedmenu="selectedMenu" @menuclicked="ChangeMenu"></left-bar>
-        <left-bar-detail class="setScroll" :selectedmenu="selectedMenu" v-if="activeDetailBar" @close-sidebar="CloseMenuBar" :style="{'overflow-x': 'hidden','overflow-y': 'auto', 'height': leftHeight+'px'}"></left-bar-detail>
-        <right-bar></right-bar>
+        <left-bar-detail class="setScroll" :selectedmenu="selectedMenu" v-if="activeDetailBar" @close-sidebar="CloseMenuBar" :height="leftHeight" ></left-bar-detail>
+        <right-bar :height="leftHeight"></right-bar>
         <div id="content" class="content mt-15" style="background-color: white; border-style: 10px solid red;">
           <!-- 배경담는 div -->
           <div id="img-background">
@@ -95,7 +95,6 @@
         },
         setHeight(val){
           this.leftHeight = val-104;
-          console.log(val); 
         }
       },
       mounted(){
