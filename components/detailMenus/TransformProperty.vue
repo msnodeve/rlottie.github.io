@@ -179,6 +179,146 @@
                             ></v-slider>
                         </v-col>
                     </v-row>
+                    <v-row>
+                        <v-col cols="8" class="py-0">
+                            <div class="text-left" style="color:white;">Opacity</div>
+                        </v-col>
+                        <v-col cols="4" class="py-0">   
+                            <v-text-field
+                                v-model="opacity"
+                                class="mt-0 pt-0"
+                                hide-details
+                                type="number"
+                                solo
+                                outlined
+                                dense
+                                dark
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" class="py-0">
+                            <v-slider
+                                v-model="opacity"
+                                class="align-center"
+                                max="100"
+                                min="0"
+                                hide-details
+                            ></v-slider>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="8" class="py-0">
+                            <div class="text-left" style="color:white;">Opacity</div>
+                        </v-col>
+                        <v-col cols="4" class="py-0">   
+                            <v-text-field
+                                v-model="opacity"
+                                class="mt-0 pt-0"
+                                hide-details
+                                type="number"
+                                solo
+                                outlined
+                                dense
+                                dark
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" class="py-0">
+                            <v-slider
+                                v-model="opacity"
+                                class="align-center"
+                                max="100"
+                                min="0"
+                                hide-details
+                            ></v-slider>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="8" class="py-0">
+                            <div class="text-left" style="color:white;">Opacity</div>
+                        </v-col>
+                        <v-col cols="4" class="py-0">   
+                            <v-text-field
+                                v-model="opacity"
+                                class="mt-0 pt-0"
+                                hide-details
+                                type="number"
+                                solo
+                                outlined
+                                dense
+                                dark
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" class="py-0">
+                            <v-slider
+                                v-model="opacity"
+                                class="align-center"
+                                max="100"
+                                min="0"
+                                hide-details
+                            ></v-slider>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="8" class="py-0">
+                            <div class="text-left" style="color:white;">Opacity</div>
+                        </v-col>
+                        <v-col cols="4" class="py-0">   
+                            <v-text-field
+                                v-model="opacity"
+                                class="mt-0 pt-0"
+                                hide-details
+                                type="number"
+                                solo
+                                outlined
+                                dense
+                                dark
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" class="py-0">
+                            <v-slider
+                                v-model="opacity"
+                                class="align-center"
+                                max="100"
+                                min="0"
+                                hide-details
+                            ></v-slider>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="8" class="py-0">
+                            <div class="text-left" style="color:white;">Opacity</div>
+                        </v-col>
+                        <v-col cols="4" class="py-0">   
+                            <v-text-field
+                                v-model="opacity"
+                                class="mt-0 pt-0"
+                                hide-details
+                                type="number"
+                                solo
+                                outlined
+                                dense
+                                dark
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" class="py-0">
+                            <v-slider
+                                v-model="opacity"
+                                class="align-center"
+                                max="100"
+                                min="0"
+                                hide-details
+                            ></v-slider>
+                        </v-col>
+                    </v-row>
                 </v-col>
             </v-row>
         </div>
@@ -210,26 +350,31 @@ module.exports = {
     anchor:{
         deep: true,
         handler(){
-            RLottieModule.trAnchor("**",Number(this.anchor.x),Number(this.anchor.y))
+            RLottieModule.trAnchor(RLottieModule.keypath,Number(this.anchor.x),Number(this.anchor.y))
+            RLottieModule.history.insert(RLottieModule.keypath, "TrAnchor", [Number(this.anchor.x),Number(this.anchor.y)])  
         }
     },
     position: {
         deep: true,
         handler(){
-            RLottieModule.trPosition("**",Number(this.position.x),Number(this.position.y))
+            RLottieModule.trPosition(RLottieModule.keypath,Number(this.position.x),Number(this.position.y))
+            RLottieModule.history.insert(RLottieModule.keypath, "TrPosition", [Number(this.position.x),Number(this.position.y)])  
         }
     },
     scale: {
         deep: true,
         handler(){
-            RLottieModule.trScale("**",Number(this.scale.w),Number(this.scale.h))
+            RLottieModule.trScale(RLottieModule.keypath,Number(this.scale.w),Number(this.scale.h))
+            RLottieModule.history.insert(RLottieModule.keypath, "TrScale", [Number(this.scale.w),Number(this.scale.h)])  
         }
     },
     degree: function (val) {
-        RLottieModule.trRotation("**",Number(this.degree))
+        RLottieModule.trRotation(RLottieModule.keypath,Number(this.degree))
+        RLottieModule.history.insert(RLottieModule.keypath, "TrRotation", [Number(this.degree)])  
     },
     opacity: function (val) {
-        RLottieModule.trOpacity("**",Number(this.opacity))
+        RLottieModule.trOpacity(RLottieModule.keypath,Number(this.opacity))
+        RLottieModule.history.insert(RLottieModule.keypath, "TrOpacity", [Number(this.opacity)])
     },
   },
   computed: {

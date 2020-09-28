@@ -51,7 +51,7 @@
         <v-col cols="4" class="py-0">   
           <v-text-field
             v-model="width"
-            class="mt-0 pt-0"
+            class="input mt-0 pt-0"
             hide-details
             type="number"
             solo
@@ -85,22 +85,42 @@ module.exports = {
         picker: null,
         setFlag: false,
         width: 0,
+
+        setHistory: true,
+        interval: '',        
       }
+    },
+    mounted(){   
+      var self = this
+      this.interval = setInterval(() => {
+          self.setHistory = true;
+      }, 500);      
+    },
+    beforeDestroy(){
+      clearInterval(this.interval);
     },
     watch: {
       picker(){
         if(this.setFlag){
-          const r = this.picker.rgba.r;
-          const g = this.picker.rgba.g;
-          const b = this.picker.rgba.b;
-          const a = this.picker.rgba.a;
-          RLottieModule.strokeColors('**', r / 255.0, g / 255.0, b / 255.0, a * 100);
+          const r = this.picker.rgba.r / 255;
+          const g = this.picker.rgba.g / 255;
+          const b = this.picker.rgba.b / 255;
+          const a = this.picker.rgba.a * 100;
+          RLottieModule.strokeColors(RLottieModule.keypath, r, g, b, a);
+          if(this.setHistory) {         
+            this.setHistory = false;
+            RLottieModule.history.insert(RLottieModule.keypath, "StrokeColor", [r,g,b,a])  
+          }
         }else{
           this.setFlag = true;
         }
       },
-      width: function(width){
-        RLottieModule.strokeWidth("**", Number(this.width));
+      width(width){
+        RLottieModule.strokeWidth(RLottieModule.keypath, Number(this.width));
+        if(this.setHistory) {         
+            this.setHistory = false;
+            RLottieModule.history.insert(RLottieModule.keypath, "StrokeWidth", [Number(this.width)])  
+        }
       }
     },
     methods: {
@@ -117,7 +137,7 @@ input{
   border: 1px solid white !important;
   color: white;
 }
-#input-73{
+.input input{
   border: 0px solid white !important;
 }
 span{
