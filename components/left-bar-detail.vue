@@ -1,5 +1,5 @@
 <template>
-    <div id="left-detail-bar" class="d-flex ml-1 align-start justify-center" :style="{'overflow-x': 'hidden','overflow-y': 'auto', 'height': height+'px'}">
+    <div id="left-detail-bar" class="d-flex ml-1 align-start justify-center" :style="{'left': '4rem', 'position':'absolute', 'overflow-x': 'hidden','overflow-y': 'auto', 'height': height+'px'}">
         <shape-property v-if="selectedmenu==1" @call-close-menu-parent="closeSideBarFromChild"></shape-property>
         <stroke-property v-if="selectedmenu==2" @call-close-menu-parent="closeSideBarFromChild"></stroke-property>
         <transform-property v-if="selectedmenu==3" @call-close-menu-parent="closeSideBarFromChild"></transform-property>
