@@ -54,7 +54,6 @@ module.exports = {
         document.getElementById('content').style.backgroundColor = this.color;
     },
     changeCanvasBorderColor(){
-      console.log(document.getElementById('myCanvas').style.borderStyle);
       if (this.borderOn){
         document.getElementById('canvasBox').style.borderStyle="none";
         this.borderOn = false;
