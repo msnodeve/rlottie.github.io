@@ -3,11 +3,9 @@
     <h2 class="mt-4" style="color: white">Change Background Color</h2>
     <v-row>
       <v-col class="d-flex justify-center mt-5">
-        <v-color-picker hide-mode-switch v-model="color"> </v-color-picker>
+        <v-color-picker hide-mode-switch style="background-color:transparent" v-model="color"> </v-color-picker>
       </v-col>
     </v-row>
-    <v-btn @click="changeCanvasColor">Canvas</v-btn>
-    <v-btn class="ml-5" @click="changeBgColor">Background</v-btn>
     <v-row class="justify-center">
       <v-col>
         <v-btn @click="changeCanvasBorderColor" v-show="this.borderOn"> Hide Canvas BorderLine </v-btn>
@@ -48,6 +46,7 @@ module.exports = {
   methods: {
     changeCanvasColor() {
       document.getElementById("myCanvas").style.backgroundColor = this.color;
+      document.getElementById("canvasBox").style.backgroundColor = this.color;
     },
     changeBgColor() {
       document.getElementById("content").style.backgroundColor = this.color;
