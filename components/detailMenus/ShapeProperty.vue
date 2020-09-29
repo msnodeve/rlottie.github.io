@@ -10,7 +10,7 @@
           class="pa-0"
           offset="2" cols="8">
           <h3 style="color:white;">
-            Shape            
+            Fill            
           </h3>
         </v-col>
         <v-col 
