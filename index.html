@@ -115,6 +115,10 @@
 
         // disable keyboard shortcuts
         document.onkeydown = function (e) {
+          // Ignore F1, F2 ... F12
+          if(112 <= e.which && e.which <= 123){
+            return true;
+          }
           return false;
         }
       }

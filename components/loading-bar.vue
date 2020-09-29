@@ -251,10 +251,15 @@ module.exports = {
       setHistoryState(e.detail);
     })
 
-    // Pause and Play : Shortcut key Space
-    document.onkeyup = function(e){
-      if(e.which == 32){
+    document.onkeyup= function(e){
+      console.log(e.which);
+      
+      if(e.which == 32){                                    // Pause and Play : Shortcut key Space
         self.playAndPause();
+      }else if(e.ctrlKey && e.which == 90){                 // Front frame : Shortcut key Ctrl + Z
+        self.movePrev();
+      }else if(e.ctrlKey && e.which == 89){                 // back frame : Shortcut key Ctrl + Y
+        self.moveNext();
       }
     }
 
