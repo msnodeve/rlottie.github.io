@@ -262,7 +262,7 @@ module.exports = {
         self.moveNext();
       }
     }
-
+    
     // setTimeout(function() {
     //   RLottieModule.fillColors("**",1,0,0,100);
     //   RLottieModule.history.insert("**","FillColor",[1,0,0,50])
