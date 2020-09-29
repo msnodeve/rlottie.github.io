@@ -234,6 +234,7 @@ module.exports = {
     }
   },
   mounted() {
+    var self = this;
     var setFrame = this.setFrame;
     var setCurFrame = this.setCurFrame;
     var setHistoryState = this.setHistoryState;
@@ -249,6 +250,13 @@ module.exports = {
     window.addEventListener('setHistoryState', function(e) {
       setHistoryState(e.detail);
     })
+
+    // Pause and Play : Shortcut key Space
+    document.onkeyup = function(e){
+      if(e.which == 32){
+        self.playAndPause();
+      }
+    }
 
     // setTimeout(function() {
     //   RLottieModule.fillColors("**",1,0,0,100);
