@@ -199,8 +199,8 @@ module.exports = {
         y: 0,
       },
       scale : {
-        w: 0,
-        h: 0,
+        w: 100,
+        h: 100,
       },
       degree: 0,
       opacity: 0,
@@ -240,6 +240,11 @@ module.exports = {
     scale: {
         deep: true,
         handler(){
+            if(Number(this.scale.w)>=1000) this.scale.w = 1000;
+            else if(Number(this.scale.w)<=0) this.scale.w = 0;
+            if(Number(this.scale.h)>=1000) this.scale.h = 1000;
+            else if(Number(this.scale.h)<=0) this.scale.h = 0;
+
             RLottieModule.trScale(RLottieModule.keypath,Number(this.scale.w),Number(this.scale.h))
             this.stack.push({
                 'property': 'TrScale',
