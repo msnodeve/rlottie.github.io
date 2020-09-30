@@ -204,6 +204,11 @@ module.exports = {
     } else {
       this.backgroundImg = false
     }
+    let rgbValue = document.getElementById("content").style.backgroundColor
+    const r = rgbValue.split(', ')[0].split('(')[1]
+    const g = rgbValue.split(', ')[1]
+    const b = rgbValue.split(', ')[2].slice(0,-1)
+    this.rgba = { r: r, g: g, b: b }
   }
 };
 </script>
