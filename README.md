@@ -10,13 +10,17 @@
 
 rlottie.github.io is a platform that supports web preview by rendering vector based animations and art in realtime.
 
-We aimed to communicate more efficiently with designers and developers.
+We aimed to communicate more efficiently between designers and developers.
 
 If you watch the beautiful animation provieded by rlottie.github.io, you can reduce boredom and communicate comfortably.
 
 Here is sample of the power of Lottie.github.io.
 
 
+
+<p align="center">
+  <img height="450" src="./.Gifs/main1.png">
+</p>
 
 
 
@@ -74,7 +78,7 @@ Here is sample of the power of Lottie.github.io.
 
 
 # Run
-1. Right click on th `index.html` file
+1. Right click on the `index.html` file
 2. Click 'Open with Live Server'
 
 
