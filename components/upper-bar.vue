@@ -101,7 +101,7 @@ module.exports = {
             var img = document.createElement("img");
             img.id = "background";
             img.style = "max-height:650px; max-width: 90%; margin-left: auto; margin-right: auto; display: block;"
-            // img.src = (flag==0)? "./assets/Flat-Samsung-Galaxy-S20-Mockup.jpg" : "./assets/samsung-gear-s2-collection.png";
+            img.src = (flag==0)? "./assets/mock_up_1.png" : "./assets/mock_up_2.png";
             document.querySelector("#img-background").appendChild(img);
         }
     },
