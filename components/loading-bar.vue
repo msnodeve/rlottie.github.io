@@ -267,6 +267,8 @@ module.exports = {
         e.preventDefault();
       }else if(e.ctrlKey && e.which == 79){
         e.preventDefault();
+      }else if(e.ctrlKey && e.which == 76){
+        e.preventDefault();
       }
     }, false)
 
