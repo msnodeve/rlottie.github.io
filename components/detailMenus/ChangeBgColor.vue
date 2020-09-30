@@ -19,11 +19,7 @@
         </v-col>
       </v-row>
     </div>
-<<<<<<< HEAD
-    <v-row>
-=======
     <v-row class="mt-4">>
->>>>>>> aa6392e64c657999b23de7717cd715b08ec7466d
       <v-col class="d-flex justify-center pa-0">
         <v-color-picker
           flat
@@ -208,6 +204,11 @@ module.exports = {
     } else {
       this.backgroundImg = false
     }
+    let rgbValue = document.getElementById("content").style.backgroundColor
+    const r = rgbValue.split(', ')[0].split('(')[1]
+    const g = rgbValue.split(', ')[1]
+    const b = rgbValue.split(', ')[2].slice(0,-1)
+    this.rgba = { r: r, g: g, b: b }
   }
 };
 </script>
