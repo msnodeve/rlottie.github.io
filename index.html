@@ -111,15 +111,6 @@
       mounted(){
         this.initCanvasLeft = this.$refs.content.clientWidth * 0.4;
         this.initCanvasTop = this.$refs.content.clientHeight * 0.2;
-
-        // disable keyboard shortcuts
-        document.onkeydown = function (e) {
-          // Ignore F1, F2 ... F12
-          if(112 <= e.which && e.which <= 123){
-            return true;
-          }
-          return false;
-        }
       }
     })
   </script>
