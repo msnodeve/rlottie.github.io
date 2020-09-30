@@ -3,12 +3,18 @@
     <div class="uploadBTN" style="align-center">
       <v-tooltip right class="tooltip-btn">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn tile class="py-7" text color="white" v-bind="attrs" v-on="on">
-              <label for="fileSelector">
-                <v-icon style="pointer:cursor">fas fa-cloud-upload-alt</v-icon>
-              </label>
-              <input type="file" id="fileSelector" accept=".json">
+          <v-btn
+            tile
+            class="py-7"
+            text
+            color="white"
+            v-bind="attrs"
+            v-on="on"
+            @click="clickToUploadJson"
+          >
+          <v-icon style="pointer:cursor">fas fa-cloud-upload-alt</v-icon>
           </v-btn>
+          <input type="file" id="fileSelector" accept=".json" ref="json">
         </template> 
         <span>
           upload New JSON File
@@ -124,6 +130,9 @@ module.exports = {
       }else{
         return false
       }
+    },
+    clickToUploadJson(){
+      this.$refs.json.click();
     }
   },
   computed:{
@@ -143,6 +152,11 @@ module.exports = {
     self.$emit('child-event', this.$refs.leftBar.clientHeight);
     window.addEventListener("resize", function(e) {
       self.$emit('child-event', e.target.innerHeight);
+    });
+    window.addEventListener('keyup', function(e){
+      if(e.ctrlKey && e.which == 79){                                    // Pause and Play : Space
+        self.clickToUploadJson();
+      }
     });
   },
   beforeDestroy() {

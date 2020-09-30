@@ -84,10 +84,19 @@ module.exports = {
         }
     },
     mounted() {
+        var self = this;
         var setLayers = this.setLayers;
         window.addEventListener('initLayers', function(e) {            
             setLayers(e.detail.layers)
-        })
+        });
+
+        // Shortcut key function binding
+        window.addEventListener('keyup', function(e) {            
+            if(e.ctrlKey && e.which == 76){            // Hide and show layer list : Ctrl + L
+                self.navigation = !self.navigation;
+            }
+        });
+
     },
     methods: {
         setLayers(layers) {
