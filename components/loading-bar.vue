@@ -245,23 +245,25 @@ module.exports = {
     window.addEventListener("CurrentFrameEvent", function(e){
       setCurFrame(e.detail.frame);
     })
-
-
     window.addEventListener('setHistoryState', function(e) {
       setHistoryState(e.detail);
     })
 
-    document.onkeyup= function(e){
-      console.log(e.which);
-      
-      if(e.which == 32){                                    // Pause and Play : Shortcut key Space
+    // Shortcut key function binding
+    window.addEventListener('keyup', function(e){
+      if(e.which == 32){                                    // Pause and Play : Space
         self.playAndPause();
-      }else if(e.ctrlKey && e.which == 90){                 // Front frame : Shortcut key Ctrl + Z
+      }else if(e.ctrlKey && e.which == 90){                 // Front frame : Ctrl + Z
         self.movePrev();
-      }else if(e.ctrlKey && e.which == 89){                 // back frame : Shortcut key Ctrl + Y
+      }else if(e.ctrlKey && e.which == 89){                 // back frame : Ctrl + Y
         self.moveNext();
+      }else if(e.ctrlKey && e.which == 82){                 // Reverse and Play : Ctrl + R
+        self.frameRateFlag = !self.frameRateFlag;
+      }else if(e.ctrlKey && e.which == 66){                 // canvas border line : Ctrl + B
+        self.borderOn = !self.borderOn;
+        self.changeCanvasBorderColor();
       }
-    }
+    });
     
     // setTimeout(function() {
     //   RLottieModule.fillColors("**",1,0,0,100);
