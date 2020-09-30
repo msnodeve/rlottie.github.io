@@ -234,6 +234,7 @@ module.exports = {
     }
   },
   mounted() {
+    var self = this;
     var setFrame = this.setFrame;
     var setCurFrame = this.setCurFrame;
     var setHistoryState = this.setHistoryState;
@@ -250,6 +251,18 @@ module.exports = {
       setHistoryState(e.detail);
     })
 
+    document.onkeyup= function(e){
+      console.log(e.which);
+      
+      if(e.which == 32){                                    // Pause and Play : Shortcut key Space
+        self.playAndPause();
+      }else if(e.ctrlKey && e.which == 90){                 // Front frame : Shortcut key Ctrl + Z
+        self.movePrev();
+      }else if(e.ctrlKey && e.which == 89){                 // back frame : Shortcut key Ctrl + Y
+        self.moveNext();
+      }
+    }
+    
     // setTimeout(function() {
     //   RLottieModule.fillColors("**",1,0,0,100);
     //   RLottieModule.history.insert("**","FillColor",[1,0,0,50])
