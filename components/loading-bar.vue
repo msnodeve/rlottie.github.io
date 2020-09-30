@@ -52,43 +52,36 @@
         </v-col>
         <v-col
           class="pa-0"
-          cols="2"
+          cols="4"
           style="min-width:100px;">
           <v-row
             class="ma-0 pa-0"
             align="center"
-            justify="end">
-            <v-col
-              class="pa-0">
+            >
+            
               <v-switch
-                color="rgba(255, 255, 255, 1)"
                 v-model="frameRateFlag"
-                :label="frameRateFlag ? `Reverse` : `Play`"
+                inset
+                label="Reverse"
+                style="margin-right:20px;"
+                dark
                 >
               </v-switch>
-            </v-col>
-          </v-row>
-        </v-col>
-        <!-- borderline -->
-        <v-col
-          class="pa-0"
-          cols="2"
-          style="min-width:100px;">
-          <v-row
-            class="ma-0 pa-0"
-            align="center"
-            justify="end">
-            <v-col
-              class="pa-0">
+            
+            <!-- borderline -->
+            
               <v-switch
-                color="rgba(255, 255, 255, 1)"
                 v-model="borderOn"
-                :label="borderOn ? `Borderline Off` : `Borderline On`"
+                inset
+                label="Border"
+                dark
                 >
               </v-switch>
-            </v-col>
+            
           </v-row>
         </v-col>
+        
+        
         <v-col
           class="pa-0"
           cols="7">
@@ -130,6 +123,7 @@
                 </template>
                 <span>Redo</span>
               </v-tooltip>
+              
               <v-menu top :offset-y="true" :offset-x="true" :left="true">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -172,10 +166,24 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
+              <v-tooltip top open-on-hover close-delay="100">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    icon
+                    large
+                    style="margin-right:10px;margin-top:3px;position:fixed;right:10px;"                    
+                    @click="exportJson()"
+                  ><v-icon color='#BFC0C2' large>mdi-download</v-icon></v-btn>
+                </template>
+                <span>Export JSON</span>
+              </v-tooltip>
             </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+          </v-row>          
+        </v-col>        
+      </v-row>      
     </div>
   </v-footer>
 </template>
@@ -222,7 +230,7 @@ module.exports = {
 
       isPrev: false,
       isNext: false,
-      borderOn: false,
+      borderOn: true,
     };
   },
   watch: {
@@ -290,14 +298,16 @@ module.exports = {
       RLottieModule.history.moveNext();
     },
     changeCanvasBorderColor(){
-      if (this.borderOn){
+      if (!this.borderOn){
         document.getElementById('canvasBox').style.borderStyle="none";
-
       }else{
         document.getElementById('canvasBox').style.border="1px solid black";
 
       }
     },
+    exportJson() {
+      RLottieModule.export.exportLayers(RLottieModule.history);
+    }
   },
 };
 </script>
