@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="right-bar">
         <v-btn 
             fixed
             fab
@@ -116,5 +116,10 @@ module.exports = {
 
 .v-navigation-drawer__content::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
+}
+#right-bar{
+    position: relative;
+    z-index: 99;
+    /* float:left */
 }
 </style>
