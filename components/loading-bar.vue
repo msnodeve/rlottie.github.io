@@ -16,6 +16,7 @@
           :thumb-size="24"
           @Click="gotoFrame"
           hide-details="false"
+          
         />
       </v-row>
     </div>
