@@ -16,6 +16,7 @@
           :thumb-size="24"
           @Click="gotoFrame"
           hide-details="false"
+          
         />
       </v-row>
     </div>
@@ -52,43 +53,36 @@
         </v-col>
         <v-col
           class="pa-0"
-          cols="2"
+          cols="4"
           style="min-width:100px;">
           <v-row
             class="ma-0 pa-0"
             align="center"
-            justify="end">
-            <v-col
-              class="pa-0">
+            >
+            
               <v-switch
-                color="rgba(255, 255, 255, 1)"
                 v-model="frameRateFlag"
-                :label="frameRateFlag ? `Reverse` : `Play`"
+                inset
+                label="Reverse"
+                style="margin-right:20px;"
+                dark
                 >
               </v-switch>
-            </v-col>
-          </v-row>
-        </v-col>
-        <!-- borderline -->
-        <v-col
-          class="pa-0"
-          cols="2"
-          style="min-width:100px;">
-          <v-row
-            class="ma-0 pa-0"
-            align="center"
-            justify="end">
-            <v-col
-              class="pa-0">
+            
+            <!-- borderline -->
+            
               <v-switch
-                color="rgba(255, 255, 255, 1)"
                 v-model="borderOn"
-                :label="borderOn ? `Borderline Off` : `Borderline On`"
+                inset
+                label="Border"
+                dark
                 >
               </v-switch>
-            </v-col>
+            
           </v-row>
         </v-col>
+        
+        
         <v-col
           class="pa-0"
           cols="7">
@@ -112,7 +106,9 @@
                     @click="movePrev"
                   ><v-icon :color="isPrev ? '#BFC0C2':'#54565A'" large>mdi-undo</v-icon></v-btn>
                 </template>
-                <span>Undo</span>
+                <div>
+                  <span>Undo (Ctrl + Z)</span>
+                </div>
               </v-tooltip>
               <v-tooltip top open-on-hover close-delay="100">
                 <template v-slot:activator="{ on, attrs }">
@@ -128,8 +124,9 @@
                     @click="moveNext"
                   ><v-icon :color="isNext ? '#BFC0C2':'#54565A'" large>mdi-redo</v-icon></v-btn>
                 </template>
-                <span>Redo</span>
+                <span>Redo (Ctrl + Shift + Z)</span>
               </v-tooltip>
+              
               <v-menu top :offset-y="true" :offset-x="true" :left="true">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -172,10 +169,24 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
+              <v-tooltip top open-on-hover close-delay="100">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    icon
+                    large
+                    style="margin-right:10px;margin-top:3px;position:fixed;right:10px;"                    
+                    @click="exportJson()"
+                  ><v-icon color='#BFC0C2' large>mdi-download</v-icon></v-btn>
+                </template>
+                <span>Export JSON(Ctrl + S)</span>
+              </v-tooltip>
             </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+          </v-row>          
+        </v-col>        
+      </v-row>      
     </div>
   </v-footer>
 </template>
@@ -222,7 +233,7 @@ module.exports = {
 
       isPrev: false,
       isNext: false,
-      borderOn: false,
+      borderOn: true,
     };
   },
   watch: {
@@ -249,16 +260,30 @@ module.exports = {
       setHistoryState(e.detail);
     })
 
+    document.addEventListener("keydown", function(e) {
+      if(e.ctrlKey && e.which == 83) {
+        e.preventDefault();
+      }else if(e.ctrlKey && e.which == 82){
+        e.preventDefault();
+      }else if(e.ctrlKey && e.which == 79){
+        e.preventDefault();
+      }
+    }, false)
+
     // Shortcut key function binding
-    window.addEventListener('keyup', function(e){
-      if(e.which == 32){                                    // Pause and Play : Space
+    document.addEventListener('keydown', function(e){
+      if(e.which == 32){                              // Pause and Play : Space
         self.playAndPause();
-      }else if(e.ctrlKey && e.which == 90){                 // Front frame : Ctrl + Z
-        self.movePrev();
-      }else if(e.ctrlKey && e.which == 89){                 // back frame : Ctrl + Y
-        self.moveNext();
+      }else if(e.ctrlKey && e.which == 83){                       // Save to Json file
+        self.exportJson();
       }else if(e.ctrlKey && e.which == 82){                 // Reverse and Play : Ctrl + R
         self.frameRateFlag = !self.frameRateFlag;
+      }else if(e.which == 32){                              // Pause and Play : Space
+        self.playAndPause();
+      }else if(e.ctrlKey && e.shiftKey && e.which == 90){   // Forward frame : Ctrl + Shift + Z
+        self.moveNext();
+      }else if(e.ctrlKey && e.which == 90){                 // Backward frame : Ctrl + Z
+        self.movePrev();
       }else if(e.ctrlKey && e.which == 66){                 // canvas border line : Ctrl + B
         self.borderOn = !self.borderOn;
         self.changeCanvasBorderColor();
@@ -305,14 +330,16 @@ module.exports = {
       RLottieModule.history.moveNext();
     },
     changeCanvasBorderColor(){
-      if (this.borderOn){
+      if (!this.borderOn){
         document.getElementById('canvasBox').style.borderStyle="none";
-
       }else{
         document.getElementById('canvasBox').style.border="1px solid black";
 
       }
     },
+    exportJson() {
+      RLottieModule.export.exportLayers(RLottieModule.history);
+    }
   },
 };
 </script>

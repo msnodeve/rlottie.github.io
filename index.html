@@ -40,7 +40,7 @@
         <left-bar @child-event="setHeight" :selectedmenu="selectedMenu" @menuclicked="ChangeMenu"></left-bar>
         <left-bar-detail class="setScroll" :canvas-size="canvasSize" :selectedmenu="selectedMenu" v-if="activeDetailBar" @close-sidebar="CloseMenuBar" :height="leftHeight" ></left-bar-detail>
         <right-bar :height="leftHeight"></right-bar>
-        <div id="content" class="content" style="height: 90%; background-color: white;" ref="content">
+        <div id="content" class="content" style="height: 90%; background-color: rgb(255,255,255);" ref="content">
           <!-- 배경담는 div -->
           <div id="img-background">
           </div>
@@ -104,7 +104,6 @@
           this.leftHeight = val-104;
         },
         changeSize(){
-          console.log()
           this.canvasSize.height = Number(document.getElementById("canvasBox").style.height.slice(0,-2))
           this.canvasSize.width = Number(document.getElementById("canvasBox").style.width.slice(0,-2))
         }
@@ -112,15 +111,6 @@
       mounted(){
         this.initCanvasLeft = this.$refs.content.clientWidth * 0.4;
         this.initCanvasTop = this.$refs.content.clientHeight * 0.2;
-
-        // disable keyboard shortcuts
-        document.onkeydown = function (e) {
-          // Ignore F1, F2 ... F12
-          if(112 <= e.which && e.which <= 123){
-            return true;
-          }
-          return false;
-        }
       }
     })
   </script>

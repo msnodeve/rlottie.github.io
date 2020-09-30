@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="right-bar">
         <v-btn 
             fixed
             fab
@@ -30,14 +30,28 @@
                 style="margin-left:15px;"
                 dark
             ></v-switch>
+            <v-text-field            
+                v-model="search"    
+                placeholder="input keypath ..."                
+                dark
+                dense
+                hide-details
+                outlined
+                style="padding:8px;"
+                @keyup.stop="inputKeypath"
+            ></v-text-field>
             <v-treeview
                 :items="layers"
                 dark     
                 activatable
                 hoverable
                 item-key="keypath"
+                item-text="keypath"
                 color="rgba(0, 153, 204, 1)"
-                @update:active="changeFocus"
+                @update:active="changeFocus"                
+                open-all
+                ref="treeview"
+                :search="search"
             >
                 <template v-slot:prepend="{ item, open }">
                     <v-icon v-if="item.type == 'root'">
@@ -59,7 +73,9 @@
                     <v-icon v-else>
                         mdi-cancel
                     </v-icon>
-
+                </template>
+                <template v-slot:label="{item}">
+                    {{item.name}}
                 </template>
             </v-treeview>
         </v-navigation-drawer>
@@ -76,6 +92,7 @@ module.exports = {
             navigation: false,
             layers: [],
             keypath: '',
+            search: '',
         }
     },
     watch: {
@@ -88,6 +105,7 @@ module.exports = {
         var setLayers = this.setLayers;
         window.addEventListener('initLayers', function(e) {            
             setLayers(e.detail.layers)
+            // console.dir(self.$refs.test)            
         });
 
         // Shortcut key function binding
@@ -111,7 +129,14 @@ module.exports = {
             RLottieModule.lottieHandle.set_fill_opacity("**", 30);
             RLottieModule.lottieHandle.set_fill_opacity(RLottieModule.keypath, 100);
             RLottieModule.lottieHandle.set_stroke_opacity("**", 30);
-            RLottieModule.lottieHandle.set_stroke_opacity(RLottieModule.keypath, 100);
+            RLottieModule.lottieHandle.set_stroke_opacity(RLottieModule.keypath, 100);            
+        },
+        inputKeypath(e) {
+            if(this.search) {
+                this.$refs.treeview.updateAll(true)
+            }else {
+                this.$refs.treeview.updateAll(false)
+            }
         }
     }
 }
@@ -125,5 +150,10 @@ module.exports = {
 
 .v-navigation-drawer__content::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
+}
+#right-bar{
+    position: relative;
+    z-index: 99;
+    /* float:left */
 }
 </style>
