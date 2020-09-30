@@ -7,7 +7,44 @@
                         <v-expand-transition>
                             <!-- <v-row v-if="scrollBottom" class="pa-0" justify="center"> -->
                                 <v-col v-if="scrollBottom" cols="6" offset="3" class="pa-0"  style="text-align:center;">
-                                    
+                                    <div style="width:100%; background-color:rgba( 41, 44, 49, 1 );border-radius:0px 0px 15px 15px;height:50px;vertical-align:middle;">
+                                          <v-btn
+                                            color="rgba( 41, 44, 49, 0.9 )"
+                                            class="white--text"
+                                            @click="button1"
+                                            style="height:100%;"
+                                            >
+                                            <v-icon
+                                                dark
+                                            >
+                                                mdi-square-off-outline
+                                             </v-icon>
+                                        </v-btn>
+                                        <v-btn
+                                            color="rgba( 41, 44, 49, 0.9 )"
+                                            class="white--text"
+                                            @click="button2(0)"
+                                            style="height:100%;"
+                                            >
+                                            <v-icon
+                                                dark
+                                            >
+                                                mdi-cellphone-android
+                                             </v-icon>
+                                        </v-btn>
+                                        <v-btn
+                                            color="rgba( 41, 44, 49, 0.9 )"
+                                            class="white--text"
+                                            @click="button2(1)"
+                                            style="height:100%;"
+                                            >
+                                            <v-icon
+                                                dark
+                                            >
+                                                mdi-watch
+                                             </v-icon>
+                                        </v-btn>
+                                    </div>
                                 </v-col>
                         </v-expand-transition>
                     </v-col>
@@ -46,6 +83,26 @@ module.exports = {
     methods: {
         changeScrollB(flag){
             this.scrollBottom=flag
+        },
+        button1(){
+                var parentDiv = document.querySelector("#img-background");
+                if(parentDiv.childNodes.length!=0){
+                    var childImg = document.querySelector("#background");
+                    parentDiv.removeChild(childImg);
+                }
+        },
+        button2(flag){
+            var parentDiv = document.querySelector("#img-background");
+            if(parentDiv.childNodes.length!=0){
+                var childImg = document.querySelector("#background");
+                parentDiv.removeChild(childImg);
+            }
+            
+            var img = document.createElement("img");
+            img.id = "background";
+            img.style = "max-height:650px; max-width: 90%; margin-left: auto; margin-right: auto; display: block;"
+            // img.src = (flag==0)? "./assets/Flat-Samsung-Galaxy-S20-Mockup.jpg" : "./assets/samsung-gear-s2-collection.png";
+            document.querySelector("#img-background").appendChild(img);
         }
     },
     mounted(){
