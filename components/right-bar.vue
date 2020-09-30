@@ -109,7 +109,7 @@ module.exports = {
         });
 
         // Shortcut key function binding
-        window.addEventListener('keyup', function(e) {            
+        document.addEventListener('keydown', function(e){      
             if(e.ctrlKey && e.which == 76){            // Hide and show layer list : Ctrl + L
                 self.navigation = !self.navigation;
             }
