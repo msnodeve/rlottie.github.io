@@ -121,15 +121,17 @@ module.exports = {
             this.layers = [layers];
         },
 
-        changeFocus(e){
+        changeFocus(e){            
             this.keypath = e[0]
             RLottieModule.keypath = this.isSelectAll ? (this.keypath ? this.keypath + '.**' : '**') : (this.keypath ? this.keypath : '');
-
-            RLottieModule.history.reload();
-            RLottieModule.lottieHandle.set_fill_opacity("**", 30);
-            RLottieModule.lottieHandle.set_fill_opacity(RLottieModule.keypath, 100);
-            RLottieModule.lottieHandle.set_stroke_opacity("**", 30);
-            RLottieModule.lottieHandle.set_stroke_opacity(RLottieModule.keypath, 100);            
+                        
+            if(!e[0]) {
+                RLottieModule.reload(RLottieModule.history.originJson);
+                RLottieModule.history.reload()
+                return;
+            }            
+            RLottieModule.history.highlighting((this.keypath ? this.keypath + '.**' : '**'))
+              
         },
         inputKeypath(e) {
             if(this.search) {
