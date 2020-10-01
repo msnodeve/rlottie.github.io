@@ -40,43 +40,6 @@
       </v-col>
     </v-row>
     <div class="text-center mt-0">
-      <v-row class="px-5">
-        <v-col cols="12" class="justify-center mt-5">
-          <div class="text-left" style="color: white">Canvas Size</div>
-          <v-row class="pd-0 pt-2">
-            <v-col cols="8" class="text-left py-0">
-              <div style="color: white">x</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field
-                v-model="canvasSizeInput.width"
-                solo
-                dense
-                dark
-                hide-details
-                outlined
-                suffix="px"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="8" class="text-left py-0">
-              <div style="color: white">y</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field
-                v-model="canvasSizeInput.height"
-                solo
-                dense
-                dark
-                hide-details
-                outlined
-                suffix="px"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </div>
-    <div class="text-center mt-0">
       <v-row class="px-5"
         align="center">
         <v-col cols="7" class="justify-center pt-0 pr-0">
