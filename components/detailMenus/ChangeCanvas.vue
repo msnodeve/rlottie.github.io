@@ -5,7 +5,7 @@
     <div class="uploadBTN py-3" style="align-center">
       <v-row align="center" justify="center">
         <v-col class="pa-0" offset="2" cols="8">
-          <h3 style="color: white">Change Background</h3>
+          <h3 style="color: white">Canvas</h3>
         </v-col>
         <v-col class="pa-0 pr-4" cols="2">
           <v-btn
