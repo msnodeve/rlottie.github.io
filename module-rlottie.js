@@ -20,7 +20,9 @@ var RLottieModule = (function () {
   var obj = {};
 
   obj.canvas = {};
+  obj.preview ={};
   obj.context = {};
+  obj.contextPre = {};
   obj.lottieHandle = 0;
   obj.frameCount = 0;
   obj.curFrame = 0;
@@ -40,6 +42,8 @@ var RLottieModule = (function () {
       relayoutCanvas();
       obj.canvas = document.getElementById("myCanvas");
       obj.context = obj.canvas.getContext('2d');
+      obj.preview = document.getElementById("preView");
+      obj.contextPre = obj.preview.getContext('2d');
 
       obj.lottieHandle = new Module.RlottieWasm();
       obj.frameCount = obj.lottieHandle.frames();
@@ -88,6 +92,16 @@ var RLottieModule = (function () {
       });
       window.dispatchEvent(getAllFrameEvent);
   }
+
+  obj.renderShanpShot = function (frame) {
+    if (obj.preview.width == 0  || obj.preview.height == 0) return;
+
+    var buffer = obj.lottieHandle.render(frame, obj.preview.width, obj.preview.height);
+    var result = Uint8ClampedArray.from(buffer);
+    var imageData = new ImageData(result, obj.preview.width, obj.preview.height);
+    
+    obj.contextPre.putImageData(imageData, 0, 0);
+}
 
   obj.reload = function (jsString) {
     var len  = obj.lottieHandle.load(jsString);
