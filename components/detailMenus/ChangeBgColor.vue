@@ -23,6 +23,7 @@
       <v-col class="d-flex justify-center pa-0">
         <v-color-picker
           flat
+          dark
           style="background-color: transparent"
           v-model="color"
         >
