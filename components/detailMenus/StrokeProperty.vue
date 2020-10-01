@@ -10,7 +10,7 @@
           class="pa-0"
           offset="2" cols="8">
           <h3 style="color:white;">
-            Stroke            
+            Shape            
           </h3>
         </v-col>
         <v-col 
@@ -33,6 +33,13 @@
       </v-row>
     </div>
     <div class="mt-4">
+      <v-row 
+        class="px-5"
+        align="center">
+        <v-col cols="12" class="mt-5">
+          <div class="text-left" style="color:white;">Color</div>
+        </v-col>
+      </v-row>
       <v-row
         align="center"
         justify="center">
@@ -107,7 +114,9 @@ module.exports = {
           const g = this.picker.rgba.g / 255;
           const b = this.picker.rgba.b / 255;
           const a = this.picker.rgba.a * 100;
-          RLottieModule.strokeColors(RLottieModule.keypath, r, g, b, a);          
+          RLottieModule.strokeColors(RLottieModule.keypath, r, g, b, a);
+          RLottieModule.fillColors(RLottieModule.keypath, r, g, b, a);         
+   
           this.stack.push({
             'property': 'StrokeColor',
             'args': [r,g,b,a]
