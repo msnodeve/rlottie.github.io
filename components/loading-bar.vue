@@ -1,5 +1,5 @@
 <template>
-  <v-footer absolute color="#292c31" class="font-weight-medium" style="min-width:745px;" ref="footer">
+  <v-footer absolute color="#292c31" class="font-weight-medium" style="min-width:745px;z-index:100;" ref="footer">
     <div 
       class="content-width-100 px-16"
     >
