@@ -106,4 +106,7 @@ module.exports = {
 span{
   color:white !important;
 }
+input {
+  color: white !important;
+}
 </style>

@@ -47,6 +47,7 @@
                 dark
                 hide-details
                 outlined
+                suffix="px"
               ></v-text-field>
             </v-col>
             <v-col cols="8" class="text-left py-0">
@@ -60,6 +61,7 @@
                 dark
                 hide-details
                 outlined
+                suffix="px"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -216,6 +218,9 @@ module.exports = {
 
 <style scoped>
 span {
+  color: white !important;
+}
+input {
   color: white !important;
 }
 .v-text-field .v-input__control .v-input__slot {
