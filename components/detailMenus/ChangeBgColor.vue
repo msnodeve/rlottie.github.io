@@ -39,43 +39,7 @@
         </v-color-picker>
       </v-col>
     </v-row>
-    <div class="text-center mt-0">
-      <v-row class="px-5">
-        <v-col cols="12" class="justify-center mt-5">
-          <div class="text-left" style="color: white">Canvas Size</div>
-          <v-row class="pd-0 pt-2">
-            <v-col cols="8" class="text-left py-0">
-              <div style="color: white">x</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field
-                v-model="canvasSizeInput.width"
-                solo
-                dense
-                dark
-                hide-details
-                outlined
-                suffix="px"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="8" class="text-left py-0">
-              <div style="color: white">y</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field
-                v-model="canvasSizeInput.height"
-                solo
-                dense
-                dark
-                hide-details
-                outlined
-                suffix="px"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </div>
+    
     <div class="text-center mt-0">
       <v-row class="px-5"
         align="center">
@@ -90,7 +54,7 @@
         tile
         class="py-7"
         text color="white"
-        style="width:90%; height: 200px; border: 2px dashed; border-radius: 20px; background-color:rgba(100,100,100,0.2);"
+        style="width:90%; height: 100px; border: 2px dashed; border-radius: 20px; background-color:rgba(100,100,100,0.2);"
         @click="clickToBackgroundImage">
           <v-icon style="pointer: cursor; font-size:30px;">mdi-image-plus</v-icon>
       </v-btn>
