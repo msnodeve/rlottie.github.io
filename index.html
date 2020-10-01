@@ -37,6 +37,7 @@
   <div id="app">
     <v-app>
       <v-main class="main-window">
+        <upper-bar :left="initCanvasLeft"></upper-bar>
         <left-bar @child-event="setHeight" :selectedmenu="selectedMenu" @menuclicked="ChangeMenu"></left-bar>
         <left-bar-detail class="setScroll" :canvas-size="canvasSize" :selectedmenu="selectedMenu" v-if="activeDetailBar" @close-sidebar="CloseMenuBar" :height="leftHeight" ></left-bar-detail>
         <right-bar :height="leftHeight"></right-bar>
@@ -70,7 +71,8 @@
         'loading-bar': 'url:./components/loading-bar.vue',
         'left-bar': 'url:./components/left-bar.vue',
         'left-bar-detail': 'url:./components/left-bar-detail.vue',
-        'right-bar': 'url:./components/right-bar.vue'
+        'right-bar': 'url:./components/right-bar.vue',
+        'upper-bar': 'url:./components/upper-bar.vue'
       },
       data() {
         return {
