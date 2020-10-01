@@ -17,7 +17,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-
   <!-- Drag and Resize -->
   <script type="text/javascript">
     var dragresize = new DragResize('dragresize',
@@ -37,6 +36,7 @@
   <div id="app">
     <v-app>
       <v-main class="main-window">
+        <upper-bar :left="initCanvasLeft"></upper-bar>
         <left-bar @child-event="setHeight" :selectedmenu="selectedMenu" @menuclicked="ChangeMenu"></left-bar>
         <left-bar-detail class="setScroll" :canvas-size="canvasSize" :selectedmenu="selectedMenu" v-if="activeDetailBar" @close-sidebar="CloseMenuBar" :height="leftHeight" ></left-bar-detail>
         <right-bar :height="leftHeight"></right-bar>
@@ -52,7 +52,8 @@
           </div>
         </div>
         <v-spacer></v-spacer>
-        <loading-bar></loading-bar>
+        <loading-bar @pointer="setPointer"></loading-bar>
+        <snapshot v-show="activeSnapShot" :pointx="pointx" :pointy="pointy"></snapshot>
       </v-main>
     </v-app>
   </div>
@@ -70,7 +71,9 @@
         'loading-bar': 'url:./components/loading-bar.vue',
         'left-bar': 'url:./components/left-bar.vue',
         'left-bar-detail': 'url:./components/left-bar-detail.vue',
-        'right-bar': 'url:./components/right-bar.vue'
+        'right-bar': 'url:./components/right-bar.vue',
+        'snapshot' : 'url:./components/snapshot.vue',
+        'upper-bar': 'url:./components/upper-bar.vue'
       },
       data() {
         return {
@@ -84,6 +87,9 @@
           initialPosition: (window.innerWidth - 400)/2,
           initCanvasTop: 0,
           initCanvasLeft: 0,
+          pointx: 0,
+          pointy: 0,
+          activeSnapShot: false,
         }
       },
       methods: {
@@ -106,11 +112,17 @@
         changeSize(){
           this.canvasSize.height = Number(document.getElementById("canvasBox").style.height.slice(0,-2))
           this.canvasSize.width = Number(document.getElementById("canvasBox").style.width.slice(0,-2))
+        },
+        setPointer(pointer){
+          this.pointx = pointer.x - 75;
+          this.pointy = pointer.y - 180;
+          this.activeSnapShot = pointer.isSnapShot;
         }
       },
       mounted(){
         this.initCanvasLeft = this.$refs.content.clientWidth * 0.4;
         this.initCanvasTop = this.$refs.content.clientHeight * 0.2;
+        
       }
     })
   </script>

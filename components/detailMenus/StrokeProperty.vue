@@ -143,14 +143,6 @@ module.exports = {
 </script>
 
 <style scoped>
-
-input{
-  border: 1px solid white !important;
-  color: white;
-}
-.input input{
-  border: 0px solid white !important;
-}
 span{
   color:white !important;
 }

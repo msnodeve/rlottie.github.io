@@ -17,7 +17,7 @@
           <input type="file" id="fileSelector" accept=".json" ref="json">
         </template> 
         <span>
-          upload New JSON File
+          upload New JSON File (Ctrl + O)
         </span>
       </v-tooltip>
     </div>
@@ -152,7 +152,9 @@ module.exports = {
     window.addEventListener("resize", function(e) {
       self.$emit('child-event', e.target.innerHeight);
     });
-    window.addEventListener('keyup', function(e){
+
+    // Shortcut key function binding
+    document.addEventListener('keydown', function(e){
       if(e.ctrlKey && e.which == 79){                                    // Pause and Play : Space
         self.clickToUploadJson();
       }

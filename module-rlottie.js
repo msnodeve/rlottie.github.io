@@ -20,7 +20,9 @@ var RLottieModule = (function () {
   var obj = {};
 
   obj.canvas = {};
+  obj.preview ={};
   obj.context = {};
+  obj.contextPre = {};
   obj.lottieHandle = 0;
   obj.frameCount = 0;
   obj.curFrame = 0;
@@ -40,6 +42,8 @@ var RLottieModule = (function () {
       relayoutCanvas();
       obj.canvas = document.getElementById("myCanvas");
       obj.context = obj.canvas.getContext('2d');
+      obj.preview = document.getElementById("preView");
+      obj.contextPre = obj.preview.getContext('2d');
 
       obj.lottieHandle = new Module.RlottieWasm();
       obj.frameCount = obj.lottieHandle.frames();
@@ -48,8 +52,7 @@ var RLottieModule = (function () {
       var originJson = obj.lottieHandle.get_basic_resource()
       obj.history = initHistory(originJson);
       obj.layers = initLayers(originJson)
-      obj.export = initExportObject(originJson);
-    
+      obj.export = initExportObject(originJson);      
       window.dispatchEvent(
         new CustomEvent("initLayers", {
           detail: {
@@ -89,6 +92,16 @@ var RLottieModule = (function () {
       window.dispatchEvent(getAllFrameEvent);
   }
 
+  obj.renderShanpShot = function (frame) {
+    if (obj.preview.width == 0  || obj.preview.height == 0) return;
+
+    var buffer = obj.lottieHandle.render(frame, obj.preview.width, obj.preview.height);
+    var result = Uint8ClampedArray.from(buffer);
+    var imageData = new ImageData(result, obj.preview.width, obj.preview.height);
+    
+    obj.contextPre.putImageData(imageData, 0, 0);
+}
+
   obj.reload = function (jsString) {
     var len  = obj.lottieHandle.load(jsString);
     obj.frameCount = obj.lottieHandle.frames();
@@ -116,11 +129,12 @@ var RLottieModule = (function () {
   }
 
   obj.fillColors = function (keypath, r, g, b, opacity) {
+    console.log(keypath, r, g, b, opacity);
     obj.lottieHandle.set_fill_color(keypath, r, g, b);
     obj.lottieHandle.set_fill_opacity(keypath, opacity);
   }
 
-  obj.strokeColors = function (keypath, r, g, b, opacity) {
+  obj.strokeColors = function (keypath, r, g, b, opacity) {    
     obj.lottieHandle.set_stroke_color(keypath, r, g, b);
     obj.lottieHandle.set_stroke_opacity(keypath, opacity);
   }
@@ -358,9 +372,9 @@ function initHistory(jsString) {
   obj.originJson = jsString;
 
   obj.setProperty = function(keypath, property, args) {
-    
     switch(property) {
       case 'FillColor':
+        
         RLottieModule.fillColors(keypath, args[0], args[1], args[2], args[3])
         break;
       case 'StrokeColor':        
@@ -403,24 +417,36 @@ function initHistory(jsString) {
   }
 
   obj.reload = function() {
-    RLottieModule.reload(obj.originJson);
+    // RLottieModule.reload(obj.originJson);
 
     let check = []
     for(let i = 0; i <= obj.cur; i++) {      
       let key = obj.history[i]['keypath'];
       let prop = obj.history[i]['property'];
       let args = obj.history[i]['args'];
-
-      // if(!check[key]){
-      //   check[key] = []        
-      // }
-      // if(!check[key][prop]){
-      //   check[key][prop] = 1;        
-      // }
       obj.setProperty(key, prop, args)
     }
 
     obj.setHistoryState();
+  }
+
+  obj.highlighting = function (keypath) {    
+    RLottieModule.lottieHandle.set_fill_opacity("**", 30);
+    RLottieModule.lottieHandle.set_stroke_opacity("**", 30);
+    for(let i = 0; i <= obj.cur; i++) {      
+      let key = obj.history[i]['keypath'];
+      let prop = obj.history[i]['property'];
+      let args = obj.history[i]['args'];
+
+      if(prop == "FillColor" || prop == "StrokeColor") {
+        if(args[3] > 30) {
+          args[3] = 30
+        }
+        obj.setProperty(key, prop, args)
+      }
+    }
+    RLottieModule.lottieHandle.set_fill_opacity(keypath, 100);            
+    RLottieModule.lottieHandle.set_stroke_opacity(keypath, 100);   
   }
 
   obj.setHistoryState = function() {
@@ -447,6 +473,7 @@ function initHistory(jsString) {
       return false;
     }    
     obj.cur--;    
+    RLottieModule.reload(obj.originJson);
     obj.reload();
   }
 
@@ -455,6 +482,7 @@ function initHistory(jsString) {
       return false;
     }
     obj.cur++;
+    RLottieModule.reload(obj.originJson);
     obj.reload();
   }
   obj.setHistoryState();

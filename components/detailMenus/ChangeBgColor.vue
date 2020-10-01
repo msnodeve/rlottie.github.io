@@ -217,10 +217,6 @@ module.exports = {
 </script>
 
 <style scoped>
-.v-color-picker__input > input {
-  border: 1px solid white !important;
-  color: white;
-}
 span {
   color: white !important;
 }
