@@ -220,6 +220,9 @@ module.exports = {
 span {
   color: white !important;
 }
+input {
+  color: white !important;
+}
 .v-text-field .v-input__control .v-input__slot {
   min-height: 20px !important;
   display: flex !important;
