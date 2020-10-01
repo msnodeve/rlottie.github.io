@@ -39,6 +39,7 @@
         <v-color-picker
           v-model="picker"
           flat
+          dark
           style="background-color:transparent;"
         ></v-color-picker>
       </v-row>
@@ -102,11 +103,6 @@ module.exports = {
 </script>
 
 <style scoped>
-
-input{
-  border: 1px solid white !important;
-  color: white;
-}
 span{
   color:white !important;
 }
