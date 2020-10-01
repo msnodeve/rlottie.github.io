@@ -17,7 +17,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-
   <!-- Drag and Resize -->
   <script type="text/javascript">
     var dragresize = new DragResize('dragresize',
@@ -37,6 +36,7 @@
   <div id="app">
     <v-app>
       <v-main class="main-window">
+        <upper-bar :left="initCanvasLeft"></upper-bar>
         <left-bar @child-event="setHeight" :selectedmenu="selectedMenu" @menuclicked="ChangeMenu"></left-bar>
         <left-bar-detail class="setScroll" :canvas-size="canvasSize" :selectedmenu="selectedMenu" v-if="activeDetailBar" @close-sidebar="CloseMenuBar" :height="leftHeight" ></left-bar-detail>
         <right-bar :height="leftHeight"></right-bar>
@@ -72,7 +72,8 @@
         'left-bar': 'url:./components/left-bar.vue',
         'left-bar-detail': 'url:./components/left-bar-detail.vue',
         'right-bar': 'url:./components/right-bar.vue',
-        'snapshot' : 'url:./components/snapshot.vue'
+        'snapshot' : 'url:./components/snapshot.vue',
+        'upper-bar': 'url:./components/upper-bar.vue'
       },
       data() {
         return {
