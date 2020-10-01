@@ -291,17 +291,6 @@ module.exports = {
         self.changeCanvasBorderColor();
       }
     });
-    
-    // setTimeout(function() {
-    //   RLottieModule.fillColors("**",1,0,0,100);
-    //   RLottieModule.history.insert("**","FillColor",[1,0,0,50])
-
-    //   RLottieModule.strokeColors("**",1,0,0,100);
-    //   RLottieModule.history.insert("**","StrokeColor",[1,0,0,100])
-
-    //   RLottieModule.fillColors("**",0,0,1,100);
-    //   RLottieModule.history.insert("**","FillColor",[0,0,1,100])
-    // }, 1000);    
   },
   methods: {
     setFrame(value){
