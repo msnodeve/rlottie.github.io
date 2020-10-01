@@ -34,7 +34,7 @@
           <span>
             <v-card class="m-0" max-width="400">
               <v-img class="white--text align-end" height="200px" 
-              src="./assets/ChangeTR.png">
+              src="./assets/ChangeBG3.jpg">
                 <v-card-title>Change Fill</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0">Change 2 properties</v-card-subtitle>
@@ -56,8 +56,8 @@
           <span>
             <v-card class="m-0" max-width="400">
               <v-img class="white--text align-end" height="200px" 
-              src="./assets/ChangeTR.png">
-                <v-card-title>Change Stroke</v-card-title>
+              src="./assets/ChangeStroke.jpg">
+                <v-card-title style="color:black">Change Stroke</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0">Change 3 properties</v-card-subtitle>
               <v-card-text class="text--primary">
@@ -77,7 +77,7 @@
           <span>
             <v-card class="m-0" max-width="400">
               <v-img class="white--text align-end" height="200px" 
-                src="./assets/ChangeTR.png">
+                src="./assets/Transform.jpg">
                 <v-card-title>Transform Animation</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0">Change 5 properties</v-card-subtitle>
@@ -98,7 +98,7 @@
           <span>                  
             <v-card class="m-0 p-0" max-width="400">
               <v-img class="white--text align-end" height="200px" 
-              src="./assets/ChangeBG3.jpg">
+              src="./assets/ChangeBG.jpg">
                 <v-card-title>Change Background</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0">Change 3 properties</v-card-subtitle>
