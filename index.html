@@ -52,7 +52,8 @@
           </div>
         </div>
         <v-spacer></v-spacer>
-        <loading-bar></loading-bar>
+        <loading-bar @pointer="setPointer"></loading-bar>
+        <snapshot v-show="activeSnapShot" :pointx="pointx" :pointy="pointy"></snapshot>
       </v-main>
     </v-app>
   </div>
@@ -70,7 +71,8 @@
         'loading-bar': 'url:./components/loading-bar.vue',
         'left-bar': 'url:./components/left-bar.vue',
         'left-bar-detail': 'url:./components/left-bar-detail.vue',
-        'right-bar': 'url:./components/right-bar.vue'
+        'right-bar': 'url:./components/right-bar.vue',
+        'snapshot' : 'url:./components/snapshot.vue'
       },
       data() {
         return {
@@ -84,6 +86,9 @@
           initialPosition: (window.innerWidth - 400)/2,
           initCanvasTop: 0,
           initCanvasLeft: 0,
+          pointx: 0,
+          pointy: 0,
+          activeSnapShot: false,
         }
       },
       methods: {
@@ -106,6 +111,11 @@
         changeSize(){
           this.canvasSize.height = Number(document.getElementById("canvasBox").style.height.slice(0,-2))
           this.canvasSize.width = Number(document.getElementById("canvasBox").style.width.slice(0,-2))
+        },
+        setPointer(pointer){
+          this.pointx = pointer.x - 75;
+          this.pointy = pointer.y - 180;
+          this.activeSnapShot = pointer.isSnapShot;
         }
       },
       mounted(){
