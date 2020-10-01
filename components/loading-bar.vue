@@ -4,8 +4,11 @@
       class="content-width-100 px-16"
     >
       <v-row
+        id="snapShot"
         class="ma-0 pa-0"
         style="width:100%"
+        @mousemove="snapShotFrame($event, true)"
+        @mouseleave="snapShotFrame($event, false)"
       >
         <v-slider
           class="v-slider--active v-slider--focused"
@@ -190,7 +193,6 @@
     </div>
   </v-footer>
 </template>
-
 <script>
 module.exports = {
   name: "loading-bar",
@@ -302,6 +304,15 @@ module.exports = {
     gotoFrame(value){
       onSliderDrag(this.curFrame);
     },
+    snapShotFrame(evt, flag){
+      const x = evt.pageX - $('#snapShot').offset().left;
+      const len = $('#snapShot').width();
+      let frame = x/len*this.allFrame; 
+      if(frame<0) frame = 0;
+      else if(frame>this.allFrame) frame = this.allFrame
+      RLottieModule.renderShanpShot(frame);
+      this.$emit('pointer', {x:evt.pageX, y:$('#snapShot').offset().top, isSnapShot:flag});
+    },
     playAndPause(){
       buttonClicked();
       this.playing = RLottieModule.playing;
@@ -351,5 +362,8 @@ module.exports = {
 
 .v-label.theme--light{
   color:#ffffff;
+}
+.v-slider--horizontal {
+  cursor: pointer;
 }
 </style>

@@ -23,6 +23,7 @@
       <v-col class="d-flex justify-center pa-0">
         <v-color-picker
           flat
+          dark
           style="background-color: transparent"
           v-model="color"
         >
@@ -214,10 +215,6 @@ module.exports = {
 </script>
 
 <style scoped>
-.v-color-picker__input > input {
-  border: 1px solid white !important;
-  color: white;
-}
 span {
   color: white !important;
 }
