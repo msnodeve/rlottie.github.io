@@ -4,7 +4,7 @@
         <transform-property v-if="selectedmenu==2" @call-close-menu-parent="closeSideBarFromChild"></transform-property>
         <change-bg-color v-if="selectedmenu==3" @call-close-menu-parent="closeSideBarFromChild"></change-bg-color>
         <change-canvas v-if="selectedmenu==4" :canvas-size="canvasSize" @call-close-menu-parent="closeSideBarFromChild"></change-canvas>
-        <shape-property v-if="selectedmenu==5" @call-close-menu-parent="closeSideBarFromChild"></shape-property>
+        <export-gif v-if="selectedmenu==5" @call-close-menu-parent="closeSideBarFromChild"></export-gif>
     </div>
 </template>
 
@@ -16,7 +16,7 @@ module.exports = {
         'transform-property': 'url:./detailMenus/TransformProperty.vue',
         'change-bg-color': 'url:./detailMenus/ChangeBgColor.vue',
         'change-canvas': 'url:./detailMenus/ChangeCanvas.vue',
-        'shape-property': 'url:./detailMenus/ShapeProperty.vue',
+        'export-gif': 'url:./detailMenus/ExportGif.vue',
     },
     props:{
         selectedmenu: Number,

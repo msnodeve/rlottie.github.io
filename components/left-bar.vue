@@ -99,7 +99,7 @@
                 src="./assets/ChangeStroke.jpg">
                 <v-card-title style="color:#2b2a2a;">Change Canvas</v-card-title>
               </v-img>
-              <v-card-subtitle class="pb-0">Change 3 properties</v-card-subtitle>
+              <v-card-subtitle class="pb-0">Change states of canvas</v-card-subtitle>
               <v-card-text class="text--primary">                
                 <div>resize, rotation, flip</div>
               </v-card-text>
