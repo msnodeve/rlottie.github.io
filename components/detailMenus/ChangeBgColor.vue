@@ -39,7 +39,6 @@
         </v-color-picker>
       </v-col>
     </v-row>
-    
     <div class="text-center mt-0">
       <v-row class="px-5"
         align="center">
