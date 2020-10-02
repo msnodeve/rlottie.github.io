@@ -435,7 +435,6 @@ function Layers(RLottieModule, jsString) {
         if(args.a > 30) {
           args.a = 30
         }
-        // console.log('high', args)
         this.setProperty(key, prop, args)
       }
     }
@@ -566,16 +565,12 @@ function Layers(RLottieModule, jsString) {
       flag = true
     }
     if(flag) {      
+
       switch(property) {
-        case "FillColor":
-          if(layer.ty == "fl") {
+        case "ShapeColor":
+          if(layer.ty == "fl" || layer.ty == "st") {
             this.changeColor(layer, args)
           }            
-          break;
-        case "StrokeColor":
-          if(layer.ty == "st") {
-            this.changeColor(layer, args)
-          }
           break;
         case "StrokeWidth":
           if(layer.ty == "st") {
@@ -622,11 +617,10 @@ function Layers(RLottieModule, jsString) {
     }
   }
 
-  this.exportlayer = function (history){
-    var saveObject = JSON.parse(this.originJson);
-    for(let i = 0; i <= history.cur; i++) {
-      var {keypath, property, args} = history.history[i];
-      
+  this.exportLayers = function (){
+    var saveObject = JSON.parse(jsString);
+    for(let i = 0; i <= this.cur; i++) {
+      var {keypath, property, args} = this.history[i];
       this.changeProperty(saveObject, keypath.split("."), property, args, false);
     }
 

@@ -337,7 +337,7 @@ module.exports = {
       }
     },
     exportJson() {
-      RLottieModule.export.exportLayers(RLottieModule.layers);
+      RLottieModule.layers.exportLayers();
     }
   },
 };
