@@ -10,7 +10,7 @@
   <title>rlottie viewer</title>
   <link rel="stylesheet" href="style.css">
   <script type="text/javascript" src="dragresize.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"> </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"> </script>  
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
@@ -58,14 +58,20 @@
     </v-app>
   </div>
 
+  <scrypt src="asdasd.js"></scrypt>
   <script src="main.js"></script>
   <script src="gif.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
   <script src="https://unpkg.com/http-vue-loader"></script>
+  
+    <!-- import {Property} from "./library/test.js"
+    console.log(Property) -->
+  </scrypt>
   <script>
     Vue.use(httpVueLoader);
-    var EventBus = new Vue();
+    var EventBus = new Vue();   
+    
     new Vue({
       el: '#app',
       vuetify: new Vuetify(),
@@ -75,7 +81,7 @@
         'left-bar-detail': 'url:./components/left-bar-detail.vue',
         'right-bar': 'url:./components/right-bar.vue',
         'snapshot' : 'url:./components/snapshot.vue',
-        'upper-bar': 'url:./components/upper-bar.vue'
+        'upper-bar': 'url:./components/upper-bar.vue',
       },
       data() {
         return {
@@ -121,10 +127,9 @@
           this.activeSnapShot = pointer.isSnapShot;
         }
       },
-      mounted(){
+      mounted(){        
         this.initCanvasLeft = this.$refs.content.clientWidth * 0.4;
-        this.initCanvasTop = this.$refs.content.clientHeight * 0.2;
-        
+        this.initCanvasTop = this.$refs.content.clientHeight * 0.2;        
       }
     })
   </script>

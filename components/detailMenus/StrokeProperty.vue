@@ -92,34 +92,54 @@ module.exports = {
       return {
         picker: null,
         setFlag: false,
+        setFlag2: false,
         width: 0,
 
         stack: [],
         interval: '',        
+        layerProperty: [],
       }
     },
     mounted(){   
       var self = this
+      
+      EventBus.$on("changeKeypath", ({keypath}) => {   
+        this.layerProperty = RLottieModule.layers.layerList[keypath]
+        this.setFlag2 = false
+        this.setColor(this.layerProperty)
+        this.setStrokeColor(this.layerProperty)
+      })      
+      this.layerProperty = RLottieModule.layers.layerList[RLottieModule.originKeypath]
+      this.setColor(this.layerProperty)
+      this.setStrokeColor(this.layerProperty)
+      
       this.interval = setInterval(() => {
           self.clearStack()
       }, 500);      
     },
     beforeDestroy(){
+      EventBus.$off("changeKeypath")
       clearInterval(this.interval);
     },
     watch: {
       picker(){
         if(this.setFlag){
+          this.layerProperty.r = this.picker.rgba.r;
+          this.layerProperty.g = this.picker.rgba.g;
+          this.layerProperty.b = this.picker.rgba.b;
+          this.layerProperty.a = this.picker.rgba.a;
+
           const r = this.picker.rgba.r / 255;
           const g = this.picker.rgba.g / 255;
           const b = this.picker.rgba.b / 255;
           const a = this.picker.rgba.a * 100;
+          
           RLottieModule.strokeColors(RLottieModule.keypath, r, g, b, a);
           RLottieModule.fillColors(RLottieModule.keypath, r, g, b, a);         
    
           this.stack.push({
-            'property': 'StrokeColor',
-            'args': [r,g,b,a]
+            'property': 'ShapeColor',
+            'args': {r,g,b,a}              
           })
           
         }else{
@@ -127,14 +147,28 @@ module.exports = {
         }
       },
       width(width){
-        RLottieModule.strokeWidth(RLottieModule.keypath, Number(this.width));
-        this.stack.push({
-          'property': 'StrokeWidth',
-          'args': [Number(this.width)]
-        })
+        if(this.setFlag2){
+          RLottieModule.strokeWidth(RLottieModule.keypath, Number(this.width));        
+          this.layerProperty.strokeWidth = Number(this.width);
+          this.stack.push({
+            'property': 'StrokeWidth',
+            'args': {'strokeWidth': Number(this.width)}
+          })
+        }else{
+          this.setFlag2 = true
+        }
       }
     },
     methods: {
+      setColor({r,g,b,a,strokeWidth}) {
+        this.picker.rgba.r = r;
+        this.picker.rgba.g = g;
+        this.picker.rgba.b = b;
+        this.picker.rgba.a = a;        
+      },
+      setStrokeColor({strokeWidth}) {
+        this.width = strokeWidth
+      },
       closeSidebar(){
         this.$emit("call-close-menu-parent");
       },
@@ -144,7 +178,7 @@ module.exports = {
           return
 
         let top = this.stack.pop()
-        RLottieModule.history.insert(RLottieModule.keypath, top.property, top.args)
+        RLottieModule.layers.insert(RLottieModule.keypath, top.property, top.args)
         this.stack = []
       }
     },

@@ -32,7 +32,9 @@ var RLottieModule = (function () {
   obj.playing = true;
   obj.wasPlaying = false;
   obj.keypath = ""
-  
+  obj.originKeypath = ""
+  obj.isSelectAll = true
+
   obj.init = function () {
       var input = document.getElementById('fileSelector');
       input.addEventListener('change', fileSelectionChanged);
@@ -49,12 +51,8 @@ var RLottieModule = (function () {
       obj.frameCount = obj.lottieHandle.frames();
       // hook to the main loop
 
-      var originJson = obj.lottieHandle.get_basic_resource()
-      obj.history = initHistory(originJson);
-      obj.layers = initLayers(originJson)
-      obj.export = initExportObject(originJson);      
-
-      EventBus.$emit('initLayers', {layers: obj.layers.layers});
+      obj.layers = new Layers(this, obj.lottieHandle.get_basic_resource())      
+      EventBus.$emit('initLayers', {layers: obj.layers.getLayerTree()});
       
       mainLoop();
   }
@@ -225,11 +223,8 @@ function handleFiles(files) {
       read.onloadend = function(){
           var jsString = read.result;
           RLottieModule.reload(jsString);            
-          RLottieModule.history = initHistory(jsString);
-          RLottieModule.layers = initLayers(jsString);            
-          RLottieModule.export = initExportObject(jsString);            
-          
-          EventBus.$emit('initLayers', {layers: RLottieModule.layers.layers});       
+          RLottieModule.layers = new Layers(RLottieModule, jsString);                  
+          EventBus.$emit('initLayers', {layers: RLottieModule.layers.getLayerTree()});       
       }
       break;
     }
@@ -266,392 +261,376 @@ function onResizeSliderDrag(value) {
   RLottieModule.update();
 }
 
-function initHistory(jsString) {
-  var obj = {};
+function Layers(RLottieModule, jsString) {
+  this.RLottieModule = RLottieModule
+  this.originLayers = JSON.parse(jsString)  
 
-  obj.history = [];
-  obj.cur = -1;
-  obj.top = -1;
-  obj.originJson = jsString;
+  this.layerList = []  
+  this.layerTree = []  
+  
+  this.history = [];
+  this.cur = -1;
+  this.top = -1;
+  
 
-  obj.setProperty = function(keypath, property, args) {
-    switch(property) {
-      case 'FillColor':
-        
-        RLottieModule.fillColors(keypath, args[0], args[1], args[2], args[3])
-        break;
-      case 'StrokeColor':        
-        RLottieModule.strokeColors(keypath, args[0], args[1], args[2], args[3])
-        break;      
-      case 'StrokeWidth':
-        RLottieModule.strokeWidth(keypath, args[0]);
-        break;
-      case 'TrAnchor':
-        RLottieModule.trAnchor(keypath, args[0], args[1]);
-        break;
-      case 'TrPosition':
-        RLottieModule.trPosition(keypath, args[0], args[1]);
-        break;
-      case 'TrScale':
-        RLottieModule.trScale(keypath, args[0], args[1]);
-        break;
-      case 'TrRotation':
-        RLottieModule.trRotation(keypath, args[0]);
-        break;
-      case 'TrOpacity':
-        RLottieModule.trOpacity(keypath, args[0]);
-        break;
+  function initLayerList(self, layer, keypath) {
+    var new_keypath = keypath
+    if(layer['nm']) {
+      new_keypath = keypath + (keypath ? '.' : '') + layer['nm']            
+      self.layerList[new_keypath] = {
+        type: layer['ty'],
+        r : 0,
+        g : 0,
+        b : 0,
+        a : 100,
+        strokeWidth : 1,
+        anchorX : 0,
+        anchorY : 0,
+        positionX : 0,
+        positionY : 0,
+        scaleWidth : 100,
+        scaleHeight : 100,
+        rotation : 0,
+        opacity : 100,  
+      } 
     }
-  }
-
-  obj.insert = function (keypath, property, args) {
-    while(obj.cur < obj.top) {
-      obj.history.pop();
-      obj.top--;
-    }
-
-    obj.history.push({
-      keypath,
-      property,
-      args
-    });    
-    obj.cur = ++obj.top;
-    obj.setHistoryState();
-  }
-
-  obj.reload = function() {
-    // RLottieModule.reload(obj.originJson);
-
-    let check = []
-    for(let i = 0; i <= obj.cur; i++) {      
-      let key = obj.history[i]['keypath'];
-      let prop = obj.history[i]['property'];
-      let args = obj.history[i]['args'];
-      obj.setProperty(key, prop, args)
-    }
-
-    obj.setHistoryState();
-  }
-
-  obj.highlighting = function (keypath) {    
-    RLottieModule.lottieHandle.set_fill_opacity("**", 30);
-    RLottieModule.lottieHandle.set_stroke_opacity("**", 30);
-    for(let i = 0; i <= obj.cur; i++) {      
-      let key = obj.history[i]['keypath'];
-      let prop = obj.history[i]['property'];
-      let args = obj.history[i]['args'];
-
-      if(prop == "FillColor" || prop == "StrokeColor") {
-        if(args[3] > 30) {
-          args[3] = 30
+    for(let key in layer) {
+      if(Array.isArray(layer[key])) {
+        for(let i in layer[key]) {
+          initLayerList(self,layer[key][i], new_keypath)
         }
-        obj.setProperty(key, prop, args)
       }
     }
-    RLottieModule.lottieHandle.set_fill_opacity(keypath, 100);            
-    RLottieModule.lottieHandle.set_stroke_opacity(keypath, 100);   
   }
 
-  obj.setHistoryState = function() {
-    EventBus.$emit('setHistoryState', {isPrev: obj.hasPrev(), isNext: obj.hasNext()}); 
-  }
-
-  obj.hasPrev = function() {
-    return obj.cur != -1;
-  }
-
-  obj.hasNext = function() {
-    return obj.cur < obj.top;
-  }
-
-  obj.movePrev = function() {
-    if(!obj.hasPrev()) {
-      return false;
-    }    
-    obj.cur--;    
-    RLottieModule.reload(obj.originJson);
-    obj.reload();
-  }
-
-  obj.moveNext = function() {
-    if(!obj.hasNext()) {
-      return false;
-    }
-    obj.cur++;
-    RLottieModule.reload(obj.originJson);
-    obj.reload();
-  }
-  obj.setHistoryState();
-  return obj;
-} 
-
-
-function initLayers(jsString) {
-  var obj = {}
-
-  var map_keypath = []
-  obj.originLayers = JSON.parse(jsString)
-  
-  
-
-  obj.addKeypath = function (json_data,keypath){  
-    var new_keypath = (keypath ? keypath+'\n' : '') + json_data.nm;
-    var new_data = {
-      type: json_data.ty,
-    }  
-
-    for(let i in json_data.assets) {
-      for(let j in json_data.assets[j].layers[j])
-        json_data.assets[i].layers[j].ty = '4';
-        obj.addKeypath(json_data.assets[i].layers[j],new_keypath);
-    }
-
-    for(let i in json_data.layers) {
-      json_data.layers[i].ty = '4';
-      obj.addKeypath(json_data.layers[i],new_keypath);    
-    }
-
-    for(let i in json_data.it) {
-      obj.addKeypath(json_data.it[i],new_keypath);    
-    }
-
-    for(let i in json_data.shapes) {
-      obj.addKeypath(json_data.shapes[i],new_keypath);    
-    }
-
-    for(let i in json_data.masksProperties) {
-      obj.addKeypath(json_data.masksProperties[i],new_keypath);    
-    }
-
-    for(let i in json_data.ef) {
-      obj.addKeypath(json_data.ef[i],new_keypath);    
-    }
-
-    for(let i in json_data.d) {
-      obj.addKeypath(json_data.d[i],new_keypath);    
-    }
-
-    if(json_data.tr) {
-      obj.addKeypath(json_data.tr,new_keypath);    
-    }
-
-    map_keypath[new_keypath] = new_data
-  }
-
-  obj.parseObject = function (keypath, cur, depth, layers, type) {
-    if(cur == depth) {
-      layers.type = type;
-      layers.keypath = keypath.join('.')
-      layers.split_keypath = keypath
-      return;
+  function initLayerTree(self, layer, keypath, idx, depth, type) {    
+    if(idx == depth) {
+      layer.type = type;
+      layer.keypath = keypath.join('.');      
+      return
     }
 
     var flag = true;
-    for(let i in layers.children) {
-      if(layers.children[i].name == keypath[cur]) {
-        obj.parseObject(keypath, cur+1, depth, layers.children[i],type)
+    for(let key in layer.children) {
+      if(layer.children[key].name == keypath[idx]) {
+        initLayerTree(self, layer.children[key], keypath, idx+1, depth, type)
         flag = false;
         break;
       }
     }
 
     if(flag) {
-      layers.children.push({
-        name: keypath[cur],
+      layer.children.push({
+        name: keypath[idx],
         children: []      
       })
-      obj.parseObject(keypath, cur+1, depth, layers.children[layers.children.length-1],type)
+      initLayerTree(self, layer.children[layer.children.length-1], keypath, idx+1, depth, type)
     }
   }
 
-  obj.parseJson = function(json_string) {
-    map_keypath = [];
-    var json_data = JSON.parse(json_string);
-    // console.dir(json_data);
+  this.getLayerList = function() {
+    if(!this.layerList.length) {      
+      let rootPath = this.originLayers.nm
+      this.originLayers.nm = ''
+      initLayerList(this, this.originLayers, '')      
+      this.originLayers.nm = rootPath
+    }
+    return this.layerList;
+  }
 
-    for(let i in json_data.assets) {
-      for(let j in json_data.assets[i].layers){
-        json_data.assets[i].layers[j].ty = '4'
-        obj.addKeypath(json_data.assets[i].layers[j],'');
+  this.getLayerTree = function() {
+    if(!this.layerTree.length) {
+      this.getLayerList();
+      this.layerTree = [{'name': this.originLayers.nm, 'children': [], 'type':'root', 'keypath': ''}]
+      for(let keypath in this.layerList) {
+        var split_keypath = keypath.split('.')
+        initLayerTree(this, this.layerTree[0], split_keypath, 0, split_keypath.length, this.layerList[keypath].type)
+      }
+      this.layerList[''] = {
+        type: 'root',
+        r : 0,
+        g : 0,
+        b : 0,
+        a : 100,
+        strokeWidth : 1,
+        anchorX : 0,
+        anchorY : 0,
+        positionX : 0,
+        positionY : 0,
+        scaleWidth : 100,
+        scaleHeight : 100,
+        rotation : 0,
+        opacity : 100,  
+      } 
+    }
+    return this.layerTree;
+  }
+
+  this.setProperty = function(keypath, property, param) {
+    switch(property) {
+      case 'ShapeColor':     
+        this.RLottieModule.fillColors(keypath, param.r, param.g, param.b, param.a)
+        this.RLottieModule.strokeColors(keypath, param.r, param.g, param.b, param.a)
+        break;      
+      case 'StrokeWidth':
+        this.RLottieModule.strokeWidth(keypath, param.strokeWidth);
+        break;
+      case 'TrAnchor':
+        this.RLottieModule.trAnchor(keypath, param.anchorX, param.anchorY);
+        break;
+      case 'TrPosition':
+        this.RLottieModule.trPosition(keypath, param.positionX, param.positionY);
+        break;
+      case 'TrScale':
+        this.RLottieModule.trScale(keypath, param.scaleWidth, param.scaleHeight);
+        break;
+      case 'TrRotation':
+        this.RLottieModule.trRotation(keypath, param.rotation);
+        break;
+      case 'TrOpacity':
+        this.RLottieModule.trOpacity(keypath, param.opacity);
+        break;
+    }
+  }
+
+  this.insert = function (keypath, property, args) {
+    while(this.cur < this.top) {
+      this.history.pop();
+      this.top--;
+    }
+
+    this.history.push({
+      keypath,
+      property,
+      args
+    });    
+
+    this.cur = ++this.top;
+    this.setHistoryState();
+  }
+
+  this.reload = function() {
+    this.RLottieModule.reload(jsString);
+
+    let check = []
+    for(let i = 0; i <= this.cur; i++) {      
+      let key = this.history[i]['keypath'];
+      let prop = this.history[i]['property'];
+      let args = this.history[i]['args'];
+      this.setProperty(key, prop, args)
+    }
+
+    this.setHistoryState();
+  }
+
+  this.highlighting = function (keypath) {    
+    this.RLottieModule.lottieHandle.set_fill_opacity("**", 30);
+    this.RLottieModule.lottieHandle.set_stroke_opacity("**", 30);
+    for(let i = 0; i <= this.cur; i++) {      
+      let key = this.history[i]['keypath'];
+      let prop = this.history[i]['property'];
+      let args = this.history[i]['args'];
+
+      if(prop == "ShapeColor") {
+        if(args.a > 30) {
+          args.a = 30
+        }
+        // console.log('high', args)
+        this.setProperty(key, prop, args)
       }
     }
-    for(let i in json_data.layers) {
-      json_data.layers[i].ty = '4'
-      obj.addKeypath(json_data.layers[i],'');    
-    }
+    this.RLottieModule.lottieHandle.set_fill_opacity(keypath, 100);            
+    this.RLottieModule.lottieHandle.set_stroke_opacity(keypath, 100);   
+  }
 
-    var layers = {'keypath': '', 'name': json_data.nm ? json_data.nm : 'keypath', 'type': 'root', 'children': []};
-    for(let keypath in map_keypath) {
-      var split_keypath = keypath.split('\n')
-      obj.parseObject(split_keypath, 0, split_keypath.length, layers, map_keypath[keypath].type)
+  this.setHistoryState = function() {
+    EventBus.$emit('setHistoryState', {isPrev: this.hasPrev(), isNext: this.hasNext()}); 
+  }
+
+  this.hasPrev = function() {
+    return this.cur != -1;
+  }
+
+  this.hasNext = function() {
+    return this.cur < this.top;
+  }
+
+  this.movePrev = function() {
+    if(!this.hasPrev()) {
+      return false;
     }    
-    return layers
+    this.cur--;    
+    this.reload();
+    this.highlighting(this.RLottieModule.keypath + (!this.RLottieModule.isSelectAll ? (this.RLottieModule.keypath ? '.**' : '**') : ''))
   }
 
-  obj.layers = obj.parseJson(jsString)
-  return obj
-}
+  this.moveNext = function() {
+    if(!this.hasNext()) {
+      return false;
+    }
+    this.cur++;
+    this.reload();
+    this.highlighting(this.RLottieModule.keypath + (!this.RLottieModule.isSelectAll ? (this.RLottieModule.keypath ? '.**' : '**') : ''))
+  }
 
-function initExportObject(jsString) {
-  var obj = {}
-  obj.originJson = jsString;
-  obj.lottieObject = JSON.parse(jsString);
-
-  obj.changeColor = function(layers, args) {
-    if(layers.c) { 
-      layers.c.k = [args[0],args[1],args[2],layers.c.k ? layers.c.k[3] : 0] 
+  this.changeColor = function(layer, args) {
+    if(layer.c) { 
+      layer.c.k = [args.r,args.g,args.b,layer.c.k ? layer.c.k[3] : 0] 
     }else{
-      layers.c = {
+      layer.c = {
         'a':0,
-        'k': [args[0],args[1],args[2],1]
+        'k': [args.r,args.g,args.b,1]
       }
     }
-    if(layers.o) { 
-      layers.o.k = args[3]
+    if(layer.o) { 
+      layer.o.k = args.a
     }else {
-      layers.o.k = {
+      layer.o.k = {
         'a': 0,
-        'k': args[3]
+        'k': args.a
       }
     }
   }
 
-  obj.changeWidth = function(layers, args) {
-    if(layers.w) { 
-      layers.w.k = args[0]
+  this.changeWidth = function(layer, args) {
+    if(layer.w) { 
+      layer.w.k = args.strokeWidth
     }else{
-      layers.w = {
+      layer.w = {
         'a':0,
-        'k': args[0]
+        'k': args.strokeWidth
       }
     }
   }
 
-  obj.changeTrAnchor = function(layers, args) {
-    if(layers.a) { 
-      layers.a.k = [args[0],args[1]]
+  this.changeTrAnchor = function(layer, args) {
+    if(layer.a) { 
+      layer.a.k = [args.anchorX,args.anchorY]
     }else{
-      layers.a = {
+      layer.a = {
         'a':0,
-        'k': [args[0],args[1]]
+        'k': [args.anchorX,args.anchorY]
       }
     }
   }
 
-  obj.changeTrPosition = function(layers, args) {
-    if(layers.p) { 
-      layers.p.k = [args[0],args[1]]
+  this.changeTrPosition = function(layer, args) {
+    if(layer.p) { 
+      layer.p.k = [args.positionX, positionY]
     }else{
-      layers.p = {
+      layer.p = {
         'a':0,
-        'k': [args[0],args[1]]
+        'k': [args.positionX, positionY]
       }
     }
   }
 
-  obj.changeTrRotation = function(layers, args) {
-    if(layers.r) { 
-      layers.r.k = (Number(layers.r.k) + args[0]) % 360
+  this.changeTrRotation = function(layer, args) {
+    if(layer.r) { 
+      layer.r.k = (parseInt(layer.r.k) + args.rotation) % 360
     }else{
-      layers.r = {
+      layer.r = {
         'a':0,
-        'k': args[0]
+        'k': args.rotation
       }
     }
   }
 
-  obj.changeTrScale = function(layers, args) {
-    if(layers.s) { 
-      layers.s.k = [args[0],args[1]]
+  this.changeTrScale = function(layer, args) {
+    if(layer.s) { 
+      if(layer.s.k)
+        layer.s.k = [parseInt(layer.s.k[0]) * args.scaleWidth / 100,parseInt(layer.s.k[1]) * args.scaleHeight / 100]
+      else
+        layer.s.k = [args.scaleWidth,args.scaleHeight]
     }else{
-      layers.s = {
+      layer.s = {
         'a':0,
-        'k': [args[0],args[1]]
+        'k': [args.scaleWidth,args.scaleHeight]
       }
     }
   }
 
-  obj.changeTrOpacity = function(layers, args) {
-    if(layers.o) { 
-      layers.o.k = args[0]
+  this.changeTrOpacity = function(layer, args) {
+    if(layer.o) { 
+      layer.o.k = args.opacity
     }else{
-      layers.o = {
+      layer.o = {
         'a':0,
-        'k': args[0]
+        'k': args.opacity
       }
     }
   }
 
-  obj.changeProperty = function (layers, keypath, property, args, flag) {                
+  this.changeProperty = function (layer, keypath, property, args, flag) {                
     if(keypath.length == 0 || keypath[0] == "**") {      
       flag = true
     }
     if(flag) {      
       switch(property) {
         case "FillColor":
-          if(layers.ty == "fl") {
-            obj.changeColor(layers, args)
+          if(layer.ty == "fl") {
+            this.changeColor(layer, args)
           }            
           break;
         case "StrokeColor":
-          if(layers.ty == "st") {
-            obj.changeColor(layers, args)
+          if(layer.ty == "st") {
+            this.changeColor(layer, args)
           }
           break;
         case "StrokeWidth":
-          if(layers.ty == "st") {
-            obj.changeWidth(layers, args)
+          if(layer.ty == "st") {
+            this.changeWidth(layer, args)
           }
           break;
         // case "TrAnchor":
-        //   if(layers.ty == "tr") {
-        //     obj.changeTrAnchor(layers, args)
+        //   if(layer.ty == "tr") {
+        //     this.changeTrAnchor(layer, args)
         //   }
         //   break;
         // case "TrPosition":
-        //   if(layers.ty == "tr") {
-        //     obj.changeTrPosition(layers, args)
+        //   if(layer.ty == "tr") {
+        //     this.changeTrPosition(layer, args)
         //   }
         //   break;        
         // case "TrRotation":
-        //   if(layers.ty == "tr") {
-        //     obj.changeTrRotation(layers, args)
+        //   if(layer.ty == "tr") {
+        //     this.changeTrRotation(layer, args)
         //   }
         //   break;
         // case "TrScale":
-        //   if(layers.ty == "tr") {
-        //     obj.changeTrScale(layers, args)
+        //   if(layer.ty == "tr") {
+        //     this.changeTrScale(layer, args)
         //   }
         //   break;
         // case "TrOpacity":
-        //   if(layers.ty == "tr") {
-        //     obj.changeTrOpacity(layers, args)
+        //   if(layer.ty == "tr") {
+        //     this.changeTrOpacity(layer, args)
         //   }
         //   break;        
       }
     }   
-    for(let i in layers) {
-      if(layers[i].nm && (keypath[0] == "**" || layers[i] == keypath[0])) {                
-        this.changeProperty(layers[i], keypath.slice(keypath[0] != "**"), property, args, flag)        
+    for(let i in layer) {
+      if(layer[i].nm && (keypath[0] == "**" || layer[i] == keypath[0])) {                
+        this.changeProperty(layer[i], keypath.slice(keypath[0] != "**"), property, args, flag)        
       }
 
-      if(Array.isArray(layers[i])) {
-        for(let j in layers[i])
-          if(layers[i][j].nm == keypath[0] || keypath[0] == "**")
-            this.changeProperty(layers[i][j], keypath.slice(keypath[0] != "**"), property, args, flag) 
+      if(Array.isArray(layer[i])) {
+        for(let j in layer[i])
+          if(layer[i][j].nm == keypath[0] || keypath[0] == "**")
+            this.changeProperty(layer[i][j], keypath.slice(keypath[0] != "**"), property, args, flag) 
       }
     }
   }
 
-  obj.exportLayers = function (history){
-    obj.lottieObject = JSON.parse(obj.originJson);
+  this.exportlayer = function (history){
+    var saveObject = JSON.parse(this.originJson);
     for(let i = 0; i <= history.cur; i++) {
       var {keypath, property, args} = history.history[i];
       
-      this.changeProperty(obj.lottieObject, keypath.split("."), property, args, false);
+      this.changeProperty(saveObject, keypath.split("."), property, args, false);
     }
 
-    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj.lottieObject));
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(saveObject));
     var downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href",     dataStr);
     downloadAnchorNode.setAttribute("download", "temp" + ".json");
@@ -659,7 +638,4 @@ function initExportObject(jsString) {
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
   }
-
-  return obj;
 }
-
