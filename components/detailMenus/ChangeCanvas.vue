@@ -144,7 +144,7 @@ module.exports = {
       this.apply();
     },
     apply(){
-      document.getElementById("canvasBox").style.transform = `rotate(${this.degree}deg) scaleX(${this.isFlipX}) scaleY(${this.isFlipY})`
+      document.getElementById("myCanvas").style.transform = `rotate(${this.degree}deg) scaleX(${this.isFlipX}) scaleY(${this.isFlipY})`
     }
   },
   computed: {

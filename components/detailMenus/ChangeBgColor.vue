@@ -39,6 +39,7 @@
         </v-color-picker>
       </v-col>
     </v-row>
+    
     <div class="text-center mt-0">
       <v-row class="px-5"
         align="center">
@@ -53,7 +54,7 @@
         tile
         class="py-7"
         text color="white"
-        style="width:90%; height: 200px; border: 2px dashed; border-radius: 20px; background-color:rgba(100,100,100,0.2);"
+        style="width:90%; height: 100px; border: 2px dashed; border-radius: 20px; background-color:rgba(100,100,100,0.2);"
         @click="clickToBackgroundImage">
           <v-icon style="pointer: cursor; font-size:30px;">mdi-image-plus</v-icon>
       </v-btn>
