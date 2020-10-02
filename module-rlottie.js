@@ -53,13 +53,8 @@ var RLottieModule = (function () {
       obj.history = initHistory(originJson);
       obj.layers = initLayers(originJson)
       obj.export = initExportObject(originJson);      
-      window.dispatchEvent(
-        new CustomEvent("initLayers", {
-          detail: {
-            layers: obj.layers.layers
-          }
-        })
-      );
+
+      EventBus.$emit('initLayers', {layers: obj.layers.layers});
       
       mainLoop();
   }
@@ -76,20 +71,7 @@ var RLottieModule = (function () {
       var imageData = new ImageData(result, obj.canvas.width, obj.canvas.height);
 
       obj.context.putImageData(imageData, 0, 0);
-
-      var getCurFrameEvent = new CustomEvent("CurrentFrameEvent", {
-        detail:{
-          frame: obj.curFrame
-        }
-      });
-      window.dispatchEvent(getCurFrameEvent);
-
-      var getAllFrameEvent = new CustomEvent("AllFrameEvent", {
-        detail:{
-          frame: obj.frameCount
-        }
-      });
-      window.dispatchEvent(getAllFrameEvent);
+      EventBus.$emit('setFrame', {curFrame:obj.curFrame, frameCount:obj.frameCount});
   }
 
   obj.renderShanpShot = function (frame) {
@@ -129,7 +111,6 @@ var RLottieModule = (function () {
   }
 
   obj.fillColors = function (keypath, r, g, b, opacity) {
-    console.log(keypath, r, g, b, opacity);
     obj.lottieHandle.set_fill_color(keypath, r, g, b);
     obj.lottieHandle.set_fill_opacity(keypath, opacity);
   }
@@ -206,78 +187,6 @@ var RLottieModule = (function () {
         obj.resizeId = setTimeout(windowResizeDone, 150);
    }
 
-   function setChangingSlow(type, keypath, start, end){
-    var startData = {
-      r: 0,
-      g: 0,
-      b: 0,
-      opacity: 0,
-      width: 0,
-      x: 0,
-      y: 0,
-      w: 0,
-      h: 0,
-    }
-    var endData = {
-      r: 0,
-      g: 0,
-      b: 0,
-      opacity: 0,
-      width: 0,
-      x: 0,
-      y: 0,
-      w: 0,
-      h: 0,
-    }
-    for(var n in start){
-      startData[n] = start[n];
-    }
-    for(var n in end){
-      endData[n] = end[n];
-    }
-    //will be change obj.frameRate
-    var frameRate = 1
-    var unit = frameRate/obj.frameCount
-
-    var curR = startData.r+(endData.r - startData.r)*unit*obj.curFrame;
-    var curG = startData.g+(endData.g - startData.g)*unit*obj.curFrame;
-    var curB = startData.b+(endData.b - startData.b)*unit*obj.curFrame;
-    var curOpacity = startData.opacity+(endData.opacity-startData.opacity)*unit*obj.curFrame;
-    var curWidth = startData.width+(endData.width-startData.width)*unit*obj.curFrame;
-    var curX = startData.x+(endData.x - startData.x)*unit*obj.curFrame;
-    var curY = startData.y+(endData.y - startData.y)*unit*obj.curFrame;
-    var curW = startData.w+(endData.w - startData.w)*unit*obj.curFrame; 
-    var curH = startData.h+(endData.h - startData.h)*unit*obj.curFrame;
-    var curDegree = startData.degree+(endData.degree - startData.degree)*unit*obj.curFrame;
-
-    switch(type){
-      case 0:
-        obj.fillColors(keypath, curR, curG, curB, curOpacity);
-        break;
-      case 1:
-        obj.strokeColors(keypath, curR, curG, curB, curOpacity);
-        break;
-      case 2:
-        obj.strokeWidth(keypath, curWidth);
-        break;
-      case 3:
-        obj.trAnchor(keypath, curX, curY);
-        break;
-      case 4:
-        obj.trPosition(keypath, curX, curY);
-        break;
-      case 5:
-        obj.trScale(keypath, curW, curH);
-        break;
-      case 6:
-        obj.trRotation(keypath, curDegree);
-        break;
-      case 7:
-        obj.trOpacity(keypath, curOpacity);
-        break;
-    }      
-  }
-
   return obj;
 }());
 
@@ -320,13 +229,7 @@ function handleFiles(files) {
           RLottieModule.layers = initLayers(jsString);            
           RLottieModule.export = initExportObject(jsString);            
           
-          window.dispatchEvent(
-            new CustomEvent("initLayers", {
-              detail: {
-                layers: RLottieModule.layers.layers
-              }
-            })
-          );       
+          EventBus.$emit('initLayers', {layers: RLottieModule.layers.layers});       
       }
       break;
     }
@@ -450,14 +353,7 @@ function initHistory(jsString) {
   }
 
   obj.setHistoryState = function() {
-    window.dispatchEvent(
-      new CustomEvent("setHistoryState", {     
-        detail: {
-          isPrev: obj.hasPrev(),
-          isNext: obj.hasNext(),
-        }
-      })
-    );
+    EventBus.$emit('setHistoryState', {isPrev: obj.hasPrev(), isNext: obj.hasNext()}); 
   }
 
   obj.hasPrev = function() {

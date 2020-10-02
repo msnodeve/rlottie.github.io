@@ -252,16 +252,13 @@ module.exports = {
     var setCurFrame = this.setCurFrame;
     var setHistoryState = this.setHistoryState;
 
-    window.addEventListener("AllFrameEvent", function(e){
-      setFrame(e.detail.frame);
-    })
-    window.addEventListener("CurrentFrameEvent", function(e){
-      setCurFrame(e.detail.frame);
-    })
-    window.addEventListener('setHistoryState', function(e) {
-      setHistoryState(e.detail);
-    })
-
+    EventBus.$on('setHistoryState', function(data) {
+      setHistoryState(data)
+    });
+    EventBus.$on('setFrame', function(frames) {
+      setFrame(frames.frameCount);
+      setCurFrame(frames.curFrame);
+    });
     document.addEventListener("keydown", function(e) {
       if(e.ctrlKey && e.which == 83) {
         e.preventDefault();
@@ -301,7 +298,7 @@ module.exports = {
     setCurFrame(value){
       this.curFrame = value;
     },
-    gotoFrame(value){
+    gotoFrame(e){
       onSliderDrag(this.curFrame);
     },
     snapShotFrame(evt, flag){

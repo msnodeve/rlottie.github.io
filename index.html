@@ -65,6 +65,7 @@
   <script src="https://unpkg.com/http-vue-loader"></script>
   <script>
     Vue.use(httpVueLoader);
+    var EventBus = new Vue();
     new Vue({
       el: '#app',
       vuetify: new Vuetify(),
