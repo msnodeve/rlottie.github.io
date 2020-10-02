@@ -53,13 +53,8 @@ var RLottieModule = (function () {
       obj.history = initHistory(originJson);
       obj.layers = initLayers(originJson)
       obj.export = initExportObject(originJson);      
-      window.dispatchEvent(
-        new CustomEvent("initLayers", {
-          detail: {
-            layers: obj.layers.layers
-          }
-        })
-      );
+
+      EventBus.$emit('initLayers', {layers: obj.layers.layers});
       
       mainLoop();
   }
@@ -76,20 +71,7 @@ var RLottieModule = (function () {
       var imageData = new ImageData(result, obj.canvas.width, obj.canvas.height);
 
       obj.context.putImageData(imageData, 0, 0);
-
-      var getCurFrameEvent = new CustomEvent("CurrentFrameEvent", {
-        detail:{
-          frame: obj.curFrame
-        }
-      });
-      window.dispatchEvent(getCurFrameEvent);
-
-      var getAllFrameEvent = new CustomEvent("AllFrameEvent", {
-        detail:{
-          frame: obj.frameCount
-        }
-      });
-      window.dispatchEvent(getAllFrameEvent);
+      EventBus.$emit('setFrame', {curFrame:obj.curFrame, frameCount:obj.frameCount});
   }
 
   obj.renderShanpShot = function (frame) {
@@ -129,7 +111,6 @@ var RLottieModule = (function () {
   }
 
   obj.fillColors = function (keypath, r, g, b, opacity) {
-    console.log(keypath, r, g, b, opacity);
     obj.lottieHandle.set_fill_color(keypath, r, g, b);
     obj.lottieHandle.set_fill_opacity(keypath, opacity);
   }
@@ -248,13 +229,7 @@ function handleFiles(files) {
           RLottieModule.layers = initLayers(jsString);            
           RLottieModule.export = initExportObject(jsString);            
           
-          window.dispatchEvent(
-            new CustomEvent("initLayers", {
-              detail: {
-                layers: RLottieModule.layers.layers
-              }
-            })
-          );       
+          EventBus.$emit('initLayers', {layers: RLottieModule.layers.layers});       
       }
       break;
     }
@@ -378,14 +353,7 @@ function initHistory(jsString) {
   }
 
   obj.setHistoryState = function() {
-    window.dispatchEvent(
-      new CustomEvent("setHistoryState", {     
-        detail: {
-          isPrev: obj.hasPrev(),
-          isNext: obj.hasNext(),
-        }
-      })
-    );
+    EventBus.$emit('setHistoryState', {isPrev: obj.hasPrev(), isNext: obj.hasNext()}); 
   }
 
   obj.hasPrev = function() {

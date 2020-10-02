@@ -103,11 +103,11 @@ module.exports = {
     mounted() {
         var self = this;
         var setLayers = this.setLayers;
-        window.addEventListener('initLayers', function(e) {            
-            setLayers(e.detail.layers)
-            // console.dir(self.$refs.test)            
-        });
 
+        EventBus.$on('initLayers', function(data) {
+            setLayers(data.layers)
+            // console.dir(self.$refs.test) 
+        });
         // Shortcut key function binding
         document.addEventListener('keydown', function(e){      
             if(e.ctrlKey && e.which == 76){            // Hide and show layer list : Ctrl + L
