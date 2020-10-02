@@ -34,7 +34,7 @@
           <span>
             <v-card class="m-0" max-width="400">
               <v-img class="white--text align-end" height="200px" 
-              src="./assets/ChangeTR.png">
+                src="./assets/ChangeBG3.jpg">
                 <v-card-title>Change Fill and Stroke</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0">Change 3 properties</v-card-subtitle>
@@ -55,7 +55,7 @@
           <span>
             <v-card class="m-0" max-width="400">
               <v-img class="white--text align-end" height="200px" 
-                src="./assets/ChangeTR.png">
+                     src="./assets/Transform.jpg">
                 <v-card-title>Change Transform</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0">Change 5 properties</v-card-subtitle>
@@ -76,7 +76,7 @@
           <span>                  
             <v-card class="m-0 p-0" max-width="400">
               <v-img class="white--text align-end" height="200px" 
-              src="./assets/ChangeBG.png">
+              src="./assets/ChangeBG.jpg">
                 <v-card-title>Change Background</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0">Change 3 properties</v-card-subtitle>
@@ -96,7 +96,7 @@
           <span>                  
             <v-card class="m-0 p-0" max-width="400">
               <v-img class="white--text align-end" height="200px" 
-              src="./assets/ChangeBG.png">
+                src="./assets/Canvas.jpg">
                 <v-card-title>Change Canvas</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0">Change states of canvas</v-card-subtitle>
