@@ -28,7 +28,7 @@ class RLottieView {
     this.context = this.canvas.getContext('2d');
 
     this.lottieHandle = new Module.RlottieWasm();
-    console.log(this.lottieHandle);
+    // console.log(this.lottieHandle);
     this.frameCount = this.lottieHandle.frames();
     this.curFrame = 0;
     this.render();
@@ -37,7 +37,7 @@ class RLottieView {
   render() {
       if (this.canvas.width == 0  || this.canvas.height == 0) return;
 
-      console.log("render stage ");
+      // console.log("render stage ");
       if (this.curFrame >= this.frameCount) this.curFrame = 0;
       var bufferPointer = this.lottieHandle.render(this.curFrame, 100, 100);
       var result = Uint8ClampedArray.from(bufferPointer);
