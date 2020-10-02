@@ -97,6 +97,7 @@ module.exports = {
     },
     watch: {
         isSelectAll() {            
+            RLottieModule.isSelectAll = this.isSelectAll
             RLottieModule.keypath = this.isSelectAll ? (this.keypath ? this.keypath + '.**' : '**') : (this.keypath ? this.keypath : '');
         }
     },
@@ -106,7 +107,6 @@ module.exports = {
 
         EventBus.$on('initLayers', function(data) {
             setLayers(data.layers)
-            // console.dir(self.$refs.test) 
         });
         // Shortcut key function binding
         document.addEventListener('keydown', function(e){      
@@ -118,19 +118,21 @@ module.exports = {
     },
     methods: {
         setLayers(layers) {
-            this.layers = [layers];
+            this.layers = layers;
         },
 
         changeFocus(e){            
-            this.keypath = e[0]
-            RLottieModule.keypath = this.isSelectAll ? (this.keypath ? this.keypath + '.**' : '**') : (this.keypath ? this.keypath : '');
-                        
+            this.keypath = e[0] ? e[0] : '';
+            RLottieModule.originKeypath = this.keypath;
+            RLottieModule.keypath = this.isSelectAll ? (this.keypath ? this.keypath + '.**' : '**') : this.keypath;            
+
+            EventBus.$emit('changeKeypath', {'keypath': this.keypath});            
             if(!e[0]) {
-                RLottieModule.reload(RLottieModule.history.originJson);
-                RLottieModule.history.reload()
+                RLottieModule.layers.reload()
+                RLottieModule.layers.highlighting('**')
                 return;
             }            
-            RLottieModule.history.highlighting((this.keypath ? this.keypath + '.**' : '**'))
+            RLottieModule.layers.highlighting((this.keypath ? this.keypath + '.**' : '**'))
               
         },
         inputKeypath(e) {

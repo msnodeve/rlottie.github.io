@@ -323,10 +323,10 @@ module.exports = {
       this.isNext = e.isNext;
     },
     movePrev() {
-      RLottieModule.history.movePrev();
+      RLottieModule.layers.movePrev();
     },
     moveNext() {
-      RLottieModule.history.moveNext();
+      RLottieModule.layers.moveNext();
     },
     changeCanvasBorderColor(){
       if (!this.borderOn){
@@ -337,7 +337,7 @@ module.exports = {
       }
     },
     exportJson() {
-      RLottieModule.export.exportLayers(RLottieModule.history);
+      RLottieModule.export.exportLayers(RLottieModule.layers);
     }
   },
 };
