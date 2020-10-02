@@ -27,7 +27,7 @@
           <div class="text-left" style="color: white">Canvas Size</div>
           <v-row class="pd-0 pt-2">
             <v-col cols="8" class="text-left py-0">
-              <div style="color: white">x</div>
+              <div style="color: white">w</div>
             </v-col>
             <v-col cols="4" class="py-0">
               <v-text-field
@@ -41,7 +41,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="8" class="text-left py-0">
-              <div style="color: white">y</div>
+              <div style="color: white">h</div>
             </v-col>
             <v-col cols="4" class="py-0">
               <v-text-field
