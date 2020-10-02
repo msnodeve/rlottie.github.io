@@ -38,7 +38,7 @@
                 hide-details
                 outlined
                 style="padding:8px;"
-                @keyup.stop="inputKeypath"
+                @keydown.stop="inputKeypath"
             ></v-text-field>
             <v-treeview
                 :items="layers"
