@@ -34,7 +34,7 @@
     </div>
     <div class="mt-4">
       <v-row 
-        class="pb-3 px-3 mt-4"
+        class="pb-3 px-5 mt-4"
         align="center">
         <v-col cols="12" class="py-0 mt-8">
           <div class="text-left" style="color:white;">Background Color</div>
@@ -57,6 +57,7 @@
           flat
           hide-mode-switch
           dark
+          width="280"
           style="background-color:transparent;"
         ></v-color-picker>
       </v-row>

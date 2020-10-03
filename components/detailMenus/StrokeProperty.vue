@@ -42,12 +42,14 @@
       </v-row>
       <v-row
         align="center"
-        justify="center">
+        justify="center"
+        >
         <v-color-picker
           v-model="picker"
           flat
           dark
           style="background-color:transparent;"
+          width="285"
         ></v-color-picker>
       </v-row>
       <v-row 
