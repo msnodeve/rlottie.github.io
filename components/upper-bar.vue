@@ -85,11 +85,11 @@ module.exports = {
             this.scrollBottom=flag
         },
         button1(){
-                var parentDiv = document.querySelector("#img-background");
-                if(parentDiv.childNodes.length!=0){
-                    var childImg = document.querySelector("#background");
-                    parentDiv.removeChild(childImg);
-                }
+            var parentDiv = document.querySelector("#img-background");
+            if(parentDiv.childNodes.length!=0){
+                var childImg = document.querySelector("#background");
+                parentDiv.removeChild(childImg);
+            }
         },
         button2(flag){
             var parentDiv = document.querySelector("#img-background");
