@@ -97,8 +97,10 @@ module.exports = {
     backgroundReset() {
       if (this.backgroundImg) {
         var parentDiv = document.querySelector("#img-background");
-        var childImg = document.querySelector("#background");
-        parentDiv.removeChild(childImg);
+        if(parentDiv.childNodes.length!=0){
+          var childImg = document.querySelector("#background");
+          parentDiv.removeChild(childImg);
+        }
       }
       this.backgroundImg = false;
     },
@@ -109,8 +111,10 @@ module.exports = {
       }
       if (this.backgroundImg) {
         var parentDiv = document.querySelector("#img-background");
-        var childImg = document.querySelector("#background");
-        parentDiv.removeChild(childImg);
+        if(parentDiv.childNodes.length!=0){
+          var childImg = document.querySelector("#background");
+          parentDiv.removeChild(childImg);
+        }
       }
       
       var img = document.createElement("img");

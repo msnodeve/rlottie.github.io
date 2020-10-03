@@ -34,6 +34,7 @@ var RLottieModule = (function () {
   obj.keypath = ""
   obj.originKeypath = ""
   obj.isSelectAll = true
+  obj.fileName = "anubis.json"
 
   obj.init = function () {
       var input = document.getElementById('fileSelector');
@@ -219,8 +220,16 @@ function handleFiles(files) {
   for (var i = 0, f; f = files[i]; i++) {
     if (f.type.includes('json')) {
       var read = new FileReader();
-      read.readAsText(f);
-      read.onloadend = function(){
+      read.fileName = f.name
+
+      read.onload = function(e) {
+        RLottieModule.fileName = e.target.fileName
+      }
+
+      read.readAsText(f);      
+      read.onloadend = function(e){
+          
+          console.log(read)
           var jsString = read.result;
           RLottieModule.reload(jsString);            
           RLottieModule.layers = new Layers(RLottieModule, jsString);                  
@@ -275,7 +284,7 @@ function Layers(RLottieModule, jsString) {
   function initLayerList(self, layer, keypath) {
     var new_keypath = keypath
     if(layer['nm']) {
-      new_keypath = keypath + (keypath ? '.' : '') + layer['nm']            
+      new_keypath = keypath + (keypath ? '\n' : '') + layer['nm']            
       self.layerList[new_keypath] = {
         type: layer['ty'],
         r : 0,
@@ -342,8 +351,9 @@ function Layers(RLottieModule, jsString) {
       this.getLayerList();
       this.layerTree = [{'name': this.originLayers.nm, 'children': [], 'type':'root', 'keypath': ''}]
       for(let keypath in this.layerList) {
-        var split_keypath = keypath.split('.')
+        var split_keypath = keypath.split('\n')
         initLayerTree(this, this.layerTree[0], split_keypath, 0, split_keypath.length, this.layerList[keypath].type)
+        this.layerList[split_keypath.join('.')] = this.layerList[keypath] 
       }
       this.layerList[''] = {
         type: 'root',
@@ -405,7 +415,7 @@ function Layers(RLottieModule, jsString) {
     });    
 
     this.cur = ++this.top;
-    this.setHistoryState();
+    this.setHistoryState();    
   }
 
   this.reload = function() {
@@ -627,7 +637,8 @@ function Layers(RLottieModule, jsString) {
     var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(saveObject));
     var downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href",     dataStr);
-    downloadAnchorNode.setAttribute("download", "temp" + ".json");
+    var fileName = Math.random().toString(36).substr(2,8).toUpperCase() + '_' + this.RLottieModule.fileName
+    downloadAnchorNode.setAttribute("download", fileName);
     document.body.appendChild(downloadAnchorNode); 
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
