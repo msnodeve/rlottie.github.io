@@ -275,7 +275,7 @@ function Layers(RLottieModule, jsString) {
   function initLayerList(self, layer, keypath) {
     var new_keypath = keypath
     if(layer['nm']) {
-      new_keypath = keypath + (keypath ? '.' : '') + layer['nm']            
+      new_keypath = keypath + (keypath ? '\n' : '') + layer['nm']            
       self.layerList[new_keypath] = {
         type: layer['ty'],
         r : 0,
@@ -342,8 +342,9 @@ function Layers(RLottieModule, jsString) {
       this.getLayerList();
       this.layerTree = [{'name': this.originLayers.nm, 'children': [], 'type':'root', 'keypath': ''}]
       for(let keypath in this.layerList) {
-        var split_keypath = keypath.split('.')
+        var split_keypath = keypath.split('\n')
         initLayerTree(this, this.layerTree[0], split_keypath, 0, split_keypath.length, this.layerList[keypath].type)
+        this.layerList[split_keypath.join('.')] = this.layerList[keypath] 
       }
       this.layerList[''] = {
         type: 'root',
