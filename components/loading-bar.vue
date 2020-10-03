@@ -32,60 +32,41 @@
       >
         <v-col
           class="py-0 px-2"
-          cols="1"
+          cols="5"
         >
-          <v-btn
-            color="rgba(0, 153, 204, 1)"
-            :outlined="false"
-            :depressed="true"
-            fab x-small
-            @click="playAndPause"
-          >
-            <v-icon
-              color="#ffffff"
-              v-if="playing"
-            >
-              mdi-pause
-            </v-icon>
-            <v-icon
-              color="#ffffff"
-              v-else>
-              mdi-play
-            </v-icon>
-          </v-btn>
-        </v-col>
-        <v-col
-          class="pa-0"
-          cols="4"
-          style="min-width:100px;">
           <v-row
             class="ma-0 pa-0"
             align="center"
+          >
+            <v-btn
+              color="rgba(0, 153, 204, 1)"
+              :outlined="false"
+              :depressed="true"
+              fab x-small
+              @click="playAndPause"
             >
-            
-              <v-switch
-                v-model="frameRateFlag"
-                inset
-                label="Reverse"
-                style="margin-right:20px;"
-                dark
-                >
-              </v-switch>
-            
-            <!-- borderline -->
-            
-              <v-switch
-                v-model="borderOn"
-                inset
-                label="Border"
-                dark
-                >
-              </v-switch>
-            
-          </v-row>
+              <v-icon
+                color="#ffffff"
+                v-if="playing"
+              >
+                mdi-pause
+              </v-icon>
+              <v-icon
+                color="#ffffff"
+                v-else>
+                mdi-play
+              </v-icon>
+            </v-btn>
+            <v-switch
+              v-model="frameRateFlag"
+              inset
+              label="Reverse"
+              style="margin-left:50px;"
+              dark
+            >
+            </v-switch>
+          </v-row>          
         </v-col>
-        
-        
         <v-col
           class="pa-0"
           cols="7">
@@ -121,7 +102,7 @@
                     v-on="on"
                     icon
                     large
-                    style="margin-right:30px;"
+                    style="margin-right:35px;"
                     :color="isNext ? 'white' : 'transparent'"
                     :style="{'cursor': isNext ? 'pointer' : 'default'}"
                     @click="moveNext"
@@ -129,19 +110,35 @@
                 </template>
                 <span>Redo (Ctrl + Shift + Z)</span>
               </v-tooltip>
+              <v-tooltip top open-on-hover close-delay="100">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    icon
+                    style="margin-right:0px;margin-top:3px;"                    
+                    @click="exportJson()"
+                  ><v-icon dark size=30>mdi-download</v-icon></v-btn>
+                </template>
+                <span>Export JSON(Ctrl + S)</span>
+              </v-tooltip>
+              
               
               <v-menu top :offset-y="true" :offset-x="true" :left="true">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                    color="rgba(0, 153, 204, 1)"
+                    dark
                     :outlined="false"
                     :depressed="true"
-                    fab x-small
+                    icon
+                    size=30
                     v-bind="attrs"
                     v-on="on"
                   >
                   <v-icon
-                    color="#ffffff"
+                    dark
+                    
                   >
                   mdi-cog
                   </v-icon>
@@ -178,13 +175,12 @@
                     dark
                     v-bind="attrs"
                     v-on="on"
-                    icon
-                    large
-                    style="margin-right:10px;margin-top:3px;position:fixed;right:10px;"                    
-                    @click="exportJson()"
-                  ><v-icon color='#BFC0C2' large>mdi-download</v-icon></v-btn>
+                    icon                  
+                    @click="borderOn = !borderOn"
+                  >
+                  <v-icon :color="borderOn ? 'white' : 'grey'" dark size=30> mdi-crop-square </v-icon>
                 </template>
-                <span>Export JSON(Ctrl + S)</span>
+                <span>Border(Ctrl + B)</span>
               </v-tooltip>
             </v-col>
           </v-row>          
