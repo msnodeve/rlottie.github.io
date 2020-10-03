@@ -109,7 +109,7 @@ module.exports = {
             setLayers(data.layers)
         });
         // Shortcut key function binding
-        document.addEventListener('keydown', function(e){      
+        document.addEventListener('keydown', function(e){                  
             if(e.ctrlKey && e.which == 76){            // Hide and show layer list : Ctrl + L
                 self.navigation = !self.navigation;
             }
@@ -129,7 +129,7 @@ module.exports = {
             EventBus.$emit('changeKeypath', {'keypath': this.keypath});            
             if(!e[0]) {
                 RLottieModule.layers.reload()
-                RLottieModule.layers.highlighting('**')
+                // RLottieModule.layers.highlighting('**')
                 return;
             }            
             RLottieModule.layers.highlighting((this.keypath ? this.keypath + '.**' : '**'))

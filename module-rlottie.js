@@ -430,12 +430,13 @@ function Layers(RLottieModule, jsString) {
       let key = this.history[i]['keypath'];
       let prop = this.history[i]['property'];
       let args = this.history[i]['args'];
-
-      if(prop == "ShapeColor") {
-        if(args.a > 30) {
-          args.a = 30
-        }
-        this.setProperty(key, prop, args)
+      let params = {}
+      for(let j in args) {
+        params[j] = args[j]
+      }
+      if(prop == "ShapeColor") {        
+        params.a *= 0.3
+        this.setProperty(key, prop, params)
       }
     }
     this.RLottieModule.lottieHandle.set_fill_opacity(keypath, 100);            
