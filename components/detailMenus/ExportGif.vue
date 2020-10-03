@@ -150,7 +150,7 @@ module.exports = {
             var dataStr = URL.createObjectURL(blob) //"data:image/gif;charset=utf-8," + encodeURIComponent(JSON.stringify(obj.lottieObject));
             var downloadAnchorNode = document.createElement('a');
             downloadAnchorNode.setAttribute("href",     dataStr);
-            downloadAnchorNode.setAttribute("download", "temp" + ".gif");
+            downloadAnchorNode.setAttribute("download", Math.random().toString(36).substr(2,8).toUpperCase() + ".gif");
             document.body.appendChild(downloadAnchorNode); 
             downloadAnchorNode.click();
             downloadAnchorNode.remove();
