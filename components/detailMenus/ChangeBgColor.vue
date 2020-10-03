@@ -33,6 +33,7 @@
         <v-color-picker
           flat
           dark
+          width="285"
           style="background-color: transparent"
           v-model="color"
         >
