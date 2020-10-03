@@ -270,8 +270,7 @@ function Layers(RLottieModule, jsString) {
   
   this.history = [];
   this.cur = -1;
-  this.top = -1;
-  
+  this.top = -1;  
 
   function initLayerList(self, layer, keypath) {
     var new_keypath = keypath
@@ -633,4 +632,5 @@ function Layers(RLottieModule, jsString) {
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
   }
+  this.setHistoryState();
 }
