@@ -282,8 +282,10 @@ module.exports = {
       }else if(e.which == 32){                              // Pause and Play : Space
         self.playAndPause();
       }else if(e.ctrlKey && e.shiftKey && e.which == 90){   // Forward frame : Ctrl + Shift + Z
+        e.preventDefault();
         self.moveNext();
       }else if(e.ctrlKey && e.which == 90){                 // Backward frame : Ctrl + Z
+        e.preventDefault();
         self.movePrev();
       }else if(e.ctrlKey && e.which == 66){                 // canvas border line : Ctrl + B
         self.borderOn = !self.borderOn;
