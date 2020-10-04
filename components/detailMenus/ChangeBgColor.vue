@@ -1,9 +1,11 @@
 <template>
-  <div class="text-center">
+  <div 
+    class="text-center"
+    style="width:100%">
     <div class="uploadBTN py-3" style="align-center">
       <v-row align="center" justify="center">
         <v-col class="pa-0" offset="2" cols="8">
-          <h3 style="color: white">Change Background</h3>
+          <h3 style="color: white">Background</h3>
         </v-col>
         <v-col class="pa-0 pr-4" cols="2">
           <v-btn
@@ -19,52 +21,25 @@
         </v-col>
       </v-row>
     </div>
-    <v-row class="mt-4">>
+    <v-row 
+      class="pb-3 px-5 mt-4"
+      align="center">
+      <v-col cols="12" class="py-0 mt-8">
+        <div class="text-left" style="color:white;">Color</div>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col class="d-flex justify-center pa-0">
         <v-color-picker
           flat
+          dark
+          width="285"
           style="background-color: transparent"
           v-model="color"
         >
         </v-color-picker>
       </v-col>
     </v-row>
-
-    <div class="text-center mt-0">
-      <v-row class="px-5">
-        <v-col cols="12" class="justify-center mt-5">
-          <div class="text-left" style="color: white">Canvas Size</div>
-          <v-row class="pd-0 pt-2">
-            <v-col cols="8" class="text-left py-0">
-              <div style="color: white">x</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field
-                v-model="canvasSizeInput.width"
-                solo
-                dense
-                dark
-                hide-details
-                outlined
-              ></v-text-field>
-            </v-col>
-            <v-col cols="8" class="text-left py-0">
-              <div style="color: white">y</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field
-                v-model="canvasSizeInput.height"
-                solo
-                dense
-                dark
-                hide-details
-                outlined
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </div>
     <div class="text-center mt-0">
       <v-row class="px-5"
         align="center">
@@ -109,12 +84,8 @@ module.exports = {
     return {
       type: "rgba",
       rgba: { r: 255, g: 255, b: 255 },
-      canvasSizeInput: this.canvasSize,
       backgroundImg: false
     };
-  },
-  props:{
-    canvasSize: Object
   },
   methods: {
     clickToBackgroundImage(){
@@ -126,8 +97,10 @@ module.exports = {
     backgroundReset() {
       if (this.backgroundImg) {
         var parentDiv = document.querySelector("#img-background");
-        var childImg = document.querySelector("#background");
-        parentDiv.removeChild(childImg);
+        if(parentDiv.childNodes.length!=0){
+          var childImg = document.querySelector("#background");
+          parentDiv.removeChild(childImg);
+        }
       }
       this.backgroundImg = false;
     },
@@ -138,8 +111,10 @@ module.exports = {
       }
       if (this.backgroundImg) {
         var parentDiv = document.querySelector("#img-background");
-        var childImg = document.querySelector("#background");
-        parentDiv.removeChild(childImg);
+        if(parentDiv.childNodes.length!=0){
+          var childImg = document.querySelector("#background");
+          parentDiv.removeChild(childImg);
+        }
       }
       
       var img = document.createElement("img");
@@ -187,14 +162,6 @@ module.exports = {
       document.getElementById(
         "content"
       ).style.backgroundColor = `rgba(${r},${g},${b})`;
-    },
-    canvasSizeInput: {
-      deep: true,
-      handler() {
-        document.getElementById("canvasBox").style.height = `${this.canvasSize.height}px`
-        document.getElementById("canvasBox").style.width = `${this.canvasSize.width}px`
-      }
-
     }
   },
   mounted() {
@@ -204,16 +171,20 @@ module.exports = {
     } else {
       this.backgroundImg = false
     }
+    let rgbValue = document.getElementById("content").style.backgroundColor
+    const r = rgbValue.split(', ')[0].split('(')[1]
+    const g = rgbValue.split(', ')[1]
+    const b = rgbValue.split(', ')[2].slice(0,-1)
+    this.rgba = { r: r, g: g, b: b }
   }
 };
 </script>
 
 <style scoped>
-.v-color-picker__input > input {
-  border: 1px solid white !important;
-  color: white;
-}
 span {
+  color: white !important;
+}
+input {
   color: white !important;
 }
 .v-text-field .v-input__control .v-input__slot {

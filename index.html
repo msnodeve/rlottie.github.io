@@ -10,14 +10,13 @@
   <title>rlottie viewer</title>
   <link rel="stylesheet" href="style.css">
   <script type="text/javascript" src="dragresize.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"> </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"> </script>  
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-
   <!-- Drag and Resize -->
   <script type="text/javascript">
     var dragresize = new DragResize('dragresize',
@@ -37,10 +36,11 @@
   <div id="app">
     <v-app>
       <v-main class="main-window">
+        <upper-bar :left="initCanvasLeft"></upper-bar>
         <left-bar @child-event="setHeight" :selectedmenu="selectedMenu" @menuclicked="ChangeMenu"></left-bar>
         <left-bar-detail class="setScroll" :canvas-size="canvasSize" :selectedmenu="selectedMenu" v-if="activeDetailBar" @close-sidebar="CloseMenuBar" :height="leftHeight" ></left-bar-detail>
         <right-bar :height="leftHeight"></right-bar>
-        <div id="content" class="content" style="height: 90%; background-color: white;" ref="content">
+        <div id="content" class="content" style="height: 90%; background-color: rgb(255,255,255);" ref="content">
           <!-- 배경담는 div -->
           <div id="img-background">
           </div>
@@ -52,17 +52,26 @@
           </div>
         </div>
         <v-spacer></v-spacer>
-        <loading-bar></loading-bar>
+        <loading-bar @pointer="setPointer"></loading-bar>
+        <snapshot v-show="activeSnapShot" :pointx="pointx" :pointy="pointy"></snapshot>
       </v-main>
     </v-app>
   </div>
 
+  <scrypt src="asdasd.js"></scrypt>
   <script src="main.js"></script>
+  <script src="gif.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
   <script src="https://unpkg.com/http-vue-loader"></script>
+  
+    <!-- import {Property} from "./library/test.js"
+    console.log(Property) -->
+  </scrypt>
   <script>
     Vue.use(httpVueLoader);
+    var EventBus = new Vue();   
+    
     new Vue({
       el: '#app',
       vuetify: new Vuetify(),
@@ -70,7 +79,9 @@
         'loading-bar': 'url:./components/loading-bar.vue',
         'left-bar': 'url:./components/left-bar.vue',
         'left-bar-detail': 'url:./components/left-bar-detail.vue',
-        'right-bar': 'url:./components/right-bar.vue'
+        'right-bar': 'url:./components/right-bar.vue',
+        'snapshot' : 'url:./components/snapshot.vue',
+        'upper-bar': 'url:./components/upper-bar.vue',
       },
       data() {
         return {
@@ -84,9 +95,12 @@
           initialPosition: (window.innerWidth - 400)/2,
           initCanvasTop: 0,
           initCanvasLeft: 0,
+          pointx: 0,
+          pointy: 0,
+          activeSnapShot: false,
         }
       },
-      methods: {
+      methods: {        
         ChangeMenu(i) {
           if (this.selectedMenu == i) {
             this.activeDetailBar = false;
@@ -104,14 +118,18 @@
           this.leftHeight = val-104;
         },
         changeSize(){
-          console.log()
           this.canvasSize.height = Number(document.getElementById("canvasBox").style.height.slice(0,-2))
           this.canvasSize.width = Number(document.getElementById("canvasBox").style.width.slice(0,-2))
+        },
+        setPointer(pointer){
+          this.pointx = pointer.x - 75;
+          this.pointy = pointer.y - 180;
+          this.activeSnapShot = pointer.isSnapShot;
         }
       },
-      mounted(){
+      mounted(){        
         this.initCanvasLeft = this.$refs.content.clientWidth * 0.4;
-        this.initCanvasTop = this.$refs.content.clientHeight * 0.2;
+        this.initCanvasTop = this.$refs.content.clientHeight * 0.2;        
       }
     })
   </script>

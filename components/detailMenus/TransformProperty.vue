@@ -39,7 +39,7 @@
                     <div class="text-left" style="color:white;">Anchor</div>
                     <v-row class="pd-0 pt-2"> 
                         <v-col cols="8" class="text-left py-0">
-                            <div style="color:white;">x</div>
+                            <div class="pl-3" style="color:white;">x</div>
                         </v-col>
                         <v-col cols="4" class="py-0">
                             <v-text-field
@@ -52,7 +52,7 @@
                             ></v-text-field>
                         </v-col>
                         <v-col cols="8" class="text-left py-0">
-                            <div style="color:white;">y</div>
+                            <div class="pl-3" style="color:white;">y</div>
                         </v-col>
                         <v-col cols="4" class="py-0">
                             <v-text-field
@@ -65,10 +65,10 @@
                             ></v-text-field>
                         </v-col>
                     </v-row>
-                    <div class="text-left" style="color:white;">Position</div>
+                    <div class="text-left pt-3" style="color:white;">Position</div>
                     <v-row class="pd-0 pt-2"> 
                         <v-col cols="8" class="text-left py-0">
-                            <div class="pr-2" style="color:white;">x</div>
+                            <div class="pl-3" style="color:white;">x</div>
                         </v-col>
                         <v-col cols="4" class="py-0">
                             <v-text-field
@@ -81,7 +81,7 @@
                             ></v-text-field>
                         </v-col>
                         <v-col cols="8" class="text-left py-0">
-                            <div style="color:white;">y</div>
+                            <div class="pl-3" style="color:white;">y</div>
                         </v-col>
                         <v-col cols="4" class="py-0">
                             <v-text-field
@@ -94,10 +94,10 @@
                             ></v-text-field>
                         </v-col>
                     </v-row>
-                    <div class="text-left" style="color:white;">Scale</div>
+                    <div class="text-left pt-3" style="color:white;">Scale</div>
                     <v-row class="pd-0 pt-2"> 
                         <v-col cols="8" class="text-left py-0">
-                            <div style="color:white;">w</div>
+                            <div class="pl-3" style="color:white;">width</div>
                         </v-col>
                         <v-col cols="4" class="py-0">
                             <v-text-field
@@ -110,7 +110,7 @@
                             ></v-text-field>
                         </v-col>
                         <v-col cols="8" class="text-left py-0">
-                            <div style="color:white;">h</div>
+                            <div class="pl-3" style="color:white;">height</div>
                         </v-col>
                         <v-col cols="4" class="py-0">
                             <v-text-field
@@ -205,9 +205,28 @@ module.exports = {
       degree: 0,
       opacity: 0,
       stack: [],
+      layerProperty: [],
+
+      anchorFlag: false,
+      positionFlag: false,
+      scaleFlag: false,
+      degreeFlag: false,
+      opacityFlag: false,
     };
   },
   mounted(){   
+    EventBus.$on("changeKeypath", ({keypath}) => {   
+        this.layerProperty = RLottieModule.layers.layerList[keypath] 
+        this.anchorFlag = false;
+        this.positionFlag = false;
+        this.scaleFlag = false;
+        this.degreeFlag = false;
+        this.opacityFlag = false; 
+
+        this.setTransform(this.layerProperty)
+    })  
+    this.layerProperty = RLottieModule.layers.layerList[RLottieModule.originKeypath] 
+    this.setTransform(this.layerProperty)
     var self = this
     this.interval = setInterval(() => {
       self.clearStack()
@@ -219,71 +238,115 @@ module.exports = {
   watch: {
     anchor:{
         deep: true,
-        handler(){
-            RLottieModule.trAnchor(RLottieModule.keypath,Number(this.anchor.x),Number(this.anchor.y))
-            this.stack.push({
-                'property': 'TrAnchor',
-                'args': [Number(this.anchor.x),Number(this.anchor.y)]
-            })
+        handler(){           
+            if(this.anchorFlag){
+                this.layerProperty.anchorX = this.anchor.x
+                this.layerProperty.anchorY = this.anchor.y
+                RLottieModule.trAnchor(RLottieModule.keypath,Number(this.anchor.x),Number(this.anchor.y))
+                this.stack.push({
+                    'property': 'TrAnchor',
+                    'args': {anchorX: Number(this.anchor.x),anchorY: Number(this.anchor.y)}
+                })
+            }
+            else{
+                this.anchorFlag = true;
+            }
         }
     },
     position: {
         deep: true,
         handler(){
-            RLottieModule.trPosition(RLottieModule.keypath,Number(this.position.x),Number(this.position.y))
-            this.stack.push({
-                'property': 'TrPosition',
-                'args': [Number(this.position.x),Number(this.position.y)]
-            })
+            if(this.positionFlag){
+                this.layerProperty.positionX = this.position.x
+                this.layerProperty.positionY = this.position.y
+                RLottieModule.trPosition(RLottieModule.keypath,Number(this.position.x),Number(this.position.y))
+                this.stack.push({
+                    'property': 'TrPosition',
+                    'args': {positionX: Number(this.position.x), positionY: Number(this.position.y)}
+                })
+            }
+            else {
+                this.positionFlag = true;
+            }
         }
     },
     scale: {
         deep: true,
         handler(){
-            if(Number(this.scale.w)>=1000) this.scale.w = 1000;
-            else if(Number(this.scale.w)<=0) this.scale.w = 0;
-            if(Number(this.scale.h)>=1000) this.scale.h = 1000;
-            else if(Number(this.scale.h)<=0) this.scale.h = 0;
+            if(this.scaleFlag){                
+                if(Number(this.scale.w)>=1000) this.scale.w = 1000;
+                else if(Number(this.scale.w)<=0) this.scale.w = 0;
+                if(Number(this.scale.h)>=1000) this.scale.h = 1000;
+                else if(Number(this.scale.h)<=0) this.scale.h = 0;
 
-            RLottieModule.trScale(RLottieModule.keypath,Number(this.scale.w),Number(this.scale.h))
-            this.stack.push({
-                'property': 'TrScale',
-                'args': [Number(this.scale.w),Number(this.scale.h)]
-            })
+                this.layerProperty.scaleWidth = this.scale.w
+                this.layerProperty.scaleHeight = this.scale.h
+                RLottieModule.trScale(RLottieModule.keypath,Number(this.scale.w),Number(this.scale.h))
+                this.stack.push({
+                    'property': 'TrScale',
+                    'args': {scaleWidth: Number(this.scale.w),scaleHeight: Number(this.scale.h)}
+                })
+            }
+            else {
+                this.scaleFlag = true;
+            }
         }
     },
     degree: function (val) {
-        RLottieModule.trRotation(RLottieModule.keypath,Number(this.degree))
-        this.stack.push({
-            'property': 'TrRotation',
-            'args': [Number(this.degree)]
-        })
+        if(this.degreeFlag){
+            this.layerProperty.rotation = this.degree
+            RLottieModule.trRotation(RLottieModule.keypath,Number(this.degree))
+            this.stack.push({
+                'property': 'TrRotation',
+                'args': {rotation: Number(this.degree)}
+            })
+        }
+        else{
+            this.degreeFlag = true;
+        }
+
     },
     opacity: function (val) {
-        RLottieModule.trOpacity(RLottieModule.keypath,Number(this.opacity))
-        this.stack.push({
-            'property': 'TrOpacity',
-            'args': [Number(this.opacity)]
-        })
+        if(this.opacityFlag){
+            this.layerProperty.opacity = this.opacity
+            RLottieModule.trOpacity(RLottieModule.keypath,Number(this.opacity))
+            this.stack.push({
+                'property': 'TrOpacity',
+                'args': {opacity: Number(this.opacity)}
+            })
+        }
+        else {
+            this.opacityFlag = true;
+        }
     },
   },
   computed: {
       
   },
   methods: {
-      closeSidebar(){
-        this.$emit("call-close-menu-parent");
-      },
-      clearStack() {
-        let len = this.stack.length;
-        if(!len)
-          return
-
-        let top = this.stack.pop()
-        RLottieModule.history.insert(RLottieModule.keypath, top.property, top.args)
-        this.stack = []
-      }
+    setTransform({strokeWidth,anchorX,anchorY,positionX,positionY,scaleWidth,scaleHeight,rotation,opacity}) {
+        this.anchor.x = anchorX
+        this.anchor.y = anchorY
+        this.position.x = positionX
+        this.position.y = positionY
+        this.scale.w = scaleWidth
+        this.scale.h = scaleHeight
+        this.degree = rotation
+        this.opacity = opacity
     },
+    closeSidebar(){
+      this.$emit("call-close-menu-parent");
+    },
+    clearStack() {
+      let len = this.stack.length;
+      if(!len)
+        return
+
+      let top = this.stack.pop()
+      RLottieModule.layers.insert(RLottieModule.keypath, top.property, top.args)
+      this.stack = []
+    }
+  },
 }
 </script>
 
