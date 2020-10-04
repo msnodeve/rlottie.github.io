@@ -113,7 +113,7 @@ Here is sample of the power of Prettie.
 
 
 # Documentation
-- [Manual](./.Gifs/manual.md)
+- [Manual](./.Gifs/README.md)
 
 
 [Back to contents](#contents)
