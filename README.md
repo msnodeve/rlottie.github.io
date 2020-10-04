@@ -12,7 +12,7 @@ Prettie is a platform that supports web preview by rendering vector based animat
 
 We aimed to communicate more efficiently between designers and developers.
 
-If you watch the beautiful animation provieded by rlottie.github.io, you can reduce boredom and communicate comfortably.
+If you watch the beautiful animation provieded by Prettie, you can reduce boredom and communicate comfortably.
 
 Here is sample of the power of Prettie.
 
@@ -33,6 +33,8 @@ Here is sample of the power of Prettie.
 # What can I do with it?
 
 - **Key-path management—** The key-paths of the layer and asset used in the lottile file are provided as a tree view. This is the easiest way to manage many key-paths.
+
+- **Highlighting—**  Highlighting effect is provided to a componenet selected through the key-path.
 
 - **Access and change the actual properties—** Users can access the properties of components in the actual file, change the value, and integrate it into a new json file.
 
