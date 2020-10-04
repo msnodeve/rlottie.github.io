@@ -35,7 +35,7 @@ var RLottieModule = (function () {
   obj.originKeypath = ""
   obj.isSelectAll = true
   obj.fileName = "anubis.json"
-
+  
   obj.init = function () {
       var input = document.getElementById('fileSelector');
       input.addEventListener('change', fileSelectionChanged);
@@ -51,7 +51,6 @@ var RLottieModule = (function () {
       obj.lottieHandle = new Module.RlottieWasm();
       obj.frameCount = obj.lottieHandle.frames();
       // hook to the main loop
-
       obj.layers = new Layers(this, obj.lottieHandle.get_basic_resource())      
       EventBus.$emit('initLayers', {layers: obj.layers.getLayerTree()});
       
@@ -81,7 +80,7 @@ var RLottieModule = (function () {
     var imageData = new ImageData(result, obj.preview.width, obj.preview.height);
     
     obj.contextPre.putImageData(imageData, 0, 0);
-}
+  }
 
   obj.reload = function (jsString) {
     var len  = obj.lottieHandle.load(jsString);
@@ -114,7 +113,7 @@ var RLottieModule = (function () {
     obj.lottieHandle.set_fill_opacity(keypath, opacity);
   }
 
-  obj.strokeColors = function (keypath, r, g, b, opacity) {    
+  obj.strokeColors = function (keypath, r, g, b, opacity) {
     obj.lottieHandle.set_stroke_color(keypath, r, g, b);
     obj.lottieHandle.set_stroke_opacity(keypath, opacity);
   }
@@ -185,7 +184,6 @@ var RLottieModule = (function () {
         clearTimeout(obj.resizeId);
         obj.resizeId = setTimeout(windowResizeDone, 150);
    }
-
   return obj;
 }());
 
