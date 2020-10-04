@@ -81,10 +81,9 @@ Here is sample of the power of Prettie.
 
 
 # Build
-
 ```bash
   cd rlottie
-  ./wasm_build {emscripten_sdk_path}  #ex: /your_path/emsdk/
+  ./wasm_build.sh {emscripten_sdk_path}  #ex: /your_path/emsdk/
   cp builddir_wasm/src/rlottie-wasm.* ../
 ```
    - NOTE : to get a callstack modify build.sh file by passing the build flag -s assertions=1
