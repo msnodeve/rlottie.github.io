@@ -1,11 +1,14 @@
 <template>
-  <v-footer absolute color="#292c31" class="font-weight-medium" style="min-width:745px;" ref="footer">
+  <v-footer absolute color="#292c31" class="font-weight-medium" style="min-width:745px;z-index:100;" ref="footer">
     <div 
       class="content-width-100 px-16"
     >
       <v-row
+        id="snapShot"
         class="ma-0 pa-0"
         style="width:100%"
+        @mousemove="snapShotFrame($event, true)"
+        @mouseleave="snapShotFrame($event, false)"
       >
         <v-slider
           class="v-slider--active v-slider--focused"
@@ -16,6 +19,7 @@
           :thumb-size="24"
           @Click="gotoFrame"
           hide-details="false"
+          
         />
       </v-row>
     </div>
@@ -28,66 +32,40 @@
       >
         <v-col
           class="py-0 px-2"
-          cols="1"
+          cols="5"
         >
-          <v-btn
-            color="rgba(0, 153, 204, 1)"
-            :outlined="false"
-            :depressed="true"
-            fab x-small
-            @click="playAndPause"
+          <v-row
+            class="ma-0 pa-0"
+            align="center"
           >
-            <v-icon
-              color="#ffffff"
-              v-if="playing"
+            <v-btn
+              color="rgba(0, 153, 204, 1)"
+              :outlined="false"
+              :depressed="true"
+              fab x-small
+              @click="playAndPause"
             >
-              mdi-pause
-            </v-icon>
-            <v-icon
-              color="#ffffff"
-              v-else>
-              mdi-play
-            </v-icon>
-          </v-btn>
-        </v-col>
-        <v-col
-          class="pa-0"
-          cols="2"
-          style="min-width:100px;">
-          <v-row
-            class="ma-0 pa-0"
-            align="center"
-            justify="end">
-            <v-col
-              class="pa-0">
-              <v-switch
-                color="rgba(255, 255, 255, 1)"
-                v-model="frameRateFlag"
-                :label="frameRateFlag ? `Reverse` : `Play`"
-                >
-              </v-switch>
-            </v-col>
-          </v-row>
-        </v-col>
-        <!-- borderline -->
-        <v-col
-          class="pa-0"
-          cols="2"
-          style="min-width:100px;">
-          <v-row
-            class="ma-0 pa-0"
-            align="center"
-            justify="end">
-            <v-col
-              class="pa-0">
-              <v-switch
-                color="rgba(255, 255, 255, 1)"
-                v-model="borderOn"
-                :label="borderOn ? `Borderline Off` : `Borderline On`"
-                >
-              </v-switch>
-            </v-col>
-          </v-row>
+              <v-icon
+                color="#ffffff"
+                v-if="playing"
+              >
+                mdi-pause
+              </v-icon>
+              <v-icon
+                color="#ffffff"
+                v-else>
+                mdi-play
+              </v-icon>
+            </v-btn>
+            <v-switch
+              v-model="frameRateFlag"
+              inset
+              label="Reverse"
+              style="margin-left:50px;"
+              dark
+            >
+            </v-switch>
+          </v-row>          
         </v-col>
         <v-col
           class="pa-0"
@@ -112,7 +90,9 @@
                     @click="movePrev"
                   ><v-icon :color="isPrev ? '#BFC0C2':'#54565A'" large>mdi-undo</v-icon></v-btn>
                 </template>
-                <span>Undo</span>
+                <div>
+                  <span>Undo (Ctrl + Z)</span>
+                </div>
               </v-tooltip>
               <v-tooltip top open-on-hover close-delay="100">
                 <template v-slot:activator="{ on, attrs }">
@@ -122,26 +102,43 @@
                     v-on="on"
                     icon
                     large
-                    style="margin-right:30px;"
+                    style="margin-right:35px;"
                     :color="isNext ? 'white' : 'transparent'"
                     :style="{'cursor': isNext ? 'pointer' : 'default'}"
                     @click="moveNext"
                   ><v-icon :color="isNext ? '#BFC0C2':'#54565A'" large>mdi-redo</v-icon></v-btn>
                 </template>
-                <span>Redo</span>
+                <span>Redo (Ctrl + Shift + Z)</span>
               </v-tooltip>
+              <v-tooltip top open-on-hover close-delay="100">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    icon
+                    style="margin-right:0px;margin-top:3px;"                    
+                    @click="exportJson()"
+                  ><v-icon dark size=30>mdi-download</v-icon></v-btn>
+                </template>
+                <span>Export JSON(Ctrl + S)</span>
+              </v-tooltip>
+              
+              
               <v-menu top :offset-y="true" :offset-x="true" :left="true">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                    color="rgba(0, 153, 204, 1)"
+                    dark
                     :outlined="false"
                     :depressed="true"
-                    fab x-small
+                    icon
+                    size=30
                     v-bind="attrs"
                     v-on="on"
                   >
                   <v-icon
-                    color="#ffffff"
+                    dark
+                    
                   >
                   mdi-cog
                   </v-icon>
@@ -172,14 +169,26 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
+              <v-tooltip top open-on-hover close-delay="100">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    icon                  
+                    @click="borderOn = !borderOn"
+                  >
+                  <v-icon :color="borderOn ? 'white' : 'grey'" dark size=30> mdi-crop-square </v-icon>
+                </template>
+                <span>Border(Ctrl + B)</span>
+              </v-tooltip>
             </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+          </v-row>          
+        </v-col>        
+      </v-row>      
     </div>
   </v-footer>
 </template>
-
 <script>
 module.exports = {
   name: "loading-bar",
@@ -222,7 +231,7 @@ module.exports = {
 
       isPrev: false,
       isNext: false,
-      borderOn: false,
+      borderOn: true,
     };
   },
   watch: {
@@ -234,32 +243,51 @@ module.exports = {
     }
   },
   mounted() {
+    var self = this;
     var setFrame = this.setFrame;
     var setCurFrame = this.setCurFrame;
     var setHistoryState = this.setHistoryState;
 
-    window.addEventListener("AllFrameEvent", function(e){
-      setFrame(e.detail.frame);
-    })
-    window.addEventListener("CurrentFrameEvent", function(e){
-      setCurFrame(e.detail.frame);
-    })
+    EventBus.$on('setHistoryState', function(data) {
+      setHistoryState(data)
+    });
+    EventBus.$on('setFrame', function(frames) {
+      setFrame(frames.frameCount);
+      setCurFrame(frames.curFrame);
+    });
+    document.addEventListener("keydown", function(e) {
+      if(e.ctrlKey && e.which == 83) {
+        e.preventDefault();
+      }else if(e.ctrlKey && e.which == 82){
+        e.preventDefault();
+      }else if(e.ctrlKey && e.which == 79){
+        e.preventDefault();
+      }else if(e.ctrlKey && e.which == 76){
+        e.preventDefault();
+      }
+    }, false)
 
-
-    window.addEventListener('setHistoryState', function(e) {
-      setHistoryState(e.detail);
-    })
-
-    // setTimeout(function() {
-    //   RLottieModule.fillColors("**",1,0,0,100);
-    //   RLottieModule.history.insert("**","FillColor",[1,0,0,50])
-
-    //   RLottieModule.strokeColors("**",1,0,0,100);
-    //   RLottieModule.history.insert("**","StrokeColor",[1,0,0,100])
-
-    //   RLottieModule.fillColors("**",0,0,1,100);
-    //   RLottieModule.history.insert("**","FillColor",[0,0,1,100])
-    // }, 1000);    
+    // Shortcut key function binding
+    document.addEventListener('keydown', function(e){
+      if(e.which == 32){                              // Pause and Play : Space
+        self.playAndPause();
+      }else if(e.ctrlKey && e.which == 83){                       // Save to Json file
+        self.exportJson();
+      }else if(e.ctrlKey && e.which == 82){                 // Reverse and Play : Ctrl + R
+        self.frameRateFlag = !self.frameRateFlag;
+      }else if(e.which == 32){                              // Pause and Play : Space
+        self.playAndPause();
+      }else if(e.ctrlKey && e.shiftKey && e.which == 90){   // Forward frame : Ctrl + Shift + Z
+        e.preventDefault();
+        self.moveNext();
+      }else if(e.ctrlKey && e.which == 90){                 // Backward frame : Ctrl + Z
+        e.preventDefault();
+        self.movePrev();
+      }else if(e.ctrlKey && e.which == 66){                 // canvas border line : Ctrl + B
+        self.borderOn = !self.borderOn;
+        self.changeCanvasBorderColor();
+      }
+    });
   },
   methods: {
     setFrame(value){
@@ -268,8 +296,17 @@ module.exports = {
     setCurFrame(value){
       this.curFrame = value;
     },
-    gotoFrame(value){
+    gotoFrame(e){
       onSliderDrag(this.curFrame);
+    },
+    snapShotFrame(evt, flag){
+      const x = evt.pageX - $('#snapShot').offset().left;
+      const len = $('#snapShot').width();
+      let frame = x/len*this.allFrame; 
+      if(frame<0) frame = 0;
+      else if(frame>this.allFrame) frame = this.allFrame
+      RLottieModule.renderShanpShot(frame);
+      this.$emit('pointer', {x:evt.pageX, y:$('#snapShot').offset().top, isSnapShot:flag});
     },
     playAndPause(){
       buttonClicked();
@@ -284,20 +321,22 @@ module.exports = {
       this.isNext = e.isNext;
     },
     movePrev() {
-      RLottieModule.history.movePrev();
+      RLottieModule.layers.movePrev();
     },
     moveNext() {
-      RLottieModule.history.moveNext();
+      RLottieModule.layers.moveNext();
     },
     changeCanvasBorderColor(){
-      if (this.borderOn){
+      if (!this.borderOn){
         document.getElementById('canvasBox').style.borderStyle="none";
-
       }else{
         document.getElementById('canvasBox').style.border="1px solid black";
 
       }
     },
+    exportJson() {
+      RLottieModule.layers.exportLayers();
+    }
   },
 };
 </script>
@@ -318,5 +357,8 @@ module.exports = {
 
 .v-label.theme--light{
   color:#ffffff;
+}
+.v-slider--horizontal {
+  cursor: pointer;
 }
 </style>

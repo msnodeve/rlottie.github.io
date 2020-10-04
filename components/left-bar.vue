@@ -3,55 +3,39 @@
     <div class="uploadBTN" style="align-center">
       <v-tooltip right class="tooltip-btn">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn tile class="py-7" text color="white" v-bind="attrs" v-on="on">
-              <label for="fileSelector">
-                <v-icon style="pointer:cursor">fas fa-cloud-upload-alt</v-icon>
-              </label>
-              <input type="file" id="fileSelector" accept=".json">
+          <v-btn
+            tile
+            class="py-7"
+            text
+            color="white"
+            v-bind="attrs"
+            v-on="on"
+            @click="clickToUploadJson"
+          >
+          <v-icon style="pointer:cursor">fas fa-cloud-upload-alt</v-icon>
           </v-btn>
+          <input type="file" id="fileSelector" accept=".json" ref="json">
         </template> 
         <span>
-          upload New JSON File
+          upload New JSON File (Ctrl + O)
         </span>
       </v-tooltip>
     </div>
     <div class="d-flex align-center" style="height: 93%;">
       <div class="text-center" style="width: 100%;">
 
-        <v-tooltip right class="tooltip-btn">
+        <v-tooltip right class="tooltip-btn" color="transparent">
           <template v-slot:activator="{ on, attrs }">
             <v-btn tile class="mt-5" text :color="activateBtn2(1)" v-bind:class="{ activateBtn: isActivate(1) }" @click="clickMenu(1)" v-bind="attrs" v-on="on">
-              <v-icon class="Acitvate">fas fa-shapes</v-icon>
+              <v-icon large>mdi-format-color-fill</v-icon>
             </v-btn>
           </template>
 
           <span>
-            <v-card class="m-0" max-width="400">
+            <v-card class="ma-0" max-width="400">
               <v-img class="white--text align-end" height="200px" 
-              src="./assets/ChangeTR.png">
-                <v-card-title>Change Fill</v-card-title>
-              </v-img>
-              <v-card-subtitle class="pb-0">Change 2 properties</v-card-subtitle>
-              <v-card-text class="text--primary">
-                <div>Color, Opacity</div>
-                <div></div>
-              </v-card-text>
-            </v-card>
-          </span>
-        </v-tooltip>
-
-        <v-tooltip right class="tooltip-btn">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn tile class="mt-5" text :color="activateBtn2(2)" v-bind:class="{ activateBtn: isActivate(2) }" @click="clickMenu(2)" v-bind="attrs" v-on="on">
-              <v-icon>mdi-triangle-wave</v-icon>
-            </v-btn>
-          </template>
-
-          <span>
-            <v-card class="m-0" max-width="400">
-              <v-img class="white--text align-end" height="200px" 
-              src="./assets/ChangeTR.png">
-                <v-card-title>Change Stroke</v-card-title>
+                     src="./assets/ChangeBG3.jpg">
+                <v-card-title style="color:#2b2a2a;">Change Fill and Stroke</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0">Change 3 properties</v-card-subtitle>
               <v-card-text class="text--primary">
@@ -62,17 +46,17 @@
           </span>
         </v-tooltip>
 
-        <v-tooltip right class="tooltip-btn">
+        <v-tooltip right class="tooltip-btn" color="transparent">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn tile class="mt-5" text :color="activateBtn2(3)" v-bind:class="{ activateBtn: isActivate(3) }" @click="clickMenu(3)" v-bind="attrs" v-on="on">
+            <v-btn tile class="mt-5" text :color="activateBtn2(2)" v-bind:class="{ activateBtn: isActivate(2) }" @click="clickMenu(2)" v-bind="attrs" v-on="on">
               <v-icon>fas fa-crop</v-icon>
             </v-btn>
           </template>
           <span>
-            <v-card class="m-0" max-width="400">
+            <v-card class="ma-0" max-width="400">
               <v-img class="white--text align-end" height="200px" 
-                src="./assets/ChangeTR.png">
-                <v-card-title>Change Transform</v-card-title>
+                     src="./assets/Transform.jpg">
+                <v-card-title style="color:#2b2a2a;">Change Transform</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0">Change 5 properties</v-card-subtitle>
               <v-card-text class="text--primary">
@@ -83,22 +67,61 @@
           </span>
         </v-tooltip>
 
-        <v-tooltip right class="tooltip-btn">
+        <v-tooltip right class="tooltip-btn" color="transparent">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn tile class="mt-5" v-bind:class="{ activateBtn: isActivate(4) }" text :color="activateBtn2(4)" @click="clickMenu(4)" v-bind="attrs" v-on="on">
-              <v-icon>fas fa-palette</v-icon>
+            <v-btn tile class="mt-5" v-bind:class="{ activateBtn: isActivate(3) }" text :color="activateBtn2(3)" @click="clickMenu(3)" v-bind="attrs" v-on="on">
+              <v-icon>fas fa-image</v-icon>
             </v-btn>
           </template>
           <span>                  
-            <v-card class="m-0 p-0" max-width="400">
+            <v-card class="ma-0" max-width="400">
               <v-img class="white--text align-end" height="200px" 
-              src="./assets/ChangeBG.png">
-                <v-card-title>Top 10 Australian beaches</v-card-title>
+              src="./assets/ChangeBG.jpg">
+                <v-card-title style="color:#2b2a2a;">Change Background</v-card-title>
               </v-img>
-              <v-card-subtitle class="pb-0">Number 10</v-card-subtitle>
+              <v-card-subtitle class="pb-0">Change 3 properties</v-card-subtitle>
+              <v-card-text class="text--primary">                
+                <div>Color, Image, Canvas Size</div>
+              </v-card-text>
+            </v-card>
+          </span>
+        </v-tooltip>
+
+        <v-tooltip right class="tooltip-btn" color="transparent">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn tile class="mt-5" v-bind:class="{ activateBtn: isActivate(4) }" text :color="activateBtn2(4)" @click="clickMenu(4)" v-bind="attrs" v-on="on">
+              <v-icon >fas fa-palette</v-icon>
+            </v-btn>
+          </template>
+          <span>                  
+            <v-card class="ma-0" max-width="400">
+              <v-img class="white--text align-end" height="200px" 
+                src="./assets/ChangeStroke.jpg">
+                <v-card-title style="color:#2b2a2a;">Change Canvas</v-card-title>
+              </v-img>
+              <v-card-subtitle class="pb-0">Change states of canvas</v-card-subtitle>
+              <v-card-text class="text--primary">                
+                <div>resize, rotation, flip</div>
+              </v-card-text>
+            </v-card>
+          </span>
+        </v-tooltip>
+
+        <v-tooltip right class="tooltip-btn" color="transparent">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn tile class="mt-5" text :color="activateBtn2(5)" v-bind:class="{ activateBtn: isActivate(5) }" @click="clickMenu(5)" v-bind="attrs" v-on="on">
+              <v-icon large>mdi-gif</v-icon>
+            </v-btn>
+          </template>
+
+          <span>
+            <v-card class="ma-0" max-width="400">
+              <img class="white--text align-end" height="200px" width="400px"
+              src="./assets/animation_500_kfqx0wpg.gif">
+              <v-card-subtitle class="pb-0">download .gif file</v-card-subtitle>
+              <v-card-title style="color:#2b2a2a;position:absolute;transform:translateY(-110px);">Download GIF</v-card-title>
               <v-card-text class="text--primary">
-                <div>Whitehaven Beach</div>
-                <div>Whitsunday Island, Whitsunday Islands</div>
+                <div></div>
               </v-card-text>
             </v-card>
           </span>
@@ -124,6 +147,9 @@ module.exports = {
       }else{
         return false
       }
+    },
+    clickToUploadJson(){
+      this.$refs.json.click();
     }
   },
   computed:{
@@ -144,6 +170,17 @@ module.exports = {
     window.addEventListener("resize", function(e) {
       self.$emit('child-event', e.target.innerHeight);
     });
+
+    // Shortcut key function binding
+    document.addEventListener('keydown', function(e){
+      if(e.ctrlKey && e.which == 79){                                    // Pause and Play : Space
+        self.clickToUploadJson();
+      }
+    });
+
+    //gif pre-loading
+    let img = new Image();
+    img.src= "./assets/animation_500_kfqx0wpg.gif";
   },
   beforeDestroy() {
     // window.removeEventListener("resize");

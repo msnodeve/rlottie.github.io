@@ -16,9 +16,9 @@ var RLottieModule = (function () {
     obj.pendingFrame = false;
 
     obj.setAttribute = function (frameCount) {
-      console.log(`set Attribute called ${frameCount}`);
+      // console.log(`set Attribute called ${frameCount}`);
       obj.frameCount = frameCount;
-      console.log(obj.frameCount);
+      // console.log(obj.frameCount);
     }
     obj.result = function (width, height, data) {
       if (width == obj.canvas.width &&
@@ -219,7 +219,6 @@ function QueryableWorker(url, defaultListener, onError) {
 var rlottie_worker = new QueryableWorker('rlottie-worker.js');
 
 rlottie_worker.addListener('ready', function () {
-  console.log("worker is ready");
   RLottieModule.init();
 });
 

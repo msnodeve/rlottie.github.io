@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="right-bar">
         <v-btn 
             fixed
             fab
@@ -30,14 +30,28 @@
                 style="margin-left:15px;"
                 dark
             ></v-switch>
+            <v-text-field            
+                v-model="search"    
+                placeholder="input keypath ..."                
+                dark
+                dense
+                hide-details
+                outlined
+                style="padding:8px;"
+                @keydown.stop="inputKeypath"
+            ></v-text-field>
             <v-treeview
                 :items="layers"
                 dark     
                 activatable
                 hoverable
                 item-key="keypath"
+                item-text="keypath"
                 color="rgba(0, 153, 204, 1)"
-                @update:active="changeFocus"
+                @update:active="changeFocus"                
+                open-all
+                ref="treeview"
+                :search="search"
             >
                 <template v-slot:prepend="{ item, open }">
                     <v-icon v-if="item.type == 'root'">
@@ -59,7 +73,9 @@
                     <v-icon v-else>
                         mdi-cancel
                     </v-icon>
-
+                </template>
+                <template v-slot:label="{item}">
+                    {{item.name}}
                 </template>
             </v-treeview>
         </v-navigation-drawer>
@@ -76,33 +92,55 @@ module.exports = {
             navigation: false,
             layers: [],
             keypath: '',
+            search: '',
         }
     },
     watch: {
         isSelectAll() {            
+            RLottieModule.isSelectAll = this.isSelectAll
             RLottieModule.keypath = this.isSelectAll ? (this.keypath ? this.keypath + '.**' : '**') : (this.keypath ? this.keypath : '');
         }
     },
     mounted() {
+        var self = this;
         var setLayers = this.setLayers;
-        window.addEventListener('initLayers', function(e) {            
-            setLayers(e.detail.layers)
-        })
+
+        EventBus.$on('initLayers', function(data) {
+            setLayers(data.layers)
+        });
+        // Shortcut key function binding
+        document.addEventListener('keydown', function(e){                  
+            if(e.ctrlKey && e.which == 76){            // Hide and show layer list : Ctrl + L
+                self.navigation = !self.navigation;
+            }
+        });
+
     },
     methods: {
         setLayers(layers) {
-            this.layers = [layers];
+            this.layers = layers;
         },
 
-        changeFocus(e){
-            this.keypath = e[0]
-            RLottieModule.keypath = this.isSelectAll ? (this.keypath ? this.keypath + '.**' : '**') : (this.keypath ? this.keypath : '');
+        changeFocus(e){            
+            this.keypath = e[0] ? e[0] : '';
+            RLottieModule.originKeypath = this.keypath;
+            RLottieModule.keypath = this.isSelectAll ? (this.keypath ? this.keypath + '.**' : '**') : this.keypath;            
 
-            RLottieModule.history.reload();
-            RLottieModule.lottieHandle.set_fill_opacity("**", 30);
-            RLottieModule.lottieHandle.set_fill_opacity(RLottieModule.keypath, 100);
-            RLottieModule.lottieHandle.set_stroke_opacity("**", 30);
-            RLottieModule.lottieHandle.set_stroke_opacity(RLottieModule.keypath, 100);
+            EventBus.$emit('changeKeypath', {'keypath': this.keypath});            
+            if(!e[0]) {
+                RLottieModule.layers.reload()
+                // RLottieModule.layers.highlighting('**')
+                return;
+            }            
+            RLottieModule.layers.highlighting((this.keypath ? this.keypath + '.**' : '**'))
+              
+        },
+        inputKeypath(e) {
+            if(this.search) {
+                this.$refs.treeview.updateAll(true)
+            }else {
+                this.$refs.treeview.updateAll(false)
+            }
         }
     }
 }
@@ -116,5 +154,10 @@ module.exports = {
 
 .v-navigation-drawer__content::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
+}
+#right-bar{
+    position: relative;
+    z-index: 99;
+    /* float:left */
 }
 </style>
