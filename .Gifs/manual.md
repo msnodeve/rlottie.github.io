@@ -2,19 +2,19 @@
 
 ## Contents
 
-1. [Upload and Export Json file](#1.-Upload-and-Export-Json-file)
-2. [Play / Pause](#2.-Play-&-Pause)
-3. [Reverse](#3.-Reverse)
-4. [Canvas](#4.-Canvas)
-5. [Speed](#5.-Speed)
-6. [Play bar](#6.-Play-bar)
-7. [Keypath & Highlighting](#7.-Keypath-&-Highlighting)
-8. [Change Fill & Stroke](#8.-Change-Fill-&-Stroke)
-9. [Change Transform](#9.-Change-Transform)
-10. [Task management / Redo & Undo](#10.-Task-management-/-Redo-&-Undo)
-11. [Mockup](#11.-Mockup)
-12. [Background](#12.-Background)
-13. [Download gif](#13.-Download-gif)
+1. [Upload and Export Json file](#1-upload-and-export-json-file)
+2. [Play / Pause](#2-play--pause)
+3. [Reverse](#3-reverse)
+4. [Canvas](#4-canvas)
+5. [Speed](#5-speed)
+6. [Play bar](#6-play-bar)
+7. [Keypath & Highlighting](#7-keypath--highlighting)
+8. [Change Fill & Stroke](#8-change-fill--stroke)
+9. [Change Transform](#9-change-transform)
+10. [Task management / Redo & Undo](#10-task-management--redo--undo)
+11. [Mockup](#11-mockup)
+12. [Background](#12-background)
+13. [Download gif](#13-download-gif)
 
 
 
@@ -83,7 +83,7 @@
 4. Drag & Drop
 <br>
 <p align="center">
-<img height="450" src="../.Gifs/manual_4_5.gif">
+<img height="450" src="../.Gifs/manual_4_4.gif">
 </p>
 
 [Back to contents](#contents)
