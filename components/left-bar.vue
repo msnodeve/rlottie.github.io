@@ -1,6 +1,6 @@
 <template>
   <div id="l-bar" ref="leftBar">
-    <div class="uploadBTN" style="align-center">
+    <div class="uploadBTN">
       <v-tooltip right class="tooltip-btn">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -12,15 +12,15 @@
             v-on="on"
             @click="clickToUploadJson"
           >
-            <v-icon style="pointer: cursor">fas fa-cloud-upload-alt</v-icon>
+            <v-icon>fas fa-cloud-upload-alt</v-icon>
           </v-btn>
           <input type="file" id="fileSelector" accept=".json" ref="json" />
         </template>
         <span> upload New JSON File (Ctrl + O) </span>
       </v-tooltip>
     </div>
-    <div class="d-flex align-center" style="height: 93%">
-      <div class="text-center" style="width: 100%">
+    <div id="toolWrapper" class="d-flex align-center">
+      <div id="toolNav" class="text-center">
         <v-tooltip right class="tooltip-btn" color="transparent">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -44,7 +44,7 @@
                 height="200px"
                 src="./assets/ChangeBG3.jpg"
               >
-                <v-card-title style="color: #2b2a2a"
+                <v-card-title class="cardTitle"
                   >Change Fill and Stroke</v-card-title
                 >
               </v-img>
@@ -81,9 +81,7 @@
                 height="200px"
                 src="./assets/Transform.jpg"
               >
-                <v-card-title style="color: #2b2a2a"
-                  >Change Transform</v-card-title
-                >
+                <v-card-title class="cardTitle">Change Transform</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0"
                 >Change 5 properties</v-card-subtitle
@@ -118,9 +116,7 @@
                 height="200px"
                 src="./assets/ChangeBG.jpg"
               >
-                <v-card-title style="color: #2b2a2a"
-                  >Change Background</v-card-title
-                >
+                <v-card-title class="cardTitle">Change Background</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0"
                 >Change 3 properties</v-card-subtitle
@@ -154,9 +150,7 @@
                 height="200px"
                 src="./assets/ChangeStroke.jpg"
               >
-                <v-card-title style="color: #2b2a2a"
-                  >Change Canvas</v-card-title
-                >
+                <v-card-title class="cardTitle">Change Canvas</v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0"
                 >Change states of canvas</v-card-subtitle
@@ -194,11 +188,8 @@
               />
               <v-card-subtitle class="pb-0">download .gif file</v-card-subtitle>
               <v-card-title
-                style="
-                  color: #2b2a2a;
-                  position: absolute;
-                  transform: translateY(-110px);
-                "
+                class="cardTitle"
+                style="position: absolute; transform: translateY(-110px)"
                 >Download GIF</v-card-title
               >
               <v-card-text class="text--primary">
@@ -282,11 +273,21 @@ module.exports = {
 }
 .uploadBTN {
   border-bottom: 2px solid grey;
+  align-content: center;
 }
 .activateBtn {
   border-left: 4px solid #0099cc;
 }
 .tooltip-btn {
   z-index: 100;
+}
+.cardTitle {
+  color: #2b2b2b;
+}
+#toolWrapper {
+  height: 93%;
+}
+#toolNav {
+  width: 100%;
 }
 </style>

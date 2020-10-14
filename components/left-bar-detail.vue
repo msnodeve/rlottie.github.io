@@ -2,19 +2,12 @@
   <div
     id="left-detail-bar"
     class="d-flex align-start justify-center"
-    :style="{
-      left: '4rem',
-      'border-left': 'solid',
-      position: 'absolute',
-      'overflow-x': 'hidden',
-      'overflow-y': 'auto',
-      height: height + 'px',
-    }"
+    :style="{ height: height + 'px' }"
   >
-    <stroke-property
+    <shape-property
       v-if="selectedmenu == 1"
       @call-close-menu-parent="closeSideBarFromChild"
-    ></stroke-property>
+    ></shape-property>
     <transform-property
       v-if="selectedmenu == 2"
       @call-close-menu-parent="closeSideBarFromChild"
@@ -39,7 +32,7 @@
 module.exports = {
   name: 'left-bar-detail',
   components: {
-    'stroke-property': 'url:./detailMenus/StrokeProperty.vue',
+    'shape-property': 'url:./detailMenus/ShapeProperty.vue',
     'transform-property': 'url:./detailMenus/TransformProperty.vue',
     'change-bg-color': 'url:./detailMenus/ChangeBgColor.vue',
     'change-canvas': 'url:./detailMenus/ChangeCanvas.vue',
@@ -69,5 +62,10 @@ module.exports = {
   width: 20rem;
   z-index: 99;
   /* float:left */
+  left: 4rem;
+  border-left: 3px solid black;
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 </style>
