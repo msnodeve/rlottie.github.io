@@ -1,7 +1,5 @@
 <template>
-  <div 
-    class="text-center"
-    style="width:100%">
+  <div class="text-center" style="width: 100%">
     <div class="uploadBTN py-3" style="align-center">
       <v-row align="center" justify="center">
         <v-col class="pa-0" offset="2" cols="8">
@@ -57,50 +55,34 @@
           </v-row>
           <v-row class="pt-5">
             <v-col cols="12" class="py-0">
-                <div class="text-left" style="color:white;">Rotation & Flip</div>
+              <div class="text-left" style="color: white">Rotation & Flip</div>
             </v-col>
           </v-row>
-          <v-row class="mb-4" >
+          <v-row class="mb-4">
             <v-col cols="12" class="py-0">
               <div class="my-2">
                 <span class="pr-2">
-                  <v-btn
-                    dark
-                    fab
-                    color="#3e4145"
-                    @click="rotate(false)"
-                  >
+                  <v-btn dark fab color="#3e4145" @click="rotate(false)">
                     <v-icon color="#BFC0C2" large>mdi-rotate-left</v-icon>
                   </v-btn>
                 </span>
                 <span class="pr-2">
-                  <v-btn
-                    dark
-                    fab
-                    color="#3e4145"
-                    @click="rotate(true)"
-                  >
+                  <v-btn dark fab color="#3e4145" @click="rotate(true)">
                     <v-icon color="#BFC0C2" large>mdi-rotate-right</v-icon>
                   </v-btn>
                 </span>
                 <span class="pr-2">
-                  <v-btn
-                    dark
-                    fab
-                    color="#3e4145"
-                    @click="flipX"
-                  >
-                    <v-icon color="#BFC0C2" large>mdi-reflect-horizontal</v-icon>
+                  <v-btn dark fab color="#3e4145" @click="flipX">
+                    <v-icon color="#BFC0C2" large
+                      >mdi-reflect-horizontal</v-icon
+                    >
                   </v-btn>
                 </span>
                 <span>
-                  <v-btn
-                    dark
-                    fab
-                    color="#3e4145"
-                    @click="flipY"
-                  >
-                    <v-icon class="mdi-rotate-90" color="#BFC0C2" large>mdi-reflect-horizontal</v-icon>
+                  <v-btn dark fab color="#3e4145" @click="flipY">
+                    <v-icon class="mdi-rotate-90" color="#BFC0C2" large
+                      >mdi-reflect-horizontal</v-icon
+                    >
                   </v-btn>
                 </span>
               </div>
@@ -114,55 +96,56 @@
 
 <script>
 module.exports = {
-  name: "change-canvas",
+  name: 'change-canvas',
   data() {
     return {
       canvasSizeInput: this.canvasSize,
       degree: 0,
       isFlipX: 1,
-      isFlipY: 1
+      isFlipY: 1,
     };
   },
-  props:{
-    canvasSize: Object
+  props: {
+    canvasSize: Object,
   },
   methods: {
     closeSidebar() {
-      this.$emit("call-close-menu-parent");
+      this.$emit('call-close-menu-parent');
     },
-    rotate(flag){
-      const change = (flag)? 90: -90;
-      this.degree = (this.degree + change +360)%360;
+    rotate(flag) {
+      const change = flag ? 90 : -90;
+      this.degree = (this.degree + change + 360) % 360;
       this.apply();
     },
-    flipX(){
+    flipX() {
       this.isFlipX = this.isFlipX * -1;
       this.apply();
     },
-    flipY(){
+    flipY() {
       this.isFlipY = this.isFlipY * -1;
       this.apply();
     },
-    apply(){
-      document.getElementById("myCanvas").style.transform = `rotate(${this.degree}deg) scaleX(${this.isFlipX}) scaleY(${this.isFlipY})`
-    }
+    apply() {
+      document.getElementById(
+        'myCanvas',
+      ).style.transform = `rotate(${this.degree}deg) scaleX(${this.isFlipX}) scaleY(${this.isFlipY})`;
+    },
   },
-  computed: {
-    
-  },
+  computed: {},
   watch: {
     canvasSizeInput: {
       deep: true,
       handler() {
-        document.getElementById("canvasBox").style.height = `${this.canvasSize.height}px`
-        document.getElementById("canvasBox").style.width = `${this.canvasSize.width}px`
-      }
-
-    }
+        document.getElementById(
+          'canvasBox',
+        ).style.height = `${this.canvasSize.height}px`;
+        document.getElementById(
+          'canvasBox',
+        ).style.width = `${this.canvasSize.width}px`;
+      },
+    },
   },
-  mounted() {
-
-  }
+  mounted() {},
 };
 </script>
 
