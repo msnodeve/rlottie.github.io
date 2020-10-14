@@ -43,33 +43,32 @@ var RLottieModule = (function () {
       window.addEventListener('drop', handleFileSelect, false);
       window.addEventListener('resize',windowResize);
       relayoutCanvas();
+
       obj.canvas = document.getElementById("myCanvas");
       obj.context = obj.canvas.getContext('2d');
       obj.preview = document.getElementById("preView");
       obj.contextPre = obj.preview.getContext('2d');
 
       obj.lottieHandle = new Module.RlottieWasm();
-      obj.frameCount = obj.lottieHandle.frames();
-      // hook to the main loop
-      obj.layers = new Layers(this, obj.lottieHandle.get_basic_resource())      
-      EventBus.$emit('initLayers', {layers: obj.layers.getLayerTree()});
-      
+      obj.frameCount = obj.lottieHandle.frames();      
+      obj.layers = new Layers(this, obj.lottieHandle.get_basic_resource())            
+      store.commit('setLayers', obj.layers.getLayerTree())                        
       mainLoop();
   }
 
   obj.render = function () {
-      if (obj.canvas.width == 0  || obj.canvas.height == 0) return;
+    if (obj.canvas.width == 0  || obj.canvas.height == 0) return;
       
-      obj.curFrame = obj.curFrame + obj.frameRate;
-      if (obj.curFrame > obj.frameCount) obj.curFrame = 0;
-      if (obj.curFrame < 0) obj.curFrame = obj.frameCount;
+    obj.curFrame = obj.curFrame + obj.frameRate;
+    if (obj.curFrame > obj.frameCount) obj.curFrame = 0;
+    if (obj.curFrame < 0) obj.curFrame = obj.frameCount;
 
-      var buffer = obj.lottieHandle.render(obj.curFrame, obj.canvas.width, obj.canvas.height);
-      var result = Uint8ClampedArray.from(buffer);
-      var imageData = new ImageData(result, obj.canvas.width, obj.canvas.height);
+    var buffer = obj.lottieHandle.render(obj.curFrame, obj.canvas.width, obj.canvas.height);
+    var result = Uint8ClampedArray.from(buffer);
+    var imageData = new ImageData(result, obj.canvas.width, obj.canvas.height);
 
-      obj.context.putImageData(imageData, 0, 0);
-      EventBus.$emit('setFrame', {curFrame:obj.curFrame, frameCount:obj.frameCount});
+    obj.context.putImageData(imageData, 0, 0);
+    EventBus.$emit('setFrame', {curFrame:obj.curFrame, frameCount:obj.frameCount});
   }
 
   obj.renderShanpShot = function (frame) {
@@ -231,7 +230,8 @@ function handleFiles(files) {
           var jsString = read.result;
           RLottieModule.reload(jsString);            
           RLottieModule.layers = new Layers(RLottieModule, jsString);                  
-          EventBus.$emit('initLayers', {layers: RLottieModule.layers.getLayerTree()});       
+          EventBus.$emit('initLayers', {layers: RLottieModule.layers.getLayerTree()});  
+
       }
       break;
     }

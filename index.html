@@ -17,19 +17,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-  <!-- Drag and Resize -->
-  <script type="text/javascript">
-    var dragresize = new DragResize('dragresize',
-      { minWidth: 10, minHeight: 10, minLeft: 64, minTop: 0, maxLeft: 1912, maxTop: 830 });
-    dragresize.isElement = function (elm) {
-      if (elm.className && elm.className.indexOf('drsElement') > -1) return true;
-    };
-    dragresize.isHandle = function (elm) {
-      if (elm.className && elm.className.indexOf('drsMoveHandle') > -1) return true;
-    };
-    dragresize.apply(document);
-  </script>
-
 </head>
 
 <body>
@@ -58,79 +45,109 @@
     </v-app>
   </div>
 
+  
   <script src="main.js"></script>
   <script src="gif.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
   <script src="https://unpkg.com/http-vue-loader"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.5.1/vuex.min.js"></script>  
   
-    <!-- import {Property} from "./library/test.js"
-    console.log(Property) -->
-  </scrypt>
-  <script>
+
+  <script >          
     Vue.use(httpVueLoader);
+    Vue.use(Vuex)
     var EventBus = new Vue();   
-    
-    new Vue({
-      el: '#app',
-      vuetify: new Vuetify(),
-      components: {
-        'loading-bar': 'url:./components/loading-bar.vue',
-        'left-bar': 'url:./components/left-bar.vue',
-        'left-bar-detail': 'url:./components/left-bar-detail.vue',
-        'right-bar': 'url:./components/right-bar.vue',
-        'snapshot' : 'url:./components/snapshot.vue',
-        'upper-bar': 'url:./components/upper-bar.vue',
-      },
-      data() {
-        return {
-          activeDetailBar: false,
-          selectedMenu: 0,
-          leftHeight: 0,
-          canvasSize:{
-            height: 400,
-            width: 400 
-          },
-          initialPosition: (window.innerWidth - 400)/2,
-          initCanvasTop: 0,
-          initCanvasLeft: 0,
-          pointx: 0,
-          pointy: 0,
-          activeSnapShot: false,
-        }
-      },
-      methods: {        
-        ChangeMenu(i) {
-          if (this.selectedMenu == i) {
-            this.activeDetailBar = false;
-            this.selectedMenu = 0
-          } else {
-            this.activeDetailBar = true;
-            this.selectedMenu = i
+
+    // Drag and Resize
+    var dragresize = new DragResize('dragresize',
+      { minWidth: 10, minHeight: 10, minLeft: 64, minTop: 0, maxLeft: 1912, maxTop: 830 });
+    dragresize.isElement = function (elm) {
+      if (elm.className && elm.className.indexOf('drsElement') > -1) return true;
+    };
+    dragresize.isHandle = function (elm) {
+      if (elm.className && elm.className.indexOf('drsMoveHandle') > -1) return true;
+    };
+    dragresize.apply(document);
+
+
+    // Import store
+    var script = document.createElement('script');    
+    script.type = 'text/javascript';
+    script.src = 'store/index.js';    
+    document.head.appendChild(script);
+
+    script.onload = _ => {
+      new Vue({
+        el: '#app',
+        vuetify: new Vuetify(),      
+        store,      
+        components: {
+          'loading-bar': 'url:./components/loading-bar.vue',
+          'left-bar': 'url:./components/left-bar.vue',
+          'left-bar-detail': 'url:./components/left-bar-detail.vue',
+          'right-bar': 'url:./components/right-bar.vue',
+          'snapshot' : 'url:./components/snapshot.vue',
+          'upper-bar': 'url:./components/upper-bar.vue',
+        },
+        data() {
+          return {
+            activeDetailBar: false,
+            selectedMenu: 0,
+            leftHeight: 0,
+            canvasSize:{
+              height: 400,
+              width: 400 
+            },
+            initialPosition: (window.innerWidth - 400) / 2,
+            initCanvasTop: 0,
+            initCanvasLeft: 0,
+            pointx: 0,
+            pointy: 0,
+            activeSnapShot: false,
           }
         },
-        CloseMenuBar(){
-          this.activeDetailBar = false;
-          this.selectedMenu = 0
+        methods: {        
+          ChangeMenu(i) {
+            if (this.selectedMenu == i) {
+              this.activeDetailBar = false;
+              this.selectedMenu = 0
+            } else {
+              this.activeDetailBar = true;
+              this.selectedMenu = i
+            }
+          },
+          CloseMenuBar(){
+            this.activeDetailBar = false;
+            this.selectedMenu = 0
+          },
+          setHeight(val){
+            this.leftHeight = val-104;
+          },
+          changeSize(){
+            this.canvasSize.height = Number(document.getElementById("canvasBox").style.height.slice(0,-2))
+            this.canvasSize.width = Number(document.getElementById("canvasBox").style.width.slice(0,-2))
+          },
+          setPointer(pointer){
+            this.pointx = pointer.x - 75;
+            this.pointy = pointer.y - 180;
+            this.activeSnapShot = pointer.isSnapShot;
+          }
         },
-        setHeight(val){
-          this.leftHeight = val-104;
-        },
-        changeSize(){
-          this.canvasSize.height = Number(document.getElementById("canvasBox").style.height.slice(0,-2))
-          this.canvasSize.width = Number(document.getElementById("canvasBox").style.width.slice(0,-2))
-        },
-        setPointer(pointer){
-          this.pointx = pointer.x - 75;
-          this.pointy = pointer.y - 180;
-          this.activeSnapShot = pointer.isSnapShot;
+        mounted(){        
+          this.initCanvasLeft = this.$refs.content.clientWidth * 0.4;
+          this.initCanvasTop = this.$refs.content.clientHeight * 0.2;
+          EventBus.$on('initLayers', ({layers}) => {
+            store.commit('setLayers', layers)                        
+          })
         }
-      },
-      mounted(){        
-        this.initCanvasLeft = this.$refs.content.clientWidth * 0.4;
-        this.initCanvasTop = this.$refs.content.clientHeight * 0.2;        
-      }
-    })
+      })
+    }
+
+    
+    
+    
   </script>
 </body>
 <style>
