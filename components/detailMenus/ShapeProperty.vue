@@ -1,9 +1,9 @@
 <template>
-  <div class="text-center" style="width: 100%">
-    <div class="upload-btn py-3" style="align-center">
+  <div class="text-center width-100-percent">
+    <div class="upload-btn py-3">
       <v-row align="center" justify="center">
         <v-col class="pa-0" offset="2" cols="8">
-          <h3 style="color: white">Shape</h3>
+          <h3 class="font-white">Shape</h3>
         </v-col>
         <v-col class="pa-0 pr-4" cols="2">
           <v-btn
@@ -22,21 +22,21 @@
     <div class="mt-4">
       <v-row class="px-5" align="center">
         <v-col cols="12" class="mt-5">
-          <div class="text-left" style="color: white">Color</div>
+          <div class="text-left font-white">Color</div>
         </v-col>
       </v-row>
       <v-row align="center" justify="center">
         <v-color-picker
+          class="bg-transparent"
           v-model="picker"
           flat
           dark
-          style="background-color: transparent"
           width="285"
-        ></v-color-picker>
+        />
       </v-row>
       <v-row class="pt-5 px-5" align="center">
         <v-col cols="8" class="py-0">
-          <div class="text-left" style="color: white">Thickness</div>
+          <div class="text-left font-white">Thickness</div>
         </v-col>
         <v-col cols="4" class="py-0">
           <v-text-field
@@ -48,8 +48,7 @@
             outlined
             dense
             dark
-            style="border: 0px !important"
-          ></v-text-field>
+          />
         </v-col>
       </v-row>
       <v-row class="mb-4 px-5">
@@ -60,7 +59,7 @@
             max="100"
             min="0"
             hide-details
-          ></v-slider>
+          />
         </v-col>
       </v-row>
     </div>
@@ -72,14 +71,13 @@ module.exports = {
   name: 'shape-property',
   data() {
     return {
-      picker: null,
-      setFlag: false,
-      setFlag2: false,
-      width: 0,
-
-      stack: [],
       interval: '',
       layerProperty: [],
+      picker: null,
+      setColorFlag: false,
+      setStrokeFlag: false,
+      stack: [],
+      width: 0,
     };
   },
   mounted() {
@@ -87,7 +85,7 @@ module.exports = {
 
     EventBus.$on('changeKeypath', ({ keypath }) => {
       this.layerProperty = RLottieModule.layers.layerList[keypath];
-      this.setFlag2 = false;
+      this.setStrokeFlag = false;
       this.setColor(this.layerProperty);
       this.setStrokeColor(this.layerProperty);
     });
@@ -106,7 +104,7 @@ module.exports = {
   },
   watch: {
     picker() {
-      if (this.setFlag) {
+      if (this.setColorFlag) {
         this.layerProperty.r = this.picker.rgba.r;
         this.layerProperty.g = this.picker.rgba.g;
         this.layerProperty.b = this.picker.rgba.b;
@@ -125,11 +123,11 @@ module.exports = {
           args: { r, g, b, a },
         });
       } else {
-        this.setFlag = true;
+        this.setColorFlag = true;
       }
     },
     width(width) {
-      if (this.setFlag2) {
+      if (this.setStrokeFlag) {
         RLottieModule.strokeWidth(RLottieModule.keypath, Number(this.width));
         this.layerProperty.strokeWidth = Number(this.width);
         this.stack.push({
@@ -137,7 +135,7 @@ module.exports = {
           args: { strokeWidth: Number(this.width) },
         });
       } else {
-        this.setFlag2 = true;
+        this.setStrokeFlag = true;
       }
     },
   },

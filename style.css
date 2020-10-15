@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   margin: 0;
@@ -16,7 +17,7 @@ html, body {
   height: 10%;
   display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
 }
 
@@ -46,7 +47,7 @@ html, body {
 .slider {
   display: flex;
   flex-direction: row;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   width: 300px;
   height: 50px;
@@ -83,8 +84,8 @@ html, body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  min-width : 140px;
-  max-width : 140px;
+  min-width: 140px;
+  max-width: 140px;
   background: lightergrey;
 }
 .color_button {
@@ -92,46 +93,55 @@ html, body {
   width: 20px;
   height: 20px;
 }
-.btn_white { background-color: white;}
-.btn_black { background-color: black;}
-.btn_red { background-color: red;}
-.btn_green { background-color: green;}
-.btn_blue { background-color: blue;}
-
-.card {
-  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+.btn_white {
+  background-color: white;
+}
+.btn_black {
+  background-color: black;
+}
+.btn_red {
+  background-color: red;
+}
+.btn_green {
+  background-color: green;
+}
+.btn_blue {
+  background-color: blue;
 }
 
+.card {
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
 
 .justify-center {
-    justify-content: center;
+  justify-content: center;
 }
 
 .text-xs {
-    font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 .border-grey-light {
-    border-color: #dae1e7;
+  border-color: #dae1e7;
 }
 
 .bg-grey-lighter {
-    background-color: #f1f5f8;
+  background-color: #f1f5f8;
 }
 
 .rounded {
-    border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 
 .text-grey-darkest {
-    color: #3d4852;
+  color: #3d4852;
 }
 .font-bold {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .cursor-pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .margin-left-10px {
@@ -141,88 +151,97 @@ html, body {
 .drsElement {
   position: absolute;
   border: 1px solid #333;
- }
- 
- /*
+}
+
+/*
   The main mouse handle that moves the whole element.
   You can apply to the same tag as drsElement if you want.
  */
- .drsMoveHandle {
+.drsMoveHandle {
   height: 20px;
-  background-color: #CCC;
+  background-color: #ccc;
   border-bottom: 1px solid #666;
   cursor: move;
- }
- 
- /*
+}
+
+/*
   The DragResize object name is automatically applied to all generated
   corner resize handles, as well as one of the individual classes below.
  */
- .dragresize {
+.dragresize {
   position: absolute;
   width: 5px;
   height: 5px;
   font-size: 1px;
-  background: #EEE;
+  background: #eee;
   border: 1px solid #333;
- }
- 
- /*
+}
+
+/*
   Individual corner classes - required for resize support.
   These are based on the object name plus the handle ID.
  */
- .dragresize-tl {
+.dragresize-tl {
   top: -8px;
   left: -8px;
   cursor: nw-resize;
- }
- .dragresize-tm {
+}
+.dragresize-tm {
   top: -8px;
   left: 50%;
   margin-left: -4px;
   cursor: n-resize;
- }
- .dragresize-tr {
+}
+.dragresize-tr {
   top: -8px;
   right: -8px;
   cursor: ne-resize;
- }
- 
- .dragresize-ml {
+}
+
+.dragresize-ml {
   top: 50%;
   margin-top: -4px;
   left: -8px;
   cursor: w-resize;
- }
- .dragresize-mr {
+}
+.dragresize-mr {
   top: 50%;
   margin-top: -4px;
   right: -8px;
   cursor: e-resize;
- }
- 
- .dragresize-bl {
+}
+
+.dragresize-bl {
   bottom: -8px;
   left: -8px;
   cursor: sw-resize;
- }
- .dragresize-bm {
+}
+.dragresize-bm {
   bottom: -8px;
   left: 50%;
   margin-left: -4px;
   cursor: s-resize;
- }
- .dragresize-br {
+}
+.dragresize-br {
   bottom: -8px;
   right: -8px;
   cursor: se-resize;
- }
- .drsElement {
+}
+.drsElement {
   position: absolute;
   border: 1px solid #333;
- }
- 
- /*
+}
+
+/*
   The main mouse handle that moves the whole element.
   You can apply to the same tag as drsElement if you want.
  */
+.font-white {
+  color: white;
+}
+.bg-transparent {
+  background-color: transparent !important;
+}
+.width-100-percent {
+  width: 100%;
+}

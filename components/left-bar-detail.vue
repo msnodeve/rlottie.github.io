@@ -32,11 +32,11 @@
 module.exports = {
   name: 'left-bar-detail',
   components: {
-    'shape-property': 'url:./detailMenus/ShapeProperty.vue',
-    'transform-property': 'url:./detailMenus/TransformProperty.vue',
     'change-bg-color': 'url:./detailMenus/ChangeBgColor.vue',
     'change-canvas': 'url:./detailMenus/ChangeCanvas.vue',
     'export-gif': 'url:./detailMenus/ExportGif.vue',
+    'shape-property': 'url:./detailMenus/ShapeProperty.vue',
+    'transform-property': 'url:./detailMenus/TransformProperty.vue',
   },
   props: {
     selectedmenu: Number,
@@ -51,7 +51,6 @@ module.exports = {
       this.$emit('close-sidebar');
     },
   },
-  mounted() {},
 };
 </script>
 
@@ -61,7 +60,6 @@ module.exports = {
   background-color: #292c31;
   width: 20rem;
   z-index: 99;
-  /* float:left */
   left: 4rem;
   border-left: 3px solid black;
   position: absolute;

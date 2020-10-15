@@ -190,11 +190,9 @@
               <v-card-subtitle class="pb-4">
                 Download .gif file
               </v-card-subtitle>
-              <v-card-title
-                class="card-title"
-                style="position: absolute; transform: translateY(-110px)"
-                >Download GIF</v-card-title
-              >
+              <v-card-title class="card-title card-gif">
+                Download GIF
+              </v-card-title>
             </v-card>
           </span>
         </v-tooltip>
@@ -280,6 +278,10 @@ module.exports = {
 }
 .card-title {
   color: #2b2b2b;
+}
+.card-gif {
+  position: absolute;
+  transform: translateY(-110px);
 }
 #tool-wrapper {
   height: 93%;
