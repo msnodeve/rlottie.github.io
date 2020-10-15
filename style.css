@@ -251,6 +251,10 @@ body {
   width: 100%;
 }
 
+.width-90-percent {
+  width: 90%;
+}
+
 .comb-list {
   width: 200px !important;
   background-color: rgba(33, 33, 33, 0.9) !important;

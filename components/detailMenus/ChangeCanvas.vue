@@ -1,9 +1,9 @@
 <template>
-  <div class="text-center" style="width: 100%">
-    <div class="upload-btn py-3" style="align-center">
+  <div class="text-center width-100-percent">
+    <div class="upload-btn py-3">
       <v-row align="center" justify="center">
         <v-col class="pa-0" offset="2" cols="8">
-          <h3 style="color: white">Canvas</h3>
+          <h3 class="font-white">Canvas</h3>
         </v-col>
         <v-col class="pa-0 pr-4" cols="2">
           <v-btn
@@ -22,10 +22,10 @@
     <div class="text-center mt-4">
       <v-row class="px-5">
         <v-col cols="12" class="justify-center mt-5">
-          <div class="text-left" style="color: white">Canvas Size</div>
+          <div class="text-left font-white">Canvas Size</div>
           <v-row class="pd-0 pt-2">
             <v-col cols="8" class="text-left py-0">
-              <div class="pl-3" style="color: white">width</div>
+              <div class="pl-3 font-white">width</div>
             </v-col>
             <v-col cols="4" class="py-0">
               <v-text-field
@@ -36,10 +36,10 @@
                 hide-details
                 outlined
                 suffix="px"
-              ></v-text-field>
+              />
             </v-col>
             <v-col cols="8" class="text-left py-0">
-              <div class="pl-3" style="color: white">height</div>
+              <div class="pl-3 font-white">height</div>
             </v-col>
             <v-col cols="4" class="py-0">
               <v-text-field
@@ -50,12 +50,12 @@
                 hide-details
                 outlined
                 suffix="px"
-              ></v-text-field>
+              />
             </v-col>
           </v-row>
           <v-row class="pt-5">
             <v-col cols="12" class="py-0">
-              <div class="text-left" style="color: white">Rotation & Flip</div>
+              <div class="text-left font-white">Rotation & Flip</div>
             </v-col>
           </v-row>
           <v-row class="mb-4">
@@ -73,9 +73,7 @@
                 </span>
                 <span class="pr-2">
                   <v-btn dark fab color="#3e4145" @click="flipX">
-                    <v-icon color="#BFC0C2" large
-                      >mdi-reflect-horizontal</v-icon
-                    >
+                    <v-icon color="#BFC0C2" large>mdi-reflect-horizontal</v-icon>
                   </v-btn>
                 </span>
                 <span>
@@ -131,21 +129,15 @@ module.exports = {
       ).style.transform = `rotate(${this.degree}deg) scaleX(${this.isFlipX}) scaleY(${this.isFlipY})`;
     },
   },
-  computed: {},
   watch: {
     canvasSizeInput: {
       deep: true,
       handler() {
-        document.getElementById(
-          'canvasBox',
-        ).style.height = `${this.canvasSize.height}px`;
-        document.getElementById(
-          'canvasBox',
-        ).style.width = `${this.canvasSize.width}px`;
+        document.getElementById('canvasBox').style.height = `${this.canvasSize.height}px`;
+        document.getElementById('canvasBox').style.width = `${this.canvasSize.width}px`;
       },
     },
   },
-  mounted() {},
 };
 </script>
 

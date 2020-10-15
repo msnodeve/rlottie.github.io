@@ -1,9 +1,9 @@
 <template>
-  <div class="text-center" style="width: 100%">
-    <div class="upload-btn py-3" style="align-center">
+  <div class="text-center width-100-percent">
+    <div class="upload-btn py-3">
       <v-row align="center" justify="center">
         <v-col class="pa-0" offset="2" cols="8">
-          <h3 style="color: white">Transform</h3>
+          <h3 class="font-white">Transform</h3>
         </v-col>
         <v-col class="pa-0 pr-4" cols="2">
           <v-btn
@@ -22,10 +22,10 @@
     <div class="text-center mt-4">
       <v-row class="px-5">
         <v-col cols="12" class="justify-center mt-5">
-          <div class="text-left" style="color: white">Anchor</div>
+          <div class="text-left font-white">Anchor</div>
           <v-row class="pd-0 pt-2">
             <v-col cols="8" class="text-left py-0">
-              <div class="pl-3" style="color: white">x</div>
+              <div class="pl-3 font-white">x</div>
             </v-col>
             <v-col cols="4" class="py-0">
               <v-text-field
@@ -38,7 +38,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="8" class="text-left py-0">
-              <div class="pl-3" style="color: white">y</div>
+              <div class="pl-3 font-white">y</div>
             </v-col>
             <v-col cols="4" class="py-0">
               <v-text-field
@@ -51,10 +51,10 @@
               ></v-text-field>
             </v-col>
           </v-row>
-          <div class="text-left pt-3" style="color: white">Position</div>
+          <div class="text-left pt-3 font-white">Position</div>
           <v-row class="pd-0 pt-2">
             <v-col cols="8" class="text-left py-0">
-              <div class="pl-3" style="color: white">x</div>
+              <div class="pl-3 font-white">x</div>
             </v-col>
             <v-col cols="4" class="py-0">
               <v-text-field
@@ -67,7 +67,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="8" class="text-left py-0">
-              <div class="pl-3" style="color: white">y</div>
+              <div class="pl-3 font-white">y</div>
             </v-col>
             <v-col cols="4" class="py-0">
               <v-text-field
@@ -80,10 +80,10 @@
               ></v-text-field>
             </v-col>
           </v-row>
-          <div class="text-left pt-3" style="color: white">Scale</div>
+          <div class="text-left pt-3 font-white">Scale</div>
           <v-row class="pd-0 pt-2">
             <v-col cols="8" class="text-left py-0">
-              <div class="pl-3" style="color: white">width</div>
+              <div class="pl-3 font-white">width</div>
             </v-col>
             <v-col cols="4" class="py-0">
               <v-text-field
@@ -96,7 +96,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="8" class="text-left py-0">
-              <div class="pl-3" style="color: white">height</div>
+              <div class="pl-3 font-white">height</div>
             </v-col>
             <v-col cols="4" class="py-0">
               <v-text-field
@@ -111,7 +111,7 @@
           </v-row>
           <v-row class="pt-5">
             <v-col cols="8" class="py-0">
-              <div class="text-left" style="color: white">Rotation</div>
+              <div class="text-left font-white">Rotation</div>
             </v-col>
             <v-col cols="4" class="py-0">
               <v-text-field
@@ -139,7 +139,7 @@
           </v-row>
           <v-row>
             <v-col cols="8" class="py-0">
-              <div class="text-left" style="color: white">Opacity</div>
+              <div class="text-left font-white">Opacity</div>
             </v-col>
             <v-col cols="4" class="py-0">
               <v-text-field
@@ -180,34 +180,33 @@ module.exports = {
         x: 0,
         y: 0,
       },
+      anchorFlag: false,
+      degree: 0,
+      degreeFlag: false,
+      layerProperty: [],
+      opacity: 0,
+      opacityFlag: false,
       position: {
         x: 0,
         y: 0,
       },
+      positionFlag: false,
       scale: {
         w: 100,
         h: 100,
       },
-      degree: 0,
-      opacity: 0,
-      stack: [],
-      layerProperty: [],
-
-      anchorFlag: false,
-      positionFlag: false,
       scaleFlag: false,
-      degreeFlag: false,
-      opacityFlag: false,
+      stack: [],
     };
   },
   mounted() {
     EventBus.$on('changeKeypath', ({ keypath }) => {
       this.layerProperty = RLottieModule.layers.layerList[keypath];
       this.anchorFlag = false;
-      this.positionFlag = false;
-      this.scaleFlag = false;
       this.degreeFlag = false;
       this.opacityFlag = false;
+      this.positionFlag = false;
+      this.scaleFlag = false;
 
       this.setTransform(this.layerProperty);
     });
@@ -325,24 +324,24 @@ module.exports = {
   computed: {},
   methods: {
     setTransform({
-      strokeWidth,
       anchorX,
       anchorY,
+      opacity,
       positionX,
       positionY,
+      rotation,
       scaleWidth,
       scaleHeight,
-      rotation,
-      opacity,
+      strokeWidth,
     }) {
       this.anchor.x = anchorX;
       this.anchor.y = anchorY;
+      this.degree = rotation;
+      this.opacity = opacity;
       this.position.x = positionX;
       this.position.y = positionY;
       this.scale.w = scaleWidth;
       this.scale.h = scaleHeight;
-      this.degree = rotation;
-      this.opacity = opacity;
     },
     closeSidebar() {
       this.$emit('call-close-menu-parent');

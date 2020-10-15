@@ -1,9 +1,9 @@
 <template>
-  <div class="text-center" style="width: 100%">
-    <div class="upload-btn py-3" style="align-center">
+  <div class="text-center width-100-percent">
+    <div class="upload-btn py-3">
       <v-row align="center" justify="center">
         <v-col class="pa-0" offset="2" cols="8">
-          <h3 style="color: white">GIF</h3>
+          <h3 class="font-white">GIF</h3>
         </v-col>
         <v-col class="pa-0 pr-4" cols="2">
           <v-btn
@@ -22,7 +22,7 @@
     <div class="mt-4">
       <v-row class="pb-3 px-5 mt-4" align="center">
         <v-col cols="12" class="py-0 mt-8">
-          <div class="text-left" style="color: white">Background Color</div>
+          <div class="text-left font-white">Background Color</div>
         </v-col>
       </v-row>
       <v-row class="mb-4 pl-5" align="center" justify="center">
@@ -37,41 +37,26 @@
         >
         </v-btn>
         <div
-          class="v-color-picker__dot ml-1"
-          style="background-color: hsla(0, 0%, 100%, 0.12); cursor: pointer"
+          class="v-color-picker__dot ml-1 picker-dot"
           @click="selectColor('#000000', false)"
-        ></div>
+        />
       </v-row>
       <v-row align="center" justify="center">
         <v-color-picker
+          class="bg-transparent"
           v-show="isColor"
           v-model="picker"
           flat
           hide-mode-switch
           dark
           width="280"
-          style="background-color: transparent"
-        ></v-color-picker>
+        />
       </v-row>
-      <v-row
-        align="center"
-        justify="center"
-        class="pa-0 ma-0"
-        style="width: 100%"
-      >
-        <img id="convert-gif" src="" style="width: 90%" />
+      <v-row align="center" justify="center" class="pa-0 ma-0 width-100-percent">
+        <img id="convert-gif" src="" class="width-90-percent" />
       </v-row>
-      <v-row
-        align="center"
-        justify="center"
-        class="pa-0 ma-0 mt-4"
-        style="width: 100%"
-      >
-        <v-btn
-          @click="convertGIF"
-          :loading="loading"
-          style="background-color: rgba(0, 153, 204, 1); width: 90%"
-        >
+      <v-row align="center" justify="center" class="pa-0 ma-0 mt-4 width-100-percent">
+        <v-btn @click="convertGIF" :loading="loading" id="convert-btn">
           Convert to GIF
         </v-btn>
       </v-row>
@@ -84,10 +69,6 @@ module.exports = {
   name: 'export-gif',
   data() {
     return {
-      type: 'hex',
-      hex: '#000000',
-      loading: false,
-      isColor: false,
       colors: [
         '#FFFFFF',
         '#EB7D46',
@@ -97,6 +78,10 @@ module.exports = {
         '#7D46EB',
         '#EB46B4',
       ],
+      hex: '#000000',
+      isColor: false,
+      loading: false,
+      type: 'hex',
     };
   },
   computed: {
@@ -176,5 +161,13 @@ module.exports = {
 <style scoped>
 span {
   color: white !important;
+}
+.picker-dot {
+  background-color: hsla(0, 0%, 100%, 0.12);
+  cursor: pointer;
+}
+#convert-btn {
+  background-color: rgba(0, 153, 204, 1);
+  width: 90%;
 }
 </style>

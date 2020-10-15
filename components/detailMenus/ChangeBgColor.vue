@@ -1,9 +1,9 @@
 <template>
-  <div class="text-center" style="width: 100%">
-    <div class="upload-btn py-3" style="align-center">
+  <div class="text-center width-100-percent">
+    <div class="upload-btn py-3">
       <v-row align="center" justify="center">
         <v-col class="pa-0" offset="2" cols="8">
-          <h3 style="color: white">Background</h3>
+          <h3 class="font-white">Background</h3>
         </v-col>
         <v-col class="pa-0 pr-4" cols="2">
           <v-btn
@@ -21,60 +21,41 @@
     </div>
     <v-row class="pb-3 px-5 mt-4" align="center">
       <v-col cols="12" class="py-0 mt-8">
-        <div class="text-left" style="color: white">Color</div>
+        <div class="text-left font-white">Color</div>
       </v-col>
     </v-row>
     <v-row>
       <v-col class="d-flex justify-center pa-0">
-        <v-color-picker
-          flat
-          dark
-          width="285"
-          style="background-color: transparent"
-          v-model="color"
-        >
-        </v-color-picker>
+        <v-color-picker class="bg-transparent" flat dark width="285" v-model="color" />
       </v-col>
     </v-row>
     <div class="text-center mt-0">
       <v-row class="px-5" align="center">
         <v-col cols="7" class="justify-center pt-0 pr-0">
-          <div class="text-left" style="color: white">Background Image</div>
+          <div class="text-left font-white">Background Image</div>
         </v-col>
       </v-row>
     </div>
-    <div class="upload-btn" style="align-left; border-bottom: none;">
-      <!-- <label for="backgroundImg"> -->
+    <div id="upload-wrapper">
       <v-btn
         tile
         class="py-7"
         text
         color="white"
-        style="
-          width: 90%;
-          height: 200px;
-          border: 2px dashed;
-          border-radius: 20px;
-          background-color: rgba(100, 100, 100, 0.2);
-        "
+        id="bg-btn"
         @click="clickToBackgroundImage"
       >
-        <v-icon style="pointer: cursor; font-size: 30px">mdi-image-plus</v-icon>
+        <v-icon id="bg-icon">mdi-image-plus</v-icon>
       </v-btn>
-      <!-- </label> -->
       <input
         ref="image"
         type="file"
-        id="backgroundImg"
+        id="background-img"
         accept="image/*"
         @change="setBackgroundImg"
       />
     </div>
-    <v-btn
-      class="mx-4 mt-4"
-      @click="backgroundReset"
-      style="background-color: rgba(0, 153, 204, 1); width: 90%"
-    >
+    <v-btn class="mx-4 mt-4" @click="backgroundReset" id="delete-btn">
       Delete Background Image
     </v-btn>
   </div>
@@ -85,9 +66,9 @@ module.exports = {
   name: 'change-bg-color',
   data() {
     return {
-      type: 'rgba',
+      backgroundImgFlag: false,
       rgba: { r: 255, g: 255, b: 255 },
-      backgroundImg: false,
+      type: 'rgba',
     };
   },
   methods: {
@@ -98,21 +79,21 @@ module.exports = {
       this.$emit('call-close-menu-parent');
     },
     backgroundReset() {
-      if (this.backgroundImg) {
+      if (this.backgroundImgFlag) {
         var parentDiv = document.querySelector('#img-background');
         if (parentDiv.childNodes.length != 0) {
           var childImg = document.querySelector('#background');
           parentDiv.removeChild(childImg);
         }
       }
-      this.backgroundImg = false;
+      this.backgroundImgFlag = false;
     },
     setBackgroundImg(event) {
       var file = event.target.files;
       if (file.length === 0) {
         return;
       }
-      if (this.backgroundImg) {
+      if (this.backgroundImgFlag) {
         var parentDiv = document.querySelector('#img-background');
         if (parentDiv.childNodes.length != 0) {
           var childImg = document.querySelector('#background');
@@ -134,7 +115,7 @@ module.exports = {
         reader.readAsDataURL(file[0]);
       }
       document.querySelector('#img-background').appendChild(img);
-      this.backgroundImg = true;
+      this.backgroundImgFlag = true;
     },
   },
   computed: {
@@ -147,7 +128,9 @@ module.exports = {
       },
     },
     showColor() {
-      if (typeof this.color === 'string') return this.color;
+      if (typeof this.color === 'string') {
+        return this.color;
+      }
       return JSON.stringify(
         Object.keys(this.color).reduce((color, key) => {
           color[key] = Number(this.color[key].toFixed(2));
@@ -163,17 +146,15 @@ module.exports = {
       const r = this.rgba.r;
       const g = this.rgba.g;
       const b = this.rgba.b;
-      document.getElementById(
-        'content',
-      ).style.backgroundColor = `rgba(${r},${g},${b})`;
+      document.getElementById('content').style.backgroundColor = `rgba(${r},${g},${b})`;
     },
   },
   mounted() {
     var childImg = document.querySelector('#background');
     if (childImg) {
-      this.backgroundImg = true;
+      this.backgroundImgFlag = true;
     } else {
-      this.backgroundImg = false;
+      this.backgroundImgFlag = false;
     }
     let rgbValue = document.getElementById('content').style.backgroundColor;
     const r = rgbValue.split(', ')[0].split('(')[1];
@@ -196,8 +177,25 @@ input {
   display: flex !important;
   align-items: center !important;
 }
-#backgroundImg {
+#background-img {
   display: none;
   cursor: pointer;
+}
+#upload-wrapper {
+  align-content: center;
+}
+#bg-btn {
+  width: 90%;
+  height: 200px;
+  border: 2px dashed;
+  border-radius: 20px;
+  background-color: rgba(100, 100, 100, 0.2);
+}
+#bg-icon {
+  font-size: 30px;
+}
+#delete-btn {
+  background-color: rgba(0, 153, 204, 1);
+  width: 90%;
 }
 </style>
