@@ -212,9 +212,14 @@ module.exports = {
       buttonClicked();
       this.playing = RLottieModule.playing;
     },
-    //
     calcFrameRate(value) {
-      this.setFrameRate(value);
+      let curFrameRate = value;
+      if (this.isReverse) {
+        curFrameRate = curFrameRate > 0 ? -curFrameRate : curFrameRate;
+      } else {
+        curFrameRate = curFrameRate > 0 ? curFrameRate : -curFrameRate;
+      }
+      this.setFrameRate(curFrameRate);
     },
     setHistoryState(e) {
       this.isPrev = e.isPrev;
