@@ -58,13 +58,13 @@
             <v-col cols="4" offset="4" class="pa-0" style="text-align: center">
               <v-img
                 v-if="!scrollBottom"
-                src="./assets/upperbar_2.png"
+                src="./assets/upperbar_down.png"
                 max-width="500"
                 max-height="300"
               ></v-img>
               <v-img
                 v-else
-                src="./assets/upperbar_1.png"
+                src="./assets/upperbar_up.png"
                 max-width="500"
                 max-height="300"
               ></v-img>
@@ -108,7 +108,8 @@ module.exports = {
       img.id = 'background';
       img.style =
         'max-height:650px; max-width: 90%; margin-left: auto; margin-right: auto; display: block;';
-      img.src = flag == 0 ? './assets/mock_up_1.png' : './assets/mock_up_2.png';
+      img.src =
+        flag == 0 ? './assets/mock_up_phone.png' : './assets/mock_up_watch.png';
       document.querySelector('#img-background').appendChild(img);
     },
   },

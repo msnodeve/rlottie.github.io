@@ -37,7 +37,7 @@ var RLottieModule = (function () {
   obj.fileName = 'anubis.json';
 
   obj.init = function () {
-    var input = document.getElementById('fileSelector');
+    var input = document.getElementById('file-selector');
     input.addEventListener('change', fileSelectionChanged);
     window.addEventListener('dragover', handleDragOver, false);
     window.addEventListener('drop', handleFileSelect, false);
@@ -252,7 +252,7 @@ function handleDragOver(evt) {
 }
 
 function fileSelectionChanged() {
-  var input = document.getElementById('fileSelector');
+  var input = document.getElementById('file-selector');
   handleFiles(input.files);
 }
 

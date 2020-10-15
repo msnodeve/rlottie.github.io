@@ -1,6 +1,6 @@
 <template>
   <div id="l-bar" ref="leftBar">
-    <div class="uploadBTN">
+    <div class="upload-btn">
       <v-tooltip right class="tooltip-btn">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -14,21 +14,21 @@
           >
             <v-icon>fas fa-cloud-upload-alt</v-icon>
           </v-btn>
-          <input type="file" id="fileSelector" accept=".json" ref="json" />
+          <input type="file" id="file-selector" accept=".json" ref="json" />
         </template>
         <span> upload New JSON File (Ctrl + O) </span>
       </v-tooltip>
     </div>
-    <div id="toolWrapper" class="d-flex align-center">
-      <div id="toolNav" class="text-center">
+    <div id="tool-wrapper" class="d-flex align-center">
+      <div id="tool-nav" class="text-center">
         <v-tooltip right class="tooltip-btn" color="transparent">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               tile
               class="mt-5"
               text
-              :color="activateBtn2(1)"
-              v-bind:class="{ activateBtn: isActivate(1) }"
+              :color="activateColor(1)"
+              v-bind:class="{ 'activate-btn': isActivate(1) }"
               @click="clickMenu(1)"
               v-bind="attrs"
               v-on="on"
@@ -42,18 +42,17 @@
               <v-img
                 class="white--text align-end"
                 height="200px"
-                src="./assets/ChangeBG3.jpg"
+                src="./assets/change_shape.jpg"
               >
-                <v-card-title class="cardTitle"
-                  >Change Fill and Stroke</v-card-title
-                >
+                <v-card-title class="card-title">
+                  Change Fill and Stroke
+                </v-card-title>
               </v-img>
-              <v-card-subtitle class="pb-0"
-                >Change 3 properties</v-card-subtitle
-              >
+              <v-card-subtitle class="pb-0">
+                Change 3 properties
+              </v-card-subtitle>
               <v-card-text class="text--primary">
                 <div>Color, Opacity, Width</div>
-                <div></div>
               </v-card-text>
             </v-card>
           </span>
@@ -65,8 +64,8 @@
               tile
               class="mt-5"
               text
-              :color="activateBtn2(2)"
-              v-bind:class="{ activateBtn: isActivate(2) }"
+              :color="activateColor(2)"
+              v-bind:class="{ 'activate-btn': isActivate(2) }"
               @click="clickMenu(2)"
               v-bind="attrs"
               v-on="on"
@@ -79,13 +78,13 @@
               <v-img
                 class="white--text align-end"
                 height="200px"
-                src="./assets/Transform.jpg"
+                src="./assets/change_transform.jpg"
               >
-                <v-card-title class="cardTitle">Change Transform</v-card-title>
+                <v-card-title class="card-title">Change Transform</v-card-title>
               </v-img>
-              <v-card-subtitle class="pb-0"
-                >Change 5 properties</v-card-subtitle
-              >
+              <v-card-subtitle class="pb-0">
+                Change 5 properties
+              </v-card-subtitle>
               <v-card-text class="text--primary">
                 <div>Anchor, Position,</div>
                 <div>Scale, Rotation, Opacity</div>
@@ -99,9 +98,9 @@
             <v-btn
               tile
               class="mt-5"
-              v-bind:class="{ activateBtn: isActivate(3) }"
+              v-bind:class="{ 'activate-btn': isActivate(3) }"
               text
-              :color="activateBtn2(3)"
+              :color="activateColor(3)"
               @click="clickMenu(3)"
               v-bind="attrs"
               v-on="on"
@@ -114,13 +113,15 @@
               <v-img
                 class="white--text align-end"
                 height="200px"
-                src="./assets/ChangeBG.jpg"
+                src="./assets/change_bg.jpg"
               >
-                <v-card-title class="cardTitle">Change Background</v-card-title>
+                <v-card-title class="card-title"
+                  >Change Background</v-card-title
+                >
               </v-img>
-              <v-card-subtitle class="pb-0"
-                >Change 3 properties</v-card-subtitle
-              >
+              <v-card-subtitle class="pb-0">
+                Change 3 properties
+              </v-card-subtitle>
               <v-card-text class="text--primary">
                 <div>Color, Image, Canvas Size</div>
               </v-card-text>
@@ -133,9 +134,9 @@
             <v-btn
               tile
               class="mt-5"
-              v-bind:class="{ activateBtn: isActivate(4) }"
+              v-bind:class="{ 'activate-btn': isActivate(4) }"
               text
-              :color="activateBtn2(4)"
+              :color="activateColor(4)"
               @click="clickMenu(4)"
               v-bind="attrs"
               v-on="on"
@@ -148,13 +149,13 @@
               <v-img
                 class="white--text align-end"
                 height="200px"
-                src="./assets/ChangeStroke.jpg"
+                src="./assets/change_canvas.jpg"
               >
-                <v-card-title class="cardTitle">Change Canvas</v-card-title>
+                <v-card-title class="card-title">Change Canvas</v-card-title>
               </v-img>
-              <v-card-subtitle class="pb-0"
-                >Change states of canvas</v-card-subtitle
-              >
+              <v-card-subtitle class="pb-0">
+                Change states of canvas
+              </v-card-subtitle>
               <v-card-text class="text--primary">
                 <div>resize, rotation, flip</div>
               </v-card-text>
@@ -168,8 +169,8 @@
               tile
               class="mt-5"
               text
-              :color="activateBtn2(5)"
-              v-bind:class="{ activateBtn: isActivate(5) }"
+              :color="activateColor(5)"
+              v-bind:class="{ 'activate-btn': isActivate(5) }"
               @click="clickMenu(5)"
               v-bind="attrs"
               v-on="on"
@@ -184,17 +185,16 @@
                 class="white--text align-end"
                 height="200px"
                 width="400px"
-                src="./assets/animation_500_kfqx0wpg.gif"
+                src="./assets/change_gif.gif"
               />
-              <v-card-subtitle class="pb-0">download .gif file</v-card-subtitle>
+              <v-card-subtitle class="pb-4">
+                Download .gif file
+              </v-card-subtitle>
               <v-card-title
-                class="cardTitle"
+                class="card-title"
                 style="position: absolute; transform: translateY(-110px)"
                 >Download GIF</v-card-title
               >
-              <v-card-text class="text--primary">
-                <div></div>
-              </v-card-text>
             </v-card>
           </span>
         </v-tooltip>
@@ -225,7 +225,7 @@ module.exports = {
     },
   },
   computed: {
-    activateBtn2() {
+    activateColor() {
       return (i) => {
         if (this.selectedmenu == i) {
           return 'white';
@@ -252,10 +252,7 @@ module.exports = {
 
     //gif pre-loading
     let img = new Image();
-    img.src = './assets/animation_500_kfqx0wpg.gif';
-  },
-  beforeDestroy() {
-    // window.removeEventListener("resize");
+    img.src = './assets/change_gif.gif';
   },
 };
 </script>
@@ -267,27 +264,27 @@ module.exports = {
   background-color: #292c31;
   float: left;
 }
-#fileSelector {
+#file-selector {
   display: none;
   cursor: pointer;
 }
-.uploadBTN {
+.upload-btn {
   border-bottom: 2px solid grey;
   align-content: center;
 }
-.activateBtn {
+.activate-btn {
   border-left: 4px solid #0099cc;
 }
 .tooltip-btn {
   z-index: 100;
 }
-.cardTitle {
+.card-title {
   color: #2b2b2b;
 }
-#toolWrapper {
+#tool-wrapper {
   height: 93%;
 }
-#toolNav {
+#tool-nav {
   width: 100%;
 }
 </style>

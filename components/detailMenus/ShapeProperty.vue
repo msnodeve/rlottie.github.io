@@ -1,6 +1,6 @@
 <template>
   <div class="text-center" style="width: 100%">
-    <div class="uploadBTN py-3" style="align-center">
+    <div class="upload-btn py-3" style="align-center">
       <v-row align="center" justify="center">
         <v-col class="pa-0" offset="2" cols="8">
           <h3 style="color: white">Shape</h3>

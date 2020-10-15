@@ -55,7 +55,7 @@ module.exports = {
 };
 </script>
 
-<style>
+<style scoped>
 #left-detail-bar {
   height: 100%;
   background-color: #292c31;
