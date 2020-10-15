@@ -1,20 +1,8 @@
 <template>
   <v-footer absolute color="#292c31" class="font-weight-medium" ref="footer">
     <div class="content-width-100 px-16">
-      <v-row
-        id="snapShot"
-        class="ma-0 pa-0"
-        @mousemove="snapShotFrame($event, true)"
-        @mouseleave="snapShotFrame($event, false)"
-      >
-        <v-slider
-          class="v-slider--active v-slider--focused"
-          :value="curFrame"
-          :min="0"
-          :max="frameCount"
-          @change="gotoFrame"
-          hide-details
-        />
+      <v-row id="snapShot" class="ma-0 pa-0" @mousemove="snapShotFrame($event, true)" @mouseleave="snapShotFrame($event, false)">
+        <v-slider class="v-slider--active v-slider--focused" :value="curFrame" :min="0" :max="frameCount" @change="gotoFrame" hide-details />
       </v-row>
     </div>
     <div class="content-width-100 px-14">
@@ -25,14 +13,7 @@
               <v-icon color="#ffffff" v-if="playing"> mdi-pause </v-icon>
               <v-icon color="#ffffff" v-else> mdi-play </v-icon>
             </v-btn>
-            <v-switch
-              class="ml-12"
-              v-model="isReverse"
-              inset
-              label="Reverse"
-              dark
-            >
-            </v-switch>
+            <v-switch class="ml-12" v-model="isReverse" inset label="Reverse" dark> </v-switch>
           </v-row>
         </v-col>
         <v-col class="pa-0" cols="7">
@@ -53,9 +34,7 @@
                     }"
                     @click="movePrev"
                   >
-                    <v-icon :color="isPrev ? '#BFC0C2' : '#54565A'" large>
-                      mdi-undo
-                    </v-icon>
+                    <v-icon :color="isPrev ? '#BFC0C2' : '#54565A'" large> mdi-undo </v-icon>
                   </v-btn>
                 </template>
                 <div>
@@ -77,23 +56,14 @@
                     }"
                     @click="moveNext"
                   >
-                    <v-icon :color="isNext ? '#BFC0C2' : '#54565A'" large>
-                      mdi-redo
-                    </v-icon>
+                    <v-icon :color="isNext ? '#BFC0C2' : '#54565A'" large> mdi-redo </v-icon>
                   </v-btn>
                 </template>
                 <span>Redo (Ctrl + Shift + Z)</span>
               </v-tooltip>
               <v-tooltip top open-on-hover close-delay="100">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    class="mr-0 mt-1"
-                    dark
-                    v-bind="attrs"
-                    v-on="on"
-                    icon
-                    @click="exportJson()"
-                  >
+                  <v-btn class="mr-0 mt-1" dark v-bind="attrs" v-on="on" icon @click="exportJson()">
                     <v-icon dark size="30">mdi-download</v-icon>
                   </v-btn>
                 </template>
@@ -102,15 +72,7 @@
 
               <v-menu top :offset-y="true" :offset-x="true" :left="true">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    dark
-                    :outlined="false"
-                    :depressed="true"
-                    icon
-                    size="30"
-                    v-bind="attrs"
-                    v-on="on"
-                  >
+                  <v-btn dark :outlined="false" :depressed="true" icon size="30" v-bind="attrs" v-on="on">
                     <v-icon dark> mdi-cog </v-icon>
                   </v-btn>
                 </template>
@@ -125,34 +87,17 @@
                     "
                   >
                     <v-list-item-title>
-                      <v-icon
-                        v-if="index === rateSelected"
-                        color="rgba(255,255,255,1)"
-                      >
-                        mdi-check
-                      </v-icon>
-                      <v-icon v-else color="rgba(33, 33, 33, 0)">
-                        mdi-check
-                      </v-icon>
-                      <span style="color: rgba(255, 255, 255, 1)">
-                        &nbsp;&nbsp;{{ item }}
-                      </span>
+                      <v-icon v-if="index === rateSelected" color="rgba(255,255,255,1)"> mdi-check </v-icon>
+                      <v-icon v-else color="rgba(33, 33, 33, 0)"> mdi-check </v-icon>
+                      <span style="color: rgba(255, 255, 255, 1)"> &nbsp;&nbsp;{{ item }} </span>
                     </v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
               <v-tooltip top open-on-hover close-delay="100">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    dark
-                    v-bind="attrs"
-                    v-on="on"
-                    icon
-                    @click="isBorder = !isBorder"
-                  >
-                    <v-icon :color="isBorder ? 'white' : 'grey'" dark size="30">
-                      mdi-crop-square
-                    </v-icon>
+                  <v-btn dark v-bind="attrs" v-on="on" icon @click="isBorder = !isBorder">
+                    <v-icon :color="isBorder ? 'white' : 'grey'" dark size="30"> mdi-crop-square </v-icon>
                   </v-btn>
                 </template>
                 <span>Border(Ctrl + B)</span>
