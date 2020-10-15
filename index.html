@@ -4,7 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width height=device-height" />
     <meta name="description" content="rlottie viewer" />
-    <meta name="keywords" content="lottie, rlottie, lottie viewer, rlottie viewer" />
+    <meta
+      name="keywords"
+      content="lottie, rlottie, lottie viewer, rlottie viewer"
+    />
     <meta name="author" content="Subhransu" />
     <title>rlottie viewer</title>
     <link rel="stylesheet" href="style.css" />
@@ -18,7 +21,10 @@
       href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css"
       rel="stylesheet"
     />
-    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
+      rel="stylesheet"
+    />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
@@ -65,18 +71,26 @@
               v-on:mouseover.left="changeSize"
               id="canvasBox"
               class="drsElement drsMoveHandle"
-              :style="{'left': initCanvasLeft+'px', 'top': initCanvasTop+'px', 'width': '600px', 'height': '600px', 'border-style': '10px solid red', 'background-color':'rgba(255,255,255,0)'}"
+              :style="{'left': initCanvasLeft+'px', 'top': initCanvasTop+'px', 'width': '550px', 'height': '550px', 'border-style': '10px solid red', 'background-color':'rgba(255,255,255,0)'}"
             >
               <canvas
                 id="myCanvas"
-                style="width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0)"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  background-color: rgba(255, 255, 255, 0);
+                "
               >
               </canvas>
             </div>
           </div>
           <v-spacer></v-spacer>
           <loading-bar @pointer="setPointer"></loading-bar>
-          <snapshot v-show="activeSnapShot" :pointx="pointx" :pointy="pointy"></snapshot>
+          <snapshot
+            v-show="activeSnapShot"
+            :pointx="pointx"
+            :pointy="pointy"
+          ></snapshot>
         </v-main>
       </v-app>
     </div>
@@ -104,10 +118,12 @@
         maxTop: 830,
       });
       dragresize.isElement = function (elm) {
-        if (elm.className && elm.className.indexOf('drsElement') > -1) return true;
+        if (elm.className && elm.className.indexOf('drsElement') > -1)
+          return true;
       };
       dragresize.isHandle = function (elm) {
-        if (elm.className && elm.className.indexOf('drsMoveHandle') > -1) return true;
+        if (elm.className && elm.className.indexOf('drsMoveHandle') > -1)
+          return true;
       };
       dragresize.apply(document);
 
@@ -135,14 +151,14 @@
           },
           data() {
             return {
-              activeDetailBar: false,
-              selectedMenu: 0,
+              activeDetailBar: true,
+              selectedMenu: 1,
               leftHeight: 0,
               canvasSize: {
-                height: 600,
-                width: 600,
+                height: 550,
+                width: 550,
               },
-              initialPosition: (window.innerWidth - 600) / 2,
+              initialPosition: (window.innerWidth - 550) / 2,
               initCanvasTop: 0,
               initCanvasLeft: 0,
               pointx: 0,
@@ -182,8 +198,8 @@
             },
           },
           mounted() {
-            this.initCanvasLeft = (this.$refs.content.clientWidth - 600) / 2;
-            this.initCanvasTop = this.$refs.content.clientHeight * 0.2;
+            this.initCanvasLeft = (this.$refs.content.clientWidth - 550) / 2;
+            this.initCanvasTop = (this.$refs.content.clientHeight - 550) / 2;
             EventBus.$on('initLayers', ({ layers }) => {
               store.commit('setLayers', layers);
             });
@@ -220,6 +236,9 @@
       background: rgb(41, 44, 49, 0.3);
       -webkit-border-radius: 8px;
       border-radius: 8px;
+    }
+    #app {
+      overflow: hidden;
     }
   </style>
 </html>

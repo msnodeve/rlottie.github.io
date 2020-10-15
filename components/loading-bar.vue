@@ -316,11 +316,11 @@ module.exports = {
 .v-slider--horizontal {
   cursor: pointer;
 }
-v-footer {
+.v-footer {
   min-width: 745px;
   z-index: 100;
 }
-v-row {
+.v-row {
   width: 100%;
 }
 </style>

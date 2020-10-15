@@ -1,10 +1,33 @@
 <template>
   <div id="right-bar">
-    <v-btn fixed fab icon style="right: 0" color="transparent" @click="navigation = !navigation">
-      <v-icon :color="navigation ? 'white' : 'grey'"> mdi-key-variant mdi-flip-h </v-icon>
+    <v-btn
+      fixed
+      fab
+      icon
+      style="right: 0"
+      color="transparent"
+      @click="navigation = !navigation"
+    >
+      <v-icon :color="navigation ? 'white' : 'grey'">
+        mdi-key-variant mdi-flip-h
+      </v-icon>
     </v-btn>
-    <v-navigation-drawer v-model="navigation" right absolute color="#292c31" width="350" :height="height">
-      <v-switch v-model="isSelectAll" inset label="Select all sub keypath" color="rgba(0, 153, 204, 1)" style="margin-left: 15px" dark></v-switch>
+    <v-navigation-drawer
+      v-model="navigation"
+      right
+      absolute
+      color="#292c31"
+      width="350"
+      :height="height"
+    >
+      <v-switch
+        v-model="isSelectAll"
+        inset
+        label="Select all sub keypath"
+        color="rgba(0, 153, 204, 1)"
+        style="margin-left: 15px"
+        dark
+      ></v-switch>
       <v-text-field
         v-model="search"
         placeholder="input keypath ..."
