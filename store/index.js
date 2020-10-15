@@ -8,19 +8,19 @@ var store = new Vuex.Store({
     frameCount: 0,
   },
   getters: {
-    getLayers(state) {
+    layers(state) {
       return state.layers;
     },
-    getCurFrame(state) {
+    curFrame(state) {
       return state.curFrame;
     },
-    getFrameCount(state) {
+    frameCount(state) {
       return state.frameCount;
     },
-    getHasPrev(sate) {
+    hasPrev(sate) {
       return state.hasPrev;
     },
-    getHasNext(sate) {
+    hasNext(sate) {
       return state.hasNext;
     },
   },
