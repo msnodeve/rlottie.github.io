@@ -39,11 +39,11 @@
 module.exports = {
   name: 'left-bar-detail',
   components: {
-    'stroke-property': 'url:./detailMenus/StrokeProperty.vue',
-    'transform-property': 'url:./detailMenus/TransformProperty.vue',
     'change-bg-color': 'url:./detailMenus/ChangeBgColor.vue',
     'change-canvas': 'url:./detailMenus/ChangeCanvas.vue',
     'export-gif': 'url:./detailMenus/ExportGif.vue',
+    'transform-property': 'url:./detailMenus/TransformProperty.vue',
+    'stroke-property': 'url:./detailMenus/StrokeProperty.vue',
   },
   props: {
     selectedmenu: Number,
