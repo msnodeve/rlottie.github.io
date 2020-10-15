@@ -1,33 +1,10 @@
 <template>
   <div id="right-bar">
-    <v-btn
-      fixed
-      fab
-      icon
-      style="right: 0"
-      color="transparent"
-      @click="navigation = !navigation"
-    >
-      <v-icon :color="navigation ? 'white' : 'grey'">
-        mdi-key-variant mdi-flip-h
-      </v-icon>
+    <v-btn fixed fab icon style="right: 0" color="transparent" @click="navigation = !navigation">
+      <v-icon :color="navigation ? 'white' : 'grey'"> mdi-key-variant mdi-flip-h </v-icon>
     </v-btn>
-    <v-navigation-drawer
-      v-model="navigation"
-      right
-      absolute
-      color="#292c31"
-      width="350"
-      :height="height"
-    >
-      <v-switch
-        v-model="isSelectAll"
-        inset
-        label="Select all sub keypath"
-        color="rgba(0, 153, 204, 1)"
-        style="margin-left: 15px"
-        dark
-      ></v-switch>
+    <v-navigation-drawer v-model="navigation" right absolute color="#292c31" width="350" :height="height">
+      <v-switch v-model="isSelectAll" inset label="Select all sub keypath" color="rgba(0, 153, 204, 1)" style="margin-left: 15px" dark></v-switch>
       <v-text-field
         v-model="search"
         placeholder="input keypath ..."
@@ -39,7 +16,7 @@
         @keydown.stop="inputKeypath"
       ></v-text-field>
       <v-treeview
-        :items="layers"
+        :items="layerTree"
         dark
         activatable
         hoverable
@@ -76,32 +53,22 @@ module.exports = {
   props: ['height'],
   data() {
     return {
-      isSelectAll: true,
-      navigation: false,
-      layers: [],
-      keypath: '',
+      navigation: true,
       search: '',
     };
   },
-  watch: {
-    isSelectAll() {
-      RLottieModule.isSelectAll = this.isSelectAll;
-      RLottieModule.keypath = this.isSelectAll
-        ? this.keypath
-          ? this.keypath + '.**'
-          : '**'
-        : this.keypath
-        ? this.keypath
-        : '';
+  computed: {
+    ...Vuex.mapGetters(['layerTree', 'keypath', 'selectedAllKeypath']),
+    isSelectAll: {
+      get() {
+        return this.$store.getters.isSelectAll;
+      },
+      set() {
+        this.$store.commit('setIsSelectAll');
+      },
     },
   },
   mounted() {
-    var self = this;
-    var setLayers = this.setLayers;
-
-    EventBus.$on('initLayers', function (data) {
-      setLayers(data.layers);
-    });
     // Shortcut key function binding
     document.addEventListener('keydown', function (e) {
       if (e.ctrlKey && e.which == 76) {
@@ -111,28 +78,16 @@ module.exports = {
     });
   },
   methods: {
-    setLayers(layers) {
-      this.layers = layers;
-    },
+    ...Vuex.mapActions(['reloadCanvas', 'highlightingLayer']),
+    changeFocus(keypath) {
+      if (keypath[0] == null) keypath[0] = '';
 
-    changeFocus(e) {
-      this.keypath = e[0] ? e[0] : '';
-      RLottieModule.originKeypath = this.keypath;
-      RLottieModule.keypath = this.isSelectAll
-        ? this.keypath
-          ? this.keypath + '.**'
-          : '**'
-        : this.keypath;
-
-      EventBus.$emit('changeKeypath', { keypath: this.keypath });
-      if (!e[0]) {
-        RLottieModule.layers.reload();
-        // RLottieModule.layers.highlighting('**')
+      this.$store.commit('setKeypath', keypath[0]);
+      if (!keypath[0]) {
+        this.reloadCanvas();
         return;
       }
-      RLottieModule.layers.highlighting(
-        this.keypath ? this.keypath + '.**' : '**',
-      );
+      this.highlightingLayer();
     },
     inputKeypath(e) {
       if (this.search) {
