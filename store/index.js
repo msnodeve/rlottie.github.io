@@ -5,7 +5,7 @@ var store = new Vuex.Store({
     hasPrev: false,
     hasNext: false,
 
-    keypath: '**',
+    keypath: '',
     isSelectAll: true,
 
     curFrame: 0,
@@ -47,19 +47,11 @@ var store = new Vuex.Store({
     selectedAllKeypath(state) {
       return state.keypath == '' ? '**' : state.keypath + '.**';
     },
-    selectedLayer(state) {
-      return 0;
-    },
-
     layerList(state) {
       return state.layers ? state.layers.getLayerList() : [];
     },
     layerTree(state) {
       return state.layers ? state.layers.getLayerTree() : [];
-    },
-    selectedLayer(state) {
-      const layerList = state.layers.getLayerList();
-      return state.layers ? layerList[state.keypath] : null;
     },
   },
   mutations: {
@@ -71,6 +63,9 @@ var store = new Vuex.Store({
     },
     setFrameCount(state, payload) {
       state.frameCount = payload;
+    },
+    setFrameRate(state, payload) {
+      state.frameRate = payload;
     },
     setHasPrev(state, payload) {
       state.hasPrev = payload;
@@ -84,16 +79,30 @@ var store = new Vuex.Store({
     setIsSelectAll(state, payload) {
       state.isSelectAll = payload;
     },
-    setFrameRate(state, payload) {
-      state.frameRate = payload;
-    },
   },
   actions: {
     reloadCanvas(context) {
+      const curFrame = context.getters.curFrame;
       if (context.getters.layers) context.getters.layers.reload();
+      context.commit('setCurFrame', curFrame);
+      onSliderDrag(curFrame);
     },
     highlightingLayer(context) {
       if (context.getters.layers) context.getters.layers.highlighting(context.getters.selectedAllKeypath);
+    },
+
+    setShapeColor(context, payload) {
+      const { layers, selectedKeypath } = context.getters;
+      const { r, g, b, a } = payload;
+
+      layers.RLottieModule.strokeColors(selectedKeypath, r, g, b, a);
+      layers.RLottieModule.fillColors(selectedKeypath, r, g, b, a);
+    },
+
+    setStrokeWidth(context, payload) {
+      const { layers, selectedKeypath } = context.getters;
+
+      layers.RLottieModule.strokeWidth(selectedKeypath, parseInt(payload));
     },
   },
 });

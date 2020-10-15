@@ -6,14 +6,7 @@
           <h3 class="font-white">Shape</h3>
         </v-col>
         <v-col class="pa-0 pr-4" cols="2">
-          <v-btn
-            color="rgba(0, 153, 204, 0)"
-            :outlined="false"
-            :depressed="true"
-            fab
-            x-small
-            @click="closeSidebar()"
-          >
+          <v-btn color="rgba(0, 153, 204, 0)" :outlined="false" :depressed="true" fab x-small @click="closeSidebar()">
             <v-icon color="#ffffff"> mdi-close </v-icon>
           </v-btn>
         </v-col>
@@ -26,40 +19,19 @@
         </v-col>
       </v-row>
       <v-row align="center" justify="center">
-        <v-color-picker
-          class="bg-transparent"
-          v-model="picker"
-          flat
-          dark
-          width="285"
-        />
+        <v-color-picker class="bg-transparent" v-model="color" flat dark width="285" />
       </v-row>
       <v-row class="pt-5 px-5" align="center">
         <v-col cols="8" class="py-0">
-          <div class="text-left font-white">Thickness</div>
+          <div class="text-left font-white">StrokeWidth</div>
         </v-col>
         <v-col cols="4" class="py-0">
-          <v-text-field
-            v-model="width"
-            class="input mt-0 pt-0"
-            hide-details
-            type="number"
-            solo
-            outlined
-            dense
-            dark
-          />
+          <v-text-field v-model="strokeWidth" class="input mt-0 pt-0" hide-details type="number" solo outlined dense dark @input="test" />
         </v-col>
       </v-row>
       <v-row class="mb-4 px-5">
         <v-col cols="12" class="py-0">
-          <v-slider
-            v-model="width"
-            class="align-center"
-            max="100"
-            min="0"
-            hide-details
-          />
+          <v-slider v-model="strokeWidth" class="align-center" max="100" min="0" hide-details />
         </v-col>
       </v-row>
     </div>
@@ -72,97 +44,79 @@ module.exports = {
   data() {
     return {
       interval: '',
-      layerProperty: [],
       picker: null,
-      setColorFlag: false,
-      setStrokeFlag: false,
       stack: [],
-      width: 0,
     };
+  },
+  computed: {
+    ...Vuex.mapGetters(['layerList', 'keypath']),
+    color: {
+      get() {
+        if (this.layerList[this.keypath]) {
+          return this.layerList[this.keypath].color;
+        }
+      },
+      set(color) {
+        if (this.layerList[this.keypath]) {
+          this.layerList[this.keypath].color = color;
+          color = {
+            r: color.rgba.r / 255,
+            g: color.rgba.g / 255,
+            b: color.rgba.b / 255,
+            a: color.rgba.a * 100,
+          };
+
+          this.setShapeColor(color);
+          this.stack.push({
+            property: 'ShapeColor',
+            args: color,
+          });
+        }
+      },
+    },
+
+    strokeWidth: {
+      get() {
+        if (this.layerList[this.keypath]) {
+          return this.layerList[this.keypath].strokeWidth;
+        }
+      },
+      set(width) {
+        if (this.layerList[this.keypath]) {
+          this.layerList[this.keypath].strokeWidth = width;
+          this.setStrokeWidth(width);
+          this.stack.push({
+            property: 'StrokeWidth',
+            args: { strokeWidth: parseInt(this.width) },
+          });
+        }
+      },
+    },
   },
   mounted() {
     var self = this;
-
-    EventBus.$on('changeKeypath', ({ keypath }) => {
-      this.layerProperty = RLottieModule.layers.layerList[keypath];
-      this.setStrokeFlag = false;
-      this.setColor(this.layerProperty);
-      this.setStrokeColor(this.layerProperty);
-    });
-    this.layerProperty =
-      RLottieModule.layers.layerList[RLottieModule.originKeypath];
-    this.setColor(this.layerProperty);
-    this.setStrokeColor(this.layerProperty);
-
     this.interval = setInterval(() => {
       self.clearStack();
     }, 500);
   },
   beforeDestroy() {
-    EventBus.$off('changeKeypath');
     clearInterval(this.interval);
   },
-  watch: {
-    picker() {
-      if (this.setColorFlag) {
-        this.layerProperty.r = this.picker.rgba.r;
-        this.layerProperty.g = this.picker.rgba.g;
-        this.layerProperty.b = this.picker.rgba.b;
-        this.layerProperty.a = this.picker.rgba.a;
-
-        const r = this.picker.rgba.r / 255;
-        const g = this.picker.rgba.g / 255;
-        const b = this.picker.rgba.b / 255;
-        const a = this.picker.rgba.a * 100;
-
-        RLottieModule.strokeColors(RLottieModule.keypath, r, g, b, a);
-        RLottieModule.fillColors(RLottieModule.keypath, r, g, b, a);
-
-        this.stack.push({
-          property: 'ShapeColor',
-          args: { r, g, b, a },
-        });
-      } else {
-        this.setColorFlag = true;
-      }
-    },
-    width(width) {
-      if (this.setStrokeFlag) {
-        RLottieModule.strokeWidth(RLottieModule.keypath, Number(this.width));
-        this.layerProperty.strokeWidth = Number(this.width);
-        this.stack.push({
-          property: 'StrokeWidth',
-          args: { strokeWidth: Number(this.width) },
-        });
-      } else {
-        this.setStrokeFlag = true;
-      }
-    },
-  },
   methods: {
-    setColor({ r, g, b, a, strokeWidth }) {
-      this.picker.rgba.r = r;
-      this.picker.rgba.g = g;
-      this.picker.rgba.b = b;
-      this.picker.rgba.a = a;
+    test(e) {
+      console.log(e);
     },
-    setStrokeColor({ strokeWidth }) {
-      this.width = strokeWidth;
-    },
-    closeSidebar() {
-      this.$emit('call-close-menu-parent');
-    },
+    ...Vuex.mapActions(['setShapeColor', 'setStrokeWidth']),
     clearStack() {
       let len = this.stack.length;
       if (!len) return;
 
       let top = this.stack.pop();
-      RLottieModule.layers.insert(
-        RLottieModule.keypath,
-        top.property,
-        top.args,
-      );
+      RLottieModule.layers.insert(RLottieModule.keypath, top.property, top.args);
       this.stack = [];
+    },
+    closeSidebar() {
+      this.$emit('call-close-menu-parent');
     },
   },
 };
