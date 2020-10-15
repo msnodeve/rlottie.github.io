@@ -62,7 +62,11 @@ var RLottieModule = (function () {
     if (obj.curFrame > obj.frameCount) obj.curFrame = 0;
     if (obj.curFrame < 0) obj.curFrame = obj.frameCount;
 
-    var buffer = obj.lottieHandle.render(obj.curFrame, obj.canvas.width, obj.canvas.height);
+    var buffer = obj.lottieHandle.render(
+      obj.curFrame,
+      obj.canvas.width,
+      obj.canvas.height,
+    );
     var result = Uint8ClampedArray.from(buffer);
     var imageData = new ImageData(result, obj.canvas.width, obj.canvas.height);
 
@@ -70,12 +74,20 @@ var RLottieModule = (function () {
     store.commit('setCurFrame', obj.curFrame);
   };
 
-  obj.renderShanpShot = function (frame) {
+  obj.renderSnapShot = function (frame) {
     if (obj.preview.width == 0 || obj.preview.height == 0) return;
 
-    var buffer = obj.lottieHandle.render(frame, obj.preview.width, obj.preview.height);
+    var buffer = obj.lottieHandle.render(
+      frame,
+      obj.preview.width,
+      obj.preview.height,
+    );
     var result = Uint8ClampedArray.from(buffer);
-    var imageData = new ImageData(result, obj.preview.width, obj.preview.height);
+    var imageData = new ImageData(
+      result,
+      obj.preview.width,
+      obj.preview.height,
+    );
 
     obj.contextPre.putImageData(imageData, 0, 0);
   };

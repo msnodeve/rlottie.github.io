@@ -1,6 +1,6 @@
 <template>
   <div class="snapWrapper" :style="{ left: pointx + 'px', top: pointy + 'px' }">
-    <canvas id="preView" width="150" height="150"> </canvas>
+    <canvas id="preView" width="150" height="150" />
   </div>
 </template>
 

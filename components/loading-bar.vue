@@ -245,7 +245,8 @@ module.exports = {
     });
   },
   methods: {
-    ...Vuex.mapMutations(['setCurFrame', 'setFrameRate']),
+    ...Vuex.mapMutations(['setCurFrame', 'setFrameRate', 'setSnapShotFrame']),
+    ...Vuex.mapActions(['renderSnapShot']),
     gotoFrame(frame) {
       this.setCurFrame(frame);
       onSliderDrag(frame);
@@ -254,9 +255,15 @@ module.exports = {
       const x = evt.pageX - $('#snapShot').offset().left;
       const len = $('#snapShot').width();
       let frame = (x / len) * this.frameCount;
-      if (frame < 0) frame = 0;
-      else if (frame > this.frameCount) frame = this.frameCount;
-      RLottieModule.renderShanpShot(frame);
+      if (frame < 0) {
+        frame = 0;
+      } else if (frame > this.frameCount) {
+        frame = this.frameCount;
+      }
+
+      this.setSnapShotFrame(frame);
+      this.renderSnapShot();
+
       this.$emit('pointer', {
         x: evt.pageX,
         y: $('#snapShot').offset().top,
