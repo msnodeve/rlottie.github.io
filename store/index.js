@@ -11,8 +11,6 @@ var store = new Vuex.Store({
     curFrame: 0,
     frameCount: 0,
     frameRate: 1,
-
-    snapShotFrame: 0,
   },
   getters: {
     layers(state) {
@@ -55,14 +53,6 @@ var store = new Vuex.Store({
     layerTree(state) {
       return state.layers ? state.layers.getLayerTree() : [];
     },
-    selectedLayer(state) {
-      const layerList = state.layers.getLayerList();
-      return state.layers ? layerList[state.keypath] : null;
-    },
-
-    snapShotFrame(state) {
-      return state.snapShotFrame;
-    },
   },
   mutations: {
     setLayers(state, payload) {
@@ -89,12 +79,6 @@ var store = new Vuex.Store({
     setIsSelectAll(state, payload) {
       state.isSelectAll = payload;
     },
-    setFrameRate(state, payload) {
-      state.frameRate = payload;
-    },
-    setSnapShotFrame(state, payload) {
-      state.snapShotFrame = payload;
-    },
   },
   actions: {
     reloadCanvas(context) {
@@ -106,9 +90,6 @@ var store = new Vuex.Store({
     highlightingLayer(context) {
       if (context.getters.layers)
         context.getters.layers.highlighting(context.getters.selectedAllKeypath);
-    },
-    renderSnapShot(context) {
-      RLottieModule.renderSnapShot(context.getters.snapShotFrame);
     },
 
     setShapeColor(context, payload) {

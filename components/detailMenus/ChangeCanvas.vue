@@ -73,7 +73,9 @@
                 </span>
                 <span class="pr-2">
                   <v-btn dark fab color="#3e4145" @click="flipX">
-                    <v-icon color="#BFC0C2" large>mdi-reflect-horizontal</v-icon>
+                    <v-icon color="#BFC0C2" large
+                      >mdi-reflect-horizontal</v-icon
+                    >
                   </v-btn>
                 </span>
                 <span>
@@ -133,8 +135,12 @@ module.exports = {
     canvasSizeInput: {
       deep: true,
       handler() {
-        document.getElementById('canvasBox').style.height = `${this.canvasSize.height}px`;
-        document.getElementById('canvasBox').style.width = `${this.canvasSize.width}px`;
+        document.getElementById(
+          'canvasBox',
+        ).style.height = `${this.canvasSize.height}px`;
+        document.getElementById(
+          'canvasBox',
+        ).style.width = `${this.canvasSize.width}px`;
       },
     },
   },

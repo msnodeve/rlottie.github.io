@@ -26,7 +26,13 @@
     </v-row>
     <v-row>
       <v-col class="d-flex justify-center pa-0">
-        <v-color-picker class="bg-transparent" flat dark width="285" v-model="color" />
+        <v-color-picker
+          class="bg-transparent"
+          flat
+          dark
+          width="285"
+          v-model="color"
+        />
       </v-col>
     </v-row>
     <div class="text-center mt-0">
@@ -146,7 +152,9 @@ module.exports = {
       const r = this.rgba.r;
       const g = this.rgba.g;
       const b = this.rgba.b;
-      document.getElementById('content').style.backgroundColor = `rgba(${r},${g},${b})`;
+      document.getElementById(
+        'content',
+      ).style.backgroundColor = `rgba(${r},${g},${b})`;
     },
   },
   mounted() {

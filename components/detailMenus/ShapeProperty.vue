@@ -40,7 +40,7 @@
         </v-col>
         <v-col cols="4" class="py-0">
           <v-text-field
-            v-model="t"
+            v-model="strokeWidth"
             class="input mt-0 pt-0"
             hide-details
             type="number"
@@ -55,7 +55,7 @@
       <v-row class="mb-4 px-5">
         <v-col cols="12" class="py-0">
           <v-slider
-            v-model="t"
+            v-model="strokeWidth"
             class="align-center"
             max="100"
             min="0"
@@ -74,11 +74,9 @@ module.exports = {
     return {
       interval: '',
       picker: null,
-      stack: [],
-      t: 0,
+      history: [],
     };
   },
-  watch: {},
   computed: {
     ...Vuex.mapGetters(['layerList', 'keypath']),
     color: {
@@ -98,7 +96,7 @@ module.exports = {
           };
 
           this.setShapeColor(color);
-          this.stack.push({
+          this.history.push({
             property: 'ShapeColor',
             args: color,
           });
@@ -116,7 +114,8 @@ module.exports = {
         if (this.layerList[this.keypath]) {
           this.layerList[this.keypath].strokeWidth = width;
           this.setStrokeWidth(width);
-          this.stack.push({
+
+          this.history.push({
             property: 'StrokeWidth',
             args: { strokeWidth: parseInt(this.width) },
           });
@@ -127,7 +126,7 @@ module.exports = {
   mounted() {
     var self = this;
     this.interval = setInterval(() => {
-      self.clearStack();
+      self.clearhistory();
     }, 500);
   },
   beforeDestroy() {
@@ -138,17 +137,17 @@ module.exports = {
       console.log(e);
     },
     ...Vuex.mapActions(['setShapeColor', 'setStrokeWidth']),
-    clearStack() {
-      let len = this.stack.length;
+    clearhistory() {
+      let len = this.history.length;
       if (!len) return;
 
-      let top = this.stack.pop();
+      let top = this.history.pop();
       RLottieModule.layers.insert(
         RLottieModule.keypath,
         top.property,
         top.args,
       );
-      this.stack = [];
+      this.history = [];
     },
     closeSidebar() {
       this.$emit('call-close-menu-parent');
