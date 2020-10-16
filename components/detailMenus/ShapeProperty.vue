@@ -6,14 +6,7 @@
           <h3 class="font-white">Shape</h3>
         </v-col>
         <v-col class="pa-0 pr-4" cols="2">
-          <v-btn
-            color="rgba(0, 153, 204, 0)"
-            :outlined="false"
-            :depressed="true"
-            fab
-            x-small
-            @click="closeSidebar()"
-          >
+          <v-btn color="rgba(0, 153, 204, 0)" :outlined="false" :depressed="true" fab x-small @click="closeSidebar()">
             <v-icon color="#ffffff"> mdi-close </v-icon>
           </v-btn>
         </v-col>
@@ -26,13 +19,7 @@
         </v-col>
       </v-row>
       <v-row align="center" justify="center">
-        <v-color-picker
-          class="bg-transparent"
-          v-model="color"
-          flat
-          dark
-          width="285"
-        />
+        <v-color-picker class="bg-transparent" v-model="color" flat dark width="285" />
       </v-row>
       <v-row class="pt-5 px-5" align="center">
         <v-col cols="8" class="py-0">
@@ -53,13 +40,7 @@
       </v-row>
       <v-row class="mb-4 px-5">
         <v-col cols="12" class="py-0">
-          <v-slider
-            v-model="strokeWidth"
-            class="align-center"
-            max="100"
-            min="0"
-            hide-details
-          />
+          <v-slider v-model="strokeWidth" class="align-center" max="100" min="0" hide-details />
         </v-col>
       </v-row>
     </div>
@@ -123,24 +104,11 @@ module.exports = {
   },
   mounted() {
     var self = this;
-
-    EventBus.$on('changeKeypath', ({ keypath }) => {
-      this.layerProperty = RLottieModule.layers.layerList[keypath];
-      this.setStrokeFlag = false;
-      this.setColor(this.layerProperty);
-      this.setStrokeColor(this.layerProperty);
-    });
-    this.layerProperty =
-      RLottieModule.layers.layerList[RLottieModule.originKeypath];
-    this.setColor(this.layerProperty);
-    this.setStrokeColor(this.layerProperty);
-
     this.interval = setInterval(() => {
       self.clearhistory();
     }, 500);
   },
   beforeDestroy() {
-    EventBus.$off('changeKeypath');
     clearInterval(this.interval);
   },
   methods: {
@@ -150,11 +118,7 @@ module.exports = {
       if (!len) return;
 
       let top = this.history.pop();
-      RLottieModule.layers.insert(
-        RLottieModule.keypath,
-        top.property,
-        top.args,
-      );
+      RLottieModule.layers.insert(RLottieModule.keypath, top.property, top.args);
       this.history = [];
     },
     closeSidebar() {
