@@ -28,7 +28,7 @@
       <v-row align="center" justify="center">
         <v-color-picker
           class="bg-transparent"
-          v-model="picker"
+          v-model="color"
           flat
           dark
           width="285"
@@ -36,11 +36,11 @@
       </v-row>
       <v-row class="pt-5 px-5" align="center">
         <v-col cols="8" class="py-0">
-          <div class="text-left font-white">Thickness</div>
+          <div class="text-left font-white">StrokeWidth</div>
         </v-col>
         <v-col cols="4" class="py-0">
           <v-text-field
-            v-model="width"
+            v-model="strokeWidth"
             class="input mt-0 pt-0"
             hide-details
             type="number"
@@ -54,7 +54,7 @@
       <v-row class="mb-4 px-5">
         <v-col cols="12" class="py-0">
           <v-slider
-            v-model="width"
+            v-model="strokeWidth"
             class="align-center"
             max="100"
             min="0"
@@ -72,13 +72,54 @@ module.exports = {
   data() {
     return {
       interval: '',
-      layerProperty: [],
-      picker: null,
-      setColorFlag: false,
-      setStrokeFlag: false,
-      stack: [],
-      width: 0,
+      history: [],
     };
+  },
+  computed: {
+    ...Vuex.mapGetters(['layerList', 'keypath']),
+    color: {
+      get() {
+        if (this.layerList[this.keypath]) {
+          return this.layerList[this.keypath].color;
+        }
+      },
+      set(color) {
+        if (this.layerList[this.keypath]) {
+          this.layerList[this.keypath].color = color;
+          color = {
+            r: color.rgba.r / 255,
+            g: color.rgba.g / 255,
+            b: color.rgba.b / 255,
+            a: color.rgba.a * 100,
+          };
+
+          this.setShapeColor(color);
+          this.history.push({
+            property: 'ShapeColor',
+            args: color,
+          });
+        }
+      },
+    },
+
+    strokeWidth: {
+      get() {
+        if (this.layerList[this.keypath]) {
+          return this.layerList[this.keypath].strokeWidth;
+        }
+      },
+      set(width) {
+        if (this.layerList[this.keypath]) {
+          this.layerList[this.keypath].strokeWidth = width;
+          this.setStrokeWidth(width);
+
+          this.history.push({
+            property: 'StrokeWidth',
+            args: { strokeWidth: parseInt(this.width) },
+          });
+        }
+      },
+    },
   },
   mounted() {
     var self = this;
@@ -95,74 +136,29 @@ module.exports = {
     this.setStrokeColor(this.layerProperty);
 
     this.interval = setInterval(() => {
-      self.clearStack();
+      self.clearhistory();
     }, 500);
   },
   beforeDestroy() {
     EventBus.$off('changeKeypath');
     clearInterval(this.interval);
   },
-  watch: {
-    picker() {
-      if (this.setColorFlag) {
-        this.layerProperty.r = this.picker.rgba.r;
-        this.layerProperty.g = this.picker.rgba.g;
-        this.layerProperty.b = this.picker.rgba.b;
-        this.layerProperty.a = this.picker.rgba.a;
-
-        const r = this.picker.rgba.r / 255;
-        const g = this.picker.rgba.g / 255;
-        const b = this.picker.rgba.b / 255;
-        const a = this.picker.rgba.a * 100;
-
-        RLottieModule.strokeColors(RLottieModule.keypath, r, g, b, a);
-        RLottieModule.fillColors(RLottieModule.keypath, r, g, b, a);
-
-        this.stack.push({
-          property: 'ShapeColor',
-          args: { r, g, b, a },
-        });
-      } else {
-        this.setColorFlag = true;
-      }
-    },
-    width(width) {
-      if (this.setStrokeFlag) {
-        RLottieModule.strokeWidth(RLottieModule.keypath, Number(this.width));
-        this.layerProperty.strokeWidth = Number(this.width);
-        this.stack.push({
-          property: 'StrokeWidth',
-          args: { strokeWidth: Number(this.width) },
-        });
-      } else {
-        this.setStrokeFlag = true;
-      }
-    },
-  },
   methods: {
-    setColor({ r, g, b, a, strokeWidth }) {
-      this.picker.rgba.r = r;
-      this.picker.rgba.g = g;
-      this.picker.rgba.b = b;
-      this.picker.rgba.a = a;
-    },
-    setStrokeColor({ strokeWidth }) {
-      this.width = strokeWidth;
-    },
-    closeSidebar() {
-      this.$emit('call-close-menu-parent');
-    },
-    clearStack() {
-      let len = this.stack.length;
+    ...Vuex.mapActions(['setShapeColor', 'setStrokeWidth']),
+    clearhistory() {
+      let len = this.history.length;
       if (!len) return;
 
-      let top = this.stack.pop();
+      let top = this.history.pop();
       RLottieModule.layers.insert(
         RLottieModule.keypath,
         top.property,
         top.args,
       );
-      this.stack = [];
+      this.history = [];
+    },
+    closeSidebar() {
+      this.$emit('call-close-menu-parent');
     },
   },
 };

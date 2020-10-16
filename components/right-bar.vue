@@ -1,19 +1,19 @@
 <template>
   <div id="right-bar">
     <v-btn
+      class="comp-r-0"
       fixed
       fab
       icon
-      style="right: 0"
       color="transparent"
-      @click="navigation = !navigation"
+      @click="isNavigation = !isNavigation"
     >
-      <v-icon :color="navigation ? 'white' : 'grey'">
+      <v-icon :color="isNavigation ? 'white' : 'grey'">
         mdi-key-variant mdi-flip-h
       </v-icon>
     </v-btn>
     <v-navigation-drawer
-      v-model="navigation"
+      v-model="isNavigation"
       right
       absolute
       color="#292c31"
@@ -21,21 +21,21 @@
       :height="height"
     >
       <v-switch
+        class="ml-4"
         v-model="isSelectAll"
         inset
         label="Select all sub keypath"
         color="rgba(0, 153, 204, 1)"
-        style="margin-left: 15px"
         dark
       ></v-switch>
       <v-text-field
+        class="pa-2"
         v-model="search"
         placeholder="input keypath ..."
         dark
         dense
         hide-details
         outlined
-        style="padding: 8px"
         @keydown.stop="inputKeypath"
       ></v-text-field>
       <v-treeview
@@ -55,7 +55,6 @@
           <v-icon v-if="item.type == 'root'">
             {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
           </v-icon>
-
           <v-icon v-else-if="item.type == '4'"> mdi-layers </v-icon>
           <v-icon v-else-if="item.type == 'gr'"> mdi-crop </v-icon>
           <v-icon v-else-if="item.type == 'st'"> mdi-pencil </v-icon>
@@ -76,7 +75,7 @@ module.exports = {
   props: ['height'],
   data() {
     return {
-      navigation: true,
+      isNavigation: true,
       search: '',
     };
   },
@@ -96,7 +95,7 @@ module.exports = {
     document.addEventListener('keydown', function (e) {
       if (e.ctrlKey && e.which == 76) {
         // Hide and show layer list : Ctrl + L
-        self.navigation = !self.navigation;
+        self.isNavigation = !self.isNavigation;
       }
     });
   },
@@ -104,7 +103,6 @@ module.exports = {
     ...Vuex.mapActions(['reloadCanvas', 'highlightingLayer']),
     changeFocus(keypath) {
       if (keypath[0] == null) keypath[0] = '';
-
       this.$store.commit('setKeypath', keypath[0]);
       if (!keypath[0]) {
         this.reloadCanvas();
@@ -113,11 +111,7 @@ module.exports = {
       this.highlightingLayer();
     },
     inputKeypath(e) {
-      if (this.search) {
-        this.$refs.treeview.updateAll(true);
-      } else {
-        this.$refs.treeview.updateAll(false);
-      }
+      this.$refs.treeview.updateAll(this.search !== '');
     },
   },
 };
@@ -136,5 +130,8 @@ module.exports = {
   position: relative;
   z-index: 99;
   /* float:left */
+}
+.comp-r-0 {
+  right: 0;
 }
 </style>

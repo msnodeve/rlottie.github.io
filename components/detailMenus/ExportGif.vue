@@ -52,10 +52,18 @@
           width="280"
         />
       </v-row>
-      <v-row align="center" justify="center" class="pa-0 ma-0 width-100-percent">
+      <v-row
+        align="center"
+        justify="center"
+        class="pa-0 ma-0 width-100-percent"
+      >
         <img id="convert-gif" src="" class="width-90-percent" />
       </v-row>
-      <v-row align="center" justify="center" class="pa-0 ma-0 mt-4 width-100-percent">
+      <v-row
+        align="center"
+        justify="center"
+        class="pa-0 ma-0 mt-4 width-100-percent"
+      >
         <v-btn @click="convertGIF" :loading="loading" id="convert-btn">
           Convert to GIF
         </v-btn>
@@ -135,7 +143,7 @@ module.exports = {
           document.getElementById('convert-gif').src = reader.result;
         };
         document.getElementById('convert-gif').src = URL.createObjectURL(blob);
-        var dataStr = URL.createObjectURL(blob); //"data:image/gif;charset=utf-8," + encodeURIComponent(JSON.stringify(obj.lottieObject));
+        var dataStr = URL.createObjectURL(blob);
         var downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute('href', dataStr);
         downloadAnchorNode.setAttribute(
