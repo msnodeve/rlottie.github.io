@@ -38,13 +38,13 @@ function Layers(RLottieModule, jsString) {
         },
         hue: 0,
         rgba: {
-          r: 0,
-          g: 0,
-          b: 0,
+          r: 230,
+          g: 230,
+          b: 230,
           a: 1,
         },
       },
-      strokeWidth: 1,
+      strokeWidth: 0,
       anchorX: 0,
       anchorY: 0,
       positionX: 0,
@@ -63,10 +63,10 @@ function Layers(RLottieModule, jsString) {
 
       switch (layer['ty']) {
         case 'fl':
-          layerList[keypath].color.r = parseInt(layer.c.k[0]) * 255;
-          layerList[keypath].color.g = parseInt(layer.c.k[1]) * 255;
-          layerList[keypath].color.b = parseInt(layer.c.k[2]) * 255;
-          layerList[keypath].color.a = parseInt(layer.o.k) / 100;
+          layerList[keypath].color.rgba.r = parseInt(parseFloat(layer.c.k[0]) * 255);
+          layerList[keypath].color.rgba.g = parseInt(parseFloat(layer.c.k[1]) * 255);
+          layerList[keypath].color.rgba.b = parseInt(parseFloat(layer.c.k[2]) * 255);
+          layerList[keypath].color.rgba.a = parseFloat(layer.o.k) / 100;
           break;
         case 'st':
           layerList[keypath].strokeWidth = parseInt(layer.w.k);
@@ -130,6 +130,7 @@ function Layers(RLottieModule, jsString) {
           keypath: '',
         },
       ];
+
       for (let keypath in layerList) {
         var names = keypath.split('\n');
         initLayerTree(this.layerTree[0], names, 0, names.length, layerList[keypath].type);
@@ -284,10 +285,7 @@ function Layers(RLottieModule, jsString) {
 
   this.changeTrPosition = function (layer, args) {
     if (layer.p && layer.p.k) {
-      layer.p.k = [
-        parseInt(layer.a.k[0]) + args.positionX,
-        parseInt(layer.a.k[1]) + args.positionY,
-      ];
+      layer.p.k = [parseInt(layer.a.k[0]) + args.positionX, parseInt(layer.a.k[1]) + args.positionY];
     }
   };
 
@@ -299,10 +297,7 @@ function Layers(RLottieModule, jsString) {
 
   this.changeTrScale = function (layer, args) {
     if (layer.s && layer.s.k) {
-      layer.s.k = [
-        (parseInt(layer.s.k[0]) * args.scaleWidth) / 100,
-        (parseInt(layer.s.k[1]) * args.scaleHeight) / 100,
-      ];
+      layer.s.k = [(parseInt(layer.s.k[0]) * args.scaleWidth) / 100, (parseInt(layer.s.k[1]) * args.scaleHeight) / 100];
     }
   };
 
@@ -366,14 +361,7 @@ function Layers(RLottieModule, jsString) {
 
       if (Array.isArray(layer[i])) {
         for (let j in layer[i])
-          if (layer[i][j].nm == keypath[0] || keypath[0] == '**')
-            this.changeProperty(
-              layer[i][j],
-              keypath.slice(keypath[0] != '**'),
-              property,
-              args,
-              flag,
-            );
+          if (layer[i][j].nm == keypath[0] || keypath[0] == '**') this.changeProperty(layer[i][j], keypath.slice(keypath[0] != '**'), property, args, flag);
       }
     }
   };
@@ -388,8 +376,7 @@ function Layers(RLottieModule, jsString) {
     var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(saveObject));
     var downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute('href', dataStr);
-    var fileName =
-      Math.random().toString(36).substr(2, 8).toUpperCase() + '_' + this.RLottieModule.fileName;
+    var fileName = Math.random().toString(36).substr(2, 8).toUpperCase() + '_' + this.RLottieModule.fileName;
     downloadAnchorNode.setAttribute('download', fileName);
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
