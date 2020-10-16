@@ -45,7 +45,7 @@ module.exports = {
     return {
       interval: '',
       picker: null,
-      stack: [],
+      history: [],
     };
   },
   computed: {
@@ -67,7 +67,7 @@ module.exports = {
           };
 
           this.setShapeColor(color);
-          this.stack.push({
+          this.history.push({
             property: 'ShapeColor',
             args: color,
           });
@@ -78,6 +78,7 @@ module.exports = {
     strokeWidth: {
       get() {
         if (this.layerList[this.keypath]) {
+          this.width = this.layerList[this.keypath].strokeWidth;
           return this.layerList[this.keypath].strokeWidth;
         }
       },
@@ -85,7 +86,8 @@ module.exports = {
         if (this.layerList[this.keypath]) {
           this.layerList[this.keypath].strokeWidth = width;
           this.setStrokeWidth(width);
-          this.stack.push({
+
+          this.history.push({
             property: 'StrokeWidth',
             args: { strokeWidth: parseInt(this.width) },
           });
@@ -96,7 +98,7 @@ module.exports = {
   mounted() {
     var self = this;
     this.interval = setInterval(() => {
-      self.clearStack();
+      self.clearhistory();
     }, 500);
   },
   beforeDestroy() {
@@ -107,13 +109,13 @@ module.exports = {
       console.log(e);
     },
     ...Vuex.mapActions(['setShapeColor', 'setStrokeWidth']),
-    clearStack() {
-      let len = this.stack.length;
+    clearhistory() {
+      let len = this.history.length;
       if (!len) return;
 
-      let top = this.stack.pop();
+      let top = this.history.pop();
       RLottieModule.layers.insert(RLottieModule.keypath, top.property, top.args);
-      this.stack = [];
+      this.history = [];
     },
     closeSidebar() {
       this.$emit('call-close-menu-parent');

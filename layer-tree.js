@@ -38,9 +38,9 @@ function Layers(RLottieModule, jsString) {
         },
         hue: 0,
         rgba: {
-          r: 230,
-          g: 230,
-          b: 230,
+          r: 250,
+          g: 250,
+          b: 250,
           a: 1,
         },
       },
@@ -62,14 +62,13 @@ function Layers(RLottieModule, jsString) {
       layerList[keypath] = initProperty(layer['ty']);
 
       switch (layer['ty']) {
+        case 'st':
+          layerList[keypath].strokeWidth = parseInt(layer.w.k);
         case 'fl':
           layerList[keypath].color.rgba.r = parseInt(parseFloat(layer.c.k[0]) * 255);
           layerList[keypath].color.rgba.g = parseInt(parseFloat(layer.c.k[1]) * 255);
           layerList[keypath].color.rgba.b = parseInt(parseFloat(layer.c.k[2]) * 255);
           layerList[keypath].color.rgba.a = parseFloat(layer.o.k) / 100;
-          break;
-        case 'st':
-          layerList[keypath].strokeWidth = parseInt(layer.w.k);
           break;
       }
     }
