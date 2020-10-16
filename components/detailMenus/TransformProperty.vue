@@ -328,7 +328,7 @@ module.exports = {
     },
   },
   methods: {
-    ...Vuex.mapActions(['setTrAnchor', 'setTrPosition', 'setTrScale', 'setTrRotation', 'setTrOpacity']),
+    ...Vuex.mapActions(['setTrAnchor', 'setTrPosition', 'setTrScale', 'setTrRotation', 'setTrOpacity', 'pushHistory']),
     closeSidebar() {
       this.$emit('call-close-menu-parent');
     },
@@ -337,7 +337,7 @@ module.exports = {
       if (!len) return;
 
       let top = this.history.pop();
-      RLottieModule.layers.insert(RLottieModule.keypath, top.property, top.args);
+      this.pushHistory(top);
       this.history = [];
     },
   },

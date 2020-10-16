@@ -96,7 +96,8 @@ var store = new Vuex.Store({
       onSliderDrag(curFrame);
     },
     highlightingLayer(context) {
-      if (context.getters.layers) context.getters.layers.highlighting(context.getters.selectedAllKeypath);
+      const { layers, selectedAllKeypath } = context.getters;
+      if (layers) layers.highlighting(selectedAllKeypath);
     },
     renderSnapShot(context) {
       RLottieModule.renderSnapShot(context.getters.snapShotFrame);
@@ -145,6 +146,13 @@ var store = new Vuex.Store({
       const { layers, selectedKeypath } = context.getters;
 
       layers.RLottieModule.trOpacity(selectedKeypath, parseInt(payload));
+    },
+
+    pushHistory(context, payload) {
+      const { layers, selectedKeypath } = context.getters;
+      const { property, args } = payload;
+
+      layers.insert(selectedKeypath, property, args);
     },
   },
 });

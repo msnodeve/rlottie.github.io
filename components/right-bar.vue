@@ -1,25 +1,9 @@
 <template>
   <div id="right-bar">
-    <v-btn
-      class="comp-r-0"
-      fixed
-      fab
-      icon
-      color="transparent"
-      @click="isNavigation = !isNavigation"
-    >
-      <v-icon :color="isNavigation ? 'white' : 'grey'">
-        mdi-key-variant mdi-flip-h
-      </v-icon>
+    <v-btn class="comp-r-0" fixed fab icon color="transparent" @click="isNavigation = !isNavigation">
+      <v-icon :color="isNavigation ? 'white' : 'grey'"> mdi-key-variant mdi-flip-h </v-icon>
     </v-btn>
-    <v-navigation-drawer
-      v-model="isNavigation"
-      right
-      absolute
-      color="#292c31"
-      width="350"
-      :height="height"
-    >
+    <v-navigation-drawer v-model="isNavigation" right absolute color="#292c31" width="350" :height="height">
       <v-switch
         class="ml-4"
         v-model="isSelectAll"

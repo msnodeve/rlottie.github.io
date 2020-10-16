@@ -117,13 +117,13 @@ module.exports = {
     clearInterval(this.interval);
   },
   methods: {
-    ...Vuex.mapActions(['setShapeColor', 'setStrokeWidth']),
+    ...Vuex.mapActions(['setShapeColor', 'setStrokeWidth', 'pushHistory']),
     clearHistory() {
       let len = this.history.length;
       if (!len) return;
 
       let top = this.history.pop();
-      RLottieModule.layers.insert(RLottieModule.keypath, top.property, top.args);
+      this.pushHistory(top);
       this.history = [];
     },
     closeSidebar() {

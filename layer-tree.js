@@ -9,6 +9,8 @@ function Layers(RLottieModule, jsString) {
   this.cur = -1;
   this.top = -1;
 
+  this.savedLayers = [];
+
   function getSelectLayer() {
     if (!this.RLottieModule.isSelectAll) {
       return this.RLottieModule.keypath + (this.RLottieModule.keypath ? '.**' : '**');
@@ -239,8 +241,8 @@ function Layers(RLottieModule, jsString) {
       return false;
     }
     this.cur--;
-    this.reload();
-    this.highlighting(this.getSelectLayer());
+    store.dispatch('reloadCanvas');
+    store.dispatch('highlightingLayer');
   };
 
   this.moveNext = function () {
@@ -248,8 +250,8 @@ function Layers(RLottieModule, jsString) {
       return false;
     }
     this.cur++;
-    this.reload();
-    this.highlighting(this.getSelectLayer());
+    store.dispatch('reloadCanvas');
+    store.dispatch('highlightingLayer');
   };
 
   this.changeColor = function (layer, args) {
@@ -371,7 +373,8 @@ function Layers(RLottieModule, jsString) {
 
   this.exportLayers = function () {
     var saveObject = JSON.parse(jsString);
-    for (let i = 0; i <= this.cur; i++) {
+    this.savedLayers = [];
+    for (let i = this.cur; i >= 0; i--) {
       var { keypath, property, args } = this.history[i];
       this.changeProperty(saveObject, keypath.split('.'), property, args, false);
     }
