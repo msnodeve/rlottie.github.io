@@ -1,9 +1,9 @@
 <template>
-  <div class="text-center" style="width: 100%">
-    <div class="uploadBTN py-3" style="align-center">
+  <div class="text-center width-100-percent">
+    <div class="upload-btn py-3">
       <v-row align="center" justify="center">
         <v-col class="pa-0" offset="2" cols="8">
-          <h3 style="color: white">Shape</h3>
+          <h3 class="font-white">Shape</h3>
         </v-col>
         <v-col class="pa-0 pr-4" cols="2">
           <v-btn
@@ -20,12 +20,48 @@
       </v-row>
     </div>
     <div class="mt-4">
+      <v-row class="px-5" align="center">
+        <v-col cols="12" class="mt-5">
+          <div class="text-left font-white">Color</div>
+        </v-col>
+      </v-row>
       <v-row align="center" justify="center">
         <v-color-picker
-          v-model="picker"
+          class="bg-transparent"
+          v-model="color"
           flat
-          style="background-color: transparent"
-        ></v-color-picker>
+          dark
+          width="285"
+        />
+      </v-row>
+      <v-row class="pt-5 px-5" align="center">
+        <v-col cols="8" class="py-0">
+          <div class="text-left font-white">StrokeWidth</div>
+        </v-col>
+        <v-col cols="4" class="py-0">
+          <v-text-field
+            v-model="t"
+            class="input mt-0 pt-0"
+            hide-details
+            type="number"
+            solo
+            outlined
+            dense
+            dark
+            @input="test"
+          />
+        </v-col>
+      </v-row>
+      <v-row class="mb-4 px-5">
+        <v-col cols="12" class="py-0">
+          <v-slider
+            v-model="t"
+            class="align-center"
+            max="100"
+            min="0"
+            hide-details
+          />
+        </v-col>
       </v-row>
     </div>
   </div>
@@ -36,12 +72,57 @@ module.exports = {
   name: 'shape-property',
   data() {
     return {
-      picker: null,
-      setFlag: false,
-
-      stack: [],
       interval: '',
+      picker: null,
+      stack: [],
+      t: 0,
     };
+  },
+  watch: {},
+  computed: {
+    ...Vuex.mapGetters(['layerList', 'keypath']),
+    color: {
+      get() {
+        if (this.layerList[this.keypath]) {
+          return this.layerList[this.keypath].color;
+        }
+      },
+      set(color) {
+        if (this.layerList[this.keypath]) {
+          this.layerList[this.keypath].color = color;
+          color = {
+            r: color.rgba.r / 255,
+            g: color.rgba.g / 255,
+            b: color.rgba.b / 255,
+            a: color.rgba.a * 100,
+          };
+
+          this.setShapeColor(color);
+          this.stack.push({
+            property: 'ShapeColor',
+            args: color,
+          });
+        }
+      },
+    },
+
+    strokeWidth: {
+      get() {
+        if (this.layerList[this.keypath]) {
+          return this.layerList[this.keypath].strokeWidth;
+        }
+      },
+      set(width) {
+        if (this.layerList[this.keypath]) {
+          this.layerList[this.keypath].strokeWidth = width;
+          this.setStrokeWidth(width);
+          this.stack.push({
+            property: 'StrokeWidth',
+            args: { strokeWidth: parseInt(this.width) },
+          });
+        }
+      },
+    },
   },
   mounted() {
     var self = this;
@@ -52,49 +133,35 @@ module.exports = {
   beforeDestroy() {
     clearInterval(this.interval);
   },
-  watch: {
-    picker() {
-      if (this.setFlag) {
-        const r = this.picker.rgba.r / 255;
-        const g = this.picker.rgba.g / 255;
-        const b = this.picker.rgba.b / 255;
-        const a = this.picker.rgba.a * 100;
-        RLottieModule.fillColors(RLottieModule.keypath, r, g, b, a);
-        this.stack.push({
-          property: 'FillColor',
-          args: [r, g, b, a],
-        });
-      } else {
-        this.setFlag = true;
-      }
-    },
-  },
   methods: {
-    closeSidebar() {
-      this.$emit('call-close-menu-parent');
+    test(e) {
+      console.log(e);
     },
+    ...Vuex.mapActions(['setShapeColor', 'setStrokeWidth']),
     clearStack() {
       let len = this.stack.length;
       if (!len) return;
 
       let top = this.stack.pop();
-      RLottieModule.history.insert(
+      RLottieModule.layers.insert(
         RLottieModule.keypath,
         top.property,
         top.args,
       );
       this.stack = [];
     },
+    closeSidebar() {
+      this.$emit('call-close-menu-parent');
+    },
   },
 };
 </script>
 
 <style scoped>
-input {
-  border: 1px solid white !important;
-  color: white;
-}
 span {
+  color: white !important;
+}
+input {
   color: white !important;
 }
 </style>

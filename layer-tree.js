@@ -11,9 +11,7 @@ function Layers(RLottieModule, jsString) {
 
   function getSelectLayer() {
     if (!this.RLottieModule.isSelectAll) {
-      return (
-        this.RLottieModule.keypath + (this.RLottieModule.keypath ? '.**' : '**')
-      );
+      return this.RLottieModule.keypath + (this.RLottieModule.keypath ? '.**' : '**');
     } else {
       return this.RLottieModule.keypath;
     }
@@ -40,13 +38,13 @@ function Layers(RLottieModule, jsString) {
         },
         hue: 0,
         rgba: {
-          r: 0,
-          g: 0,
-          b: 0,
+          r: 230,
+          g: 230,
+          b: 230,
           a: 1,
         },
       },
-      strokeWidth: 1,
+      strokeWidth: 0,
       anchorX: 0,
       anchorY: 0,
       positionX: 0,
@@ -58,20 +56,20 @@ function Layers(RLottieModule, jsString) {
     };
   }
 
-  function initLayerList(self, layer, keypath) {
+  function initLayerList(layerList, layer, keypath) {
     if (layer['nm']) {
       keypath = keypath + (keypath ? '\n' : '') + layer['nm'];
-      this.layerList[keypath] = initProperty(layer['ty']);
+      layerList[keypath] = initProperty(layer['ty']);
 
       switch (layer['ty']) {
         case 'fl':
-          this.layerList[keypath].color.r = parseInt(layer.c.k[0]) * 255;
-          this.layerList[keypath].color.g = parseInt(layer.c.k[1]) * 255;
-          this.layerList[keypath].color.b = parseInt(layer.c.k[2]) * 255;
-          this.layerList[keypath].color.a = parseInt(layer.o.k) / 100;
+          layerList[keypath].color.rgba.r = parseInt(parseFloat(layer.c.k[0]) * 255);
+          layerList[keypath].color.rgba.g = parseInt(parseFloat(layer.c.k[1]) * 255);
+          layerList[keypath].color.rgba.b = parseInt(parseFloat(layer.c.k[2]) * 255);
+          layerList[keypath].color.rgba.a = parseFloat(layer.o.k) / 100;
           break;
         case 'st':
-          this.layerList[keypath].strokeWidth = parseInt(layer.w.k);
+          layerList[keypath].strokeWidth = parseInt(layer.w.k);
           break;
       }
     }
@@ -79,7 +77,7 @@ function Layers(RLottieModule, jsString) {
     for (let i in layer) {
       if (Array.isArray(layer[i])) {
         for (let j in layer[i]) {
-          initLayerList(layer[i][j], keypath);
+          initLayerList(layerList, layer[i][j], keypath);
         }
       }
     }
@@ -106,13 +104,7 @@ function Layers(RLottieModule, jsString) {
         name: names[idx],
         children: [],
       });
-      initLayerTree(
-        layer.children[layer.children.length - 1],
-        names,
-        idx + 1,
-        depth,
-        type,
-      );
+      initLayerTree(layer.children[layer.children.length - 1], names, idx + 1, depth, type);
     }
   }
 
@@ -120,7 +112,7 @@ function Layers(RLottieModule, jsString) {
     if (!this.layerList.length) {
       let rootPath = this.originLayers.nm;
       this.originLayers.nm = '';
-      initLayerList(this.originLayers, '');
+      initLayerList(this.layerList, this.originLayers, '');
       this.originLayers.nm = rootPath;
     }
     return this.layerList;
@@ -138,15 +130,10 @@ function Layers(RLottieModule, jsString) {
           keypath: '',
         },
       ];
+
       for (let keypath in layerList) {
         var names = keypath.split('\n');
-        initLayerTree(
-          this.layerTree[0],
-          names,
-          0,
-          names.length,
-          layerList[keypath].type,
-        );
+        initLayerTree(this.layerTree[0], names, 0, names.length, layerList[keypath].type);
         layerList[names.join('.')] = layerList[keypath];
       }
       layerList[''] = initProperty('root');
@@ -157,20 +144,8 @@ function Layers(RLottieModule, jsString) {
   this.setProperty = function (keypath, property, param) {
     switch (property) {
       case 'ShapeColor':
-        this.RLottieModule.fillColors(
-          keypath,
-          param.r,
-          param.g,
-          param.b,
-          param.a,
-        );
-        this.RLottieModule.strokeColors(
-          keypath,
-          param.r,
-          param.g,
-          param.b,
-          param.a,
-        );
+        this.RLottieModule.fillColors(keypath, param.r, param.g, param.b, param.a);
+        this.RLottieModule.strokeColors(keypath, param.r, param.g, param.b, param.a);
         break;
       case 'StrokeWidth':
         this.RLottieModule.strokeWidth(keypath, param.strokeWidth);
@@ -179,18 +154,10 @@ function Layers(RLottieModule, jsString) {
         this.RLottieModule.trAnchor(keypath, param.anchorX, param.anchorY);
         break;
       case 'TrPosition':
-        this.RLottieModule.trPosition(
-          keypath,
-          param.positionX,
-          param.positionY,
-        );
+        this.RLottieModule.trPosition(keypath, param.positionX, param.positionY);
         break;
       case 'TrScale':
-        this.RLottieModule.trScale(
-          keypath,
-          param.scaleWidth,
-          param.scaleHeight,
-        );
+        this.RLottieModule.trScale(keypath, param.scaleWidth, param.scaleHeight);
         break;
       case 'TrRotation':
         this.RLottieModule.trRotation(keypath, param.rotation);
@@ -254,6 +221,7 @@ function Layers(RLottieModule, jsString) {
   this.setHistoryState = function () {
     store.commit('setHasPrev', this.hasPrev());
     store.commit('setHasNext', this.hasNext());
+    EventBus.$emit('setHistoryState', { isPrev: this.hasPrev(), isNext: this.hasNext() });
   };
 
   this.hasPrev = function () {
@@ -311,19 +279,13 @@ function Layers(RLottieModule, jsString) {
 
   this.changeTrAnchor = function (layer, args) {
     if (layer.a && layer.a.k) {
-      layer.a.k = [
-        parseInt(layer.a.k[0]) + args.anchorX,
-        parseInt(layer.a.k[1]) + args.anchorY,
-      ];
+      layer.a.k = [parseInt(layer.a.k[0]) + args.anchorX, parseInt(layer.a.k[1]) + args.anchorY];
     }
   };
 
   this.changeTrPosition = function (layer, args) {
     if (layer.p && layer.p.k) {
-      layer.p.k = [
-        parseInt(layer.a.k[0]) + args.positionX,
-        parseInt(layer.a.k[1]) + args.positionY,
-      ];
+      layer.p.k = [parseInt(layer.a.k[0]) + args.positionX, parseInt(layer.a.k[1]) + args.positionY];
     }
   };
 
@@ -335,10 +297,7 @@ function Layers(RLottieModule, jsString) {
 
   this.changeTrScale = function (layer, args) {
     if (layer.s && layer.s.k) {
-      layer.s.k = [
-        (parseInt(layer.s.k[0]) * args.scaleWidth) / 100,
-        (parseInt(layer.s.k[1]) * args.scaleHeight) / 100,
-      ];
+      layer.s.k = [(parseInt(layer.s.k[0]) * args.scaleWidth) / 100, (parseInt(layer.s.k[1]) * args.scaleHeight) / 100];
     }
   };
 
@@ -397,25 +356,12 @@ function Layers(RLottieModule, jsString) {
     }
     for (let i in layer) {
       if (layer[i].nm && (keypath[0] == '**' || layer[i] == keypath[0])) {
-        this.changeProperty(
-          layer[i],
-          keypath.slice(keypath[0] != '**'),
-          property,
-          args,
-          flag,
-        );
+        this.changeProperty(layer[i], keypath.slice(keypath[0] != '**'), property, args, flag);
       }
 
       if (Array.isArray(layer[i])) {
         for (let j in layer[i])
-          if (layer[i][j].nm == keypath[0] || keypath[0] == '**')
-            this.changeProperty(
-              layer[i][j],
-              keypath.slice(keypath[0] != '**'),
-              property,
-              args,
-              flag,
-            );
+          if (layer[i][j].nm == keypath[0] || keypath[0] == '**') this.changeProperty(layer[i][j], keypath.slice(keypath[0] != '**'), property, args, flag);
       }
     }
   };
@@ -424,24 +370,13 @@ function Layers(RLottieModule, jsString) {
     var saveObject = JSON.parse(jsString);
     for (let i = 0; i <= this.cur; i++) {
       var { keypath, property, args } = this.history[i];
-      this.changeProperty(
-        saveObject,
-        keypath.split('.'),
-        property,
-        args,
-        false,
-      );
+      this.changeProperty(saveObject, keypath.split('.'), property, args, false);
     }
 
-    var dataStr =
-      'data:text/json;charset=utf-8,' +
-      encodeURIComponent(JSON.stringify(saveObject));
+    var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(saveObject));
     var downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute('href', dataStr);
-    var fileName =
-      Math.random().toString(36).substr(2, 8).toUpperCase() +
-      '_' +
-      this.RLottieModule.fileName;
+    var fileName = Math.random().toString(36).substr(2, 8).toUpperCase() + '_' + this.RLottieModule.fileName;
     downloadAnchorNode.setAttribute('download', fileName);
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
