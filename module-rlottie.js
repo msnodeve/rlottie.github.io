@@ -70,7 +70,7 @@ var RLottieModule = (function () {
     store.commit('setCurFrame', obj.curFrame);
   };
 
-  obj.renderShanpShot = function (frame) {
+  obj.renderSnapShot = function (frame) {
     if (obj.preview.width == 0 || obj.preview.height == 0) return;
 
     var buffer = obj.lottieHandle.render(frame, obj.preview.width, obj.preview.height);

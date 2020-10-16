@@ -6,7 +6,14 @@
           <h3 class="font-white">Shape</h3>
         </v-col>
         <v-col class="pa-0 pr-4" cols="2">
-          <v-btn color="rgba(0, 153, 204, 0)" :outlined="false" :depressed="true" fab x-small @click="closeSidebar()">
+          <v-btn
+            color="rgba(0, 153, 204, 0)"
+            :outlined="false"
+            :depressed="true"
+            fab
+            x-small
+            @click="closeSidebar()"
+          >
             <v-icon color="#ffffff"> mdi-close </v-icon>
           </v-btn>
         </v-col>
@@ -19,19 +26,41 @@
         </v-col>
       </v-row>
       <v-row align="center" justify="center">
-        <v-color-picker class="bg-transparent" v-model="color" flat dark width="285" />
+        <v-color-picker
+          class="bg-transparent"
+          v-model="color"
+          flat
+          dark
+          width="285"
+        />
       </v-row>
       <v-row class="pt-5 px-5" align="center">
         <v-col cols="8" class="py-0">
           <div class="text-left font-white">StrokeWidth</div>
         </v-col>
         <v-col cols="4" class="py-0">
-          <v-text-field v-model="strokeWidth" class="input mt-0 pt-0" hide-details type="number" solo outlined dense dark @input="test" />
+          <v-text-field
+            v-model="strokeWidth"
+            class="input mt-0 pt-0"
+            hide-details
+            type="number"
+            solo
+            outlined
+            dense
+            dark
+            @input="test"
+          />
         </v-col>
       </v-row>
       <v-row class="mb-4 px-5">
         <v-col cols="12" class="py-0">
-          <v-slider v-model="strokeWidth" class="align-center" max="100" min="0" hide-details />
+          <v-slider
+            v-model="strokeWidth"
+            class="align-center"
+            max="100"
+            min="0"
+            hide-details
+          />
         </v-col>
       </v-row>
     </div>
@@ -78,7 +107,6 @@ module.exports = {
     strokeWidth: {
       get() {
         if (this.layerList[this.keypath]) {
-          this.width = this.layerList[this.keypath].strokeWidth;
           return this.layerList[this.keypath].strokeWidth;
         }
       },
@@ -114,7 +142,11 @@ module.exports = {
       if (!len) return;
 
       let top = this.history.pop();
-      RLottieModule.layers.insert(RLottieModule.keypath, top.property, top.args);
+      RLottieModule.layers.insert(
+        RLottieModule.keypath,
+        top.property,
+        top.args,
+      );
       this.history = [];
     },
     closeSidebar() {

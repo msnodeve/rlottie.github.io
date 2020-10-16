@@ -171,9 +171,6 @@ module.exports = {
       } else if (e.ctrlKey && e.which == 82) {
         // Reverse and Play : Ctrl + R
         self.isReverse = !self.isReverse;
-      } else if (e.which == 32) {
-        // Pause and Play : Space
-        self.playAndPause();
       } else if (e.ctrlKey && e.shiftKey && e.which == 90) {
         // Forward frame : Ctrl + Shift + Z
         e.preventDefault();
@@ -190,7 +187,8 @@ module.exports = {
     });
   },
   methods: {
-    ...Vuex.mapMutations(['setCurFrame', 'setFrameRate']),
+    ...Vuex.mapMutations(['setCurFrame', 'setFrameRate', 'setSnapShotFrame']),
+    ...Vuex.mapActions(['renderSnapShot']),
     gotoFrame(frame) {
       this.setCurFrame(frame);
       onSliderDrag(frame);
@@ -199,9 +197,15 @@ module.exports = {
       const x = evt.pageX - $('#snapShot').offset().left;
       const len = $('#snapShot').width();
       let frame = (x / len) * this.frameCount;
-      if (frame < 0) frame = 0;
-      else if (frame > this.frameCount) frame = this.frameCount;
-      RLottieModule.renderShanpShot(frame);
+      if (frame < 0) {
+        frame = 0;
+      } else if (frame > this.frameCount) {
+        frame = this.frameCount;
+      }
+
+      this.setSnapShotFrame(frame);
+      this.renderSnapShot();
+
       this.$emit('pointer', {
         x: evt.pageX,
         y: $('#snapShot').offset().top,

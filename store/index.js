@@ -88,7 +88,8 @@ var store = new Vuex.Store({
       onSliderDrag(curFrame);
     },
     highlightingLayer(context) {
-      if (context.getters.layers) context.getters.layers.highlighting(context.getters.selectedAllKeypath);
+      if (context.getters.layers)
+        context.getters.layers.highlighting(context.getters.selectedAllKeypath);
     },
 
     setShapeColor(context, payload) {
