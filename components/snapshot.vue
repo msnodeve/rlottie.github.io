@@ -1,6 +1,9 @@
 <template>
-  <div class="snapWrapper" :style="{ left: pointx + 'px', top: pointy + 'px' }">
-    <canvas id="preView" width="150" height="150" />
+  <div
+    class="snap-wrapper"
+    :style="{ left: pointx + 'px', top: pointy + 'px' }"
+  >
+    <canvas id="pre-view" width="150" height="150" />
   </div>
 </template>
 
@@ -11,14 +14,14 @@ module.exports = {
 </script>
 
 <style scoped>
-.snapWrapper {
+.snap-wrapper {
   width: 150px;
   height: 150px;
   background-color: rgba(255, 255, 255, 0);
   position: fixed;
   z-index: 100;
 }
-#preView {
+#pre-view {
   width: 100%;
   height: 100%;
   border: 1px solid #dae1e7;

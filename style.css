@@ -255,7 +255,15 @@ body {
   width: 90%;
 }
 
+.height-100-percent {
+  height: 100% !important;
+}
+
 .comb-list {
   width: 190px;
   background-color: rgba(33, 33, 33, 0.9) !important;
+}
+
+.text-center {
+  text-align: center;
 }

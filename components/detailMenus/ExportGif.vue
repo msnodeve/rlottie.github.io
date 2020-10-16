@@ -6,14 +6,7 @@
           <h3 class="font-white">GIF</h3>
         </v-col>
         <v-col class="pa-0 pr-4" cols="2">
-          <v-btn
-            color="rgba(0, 153, 204, 0)"
-            :outlined="false"
-            :depressed="true"
-            fab
-            x-small
-            @click="closeSidebar()"
-          >
+          <v-btn color="rgba(0, 153, 204, 0)" :outlined="false" :depressed="true" fab x-small @click="closeSidebar()">
             <v-icon color="#ffffff"> mdi-close </v-icon>
           </v-btn>
         </v-col>
@@ -36,10 +29,7 @@
           @click="selectColor(color, true)"
         >
         </v-btn>
-        <div
-          class="v-color-picker__dot ml-1 picker-dot"
-          @click="selectColor('#000000', false)"
-        />
+        <div class="v-color-picker__dot ml-1 picker-dot" @click="selectColor('#000000', false)"></div>
       </v-row>
       <v-row align="center" justify="center">
         <v-color-picker
@@ -52,21 +42,11 @@
           width="280"
         />
       </v-row>
-      <v-row
-        align="center"
-        justify="center"
-        class="pa-0 ma-0 width-100-percent"
-      >
+      <v-row align="center" justify="center" class="pa-0 ma-0 width-100-percent">
         <img id="convert-gif" src="" class="width-90-percent" />
       </v-row>
-      <v-row
-        align="center"
-        justify="center"
-        class="pa-0 ma-0 mt-4 width-100-percent"
-      >
-        <v-btn @click="convertGIF" :loading="loading" id="convert-btn">
-          Convert to GIF
-        </v-btn>
+      <v-row align="center" justify="center" class="pa-0 ma-0 mt-4 width-100-percent">
+        <v-btn @click="convertGIF" :loading="loading" id="convert-btn"> Convert to GIF </v-btn>
       </v-row>
     </div>
   </div>
@@ -77,15 +57,7 @@ module.exports = {
   name: 'export-gif',
   data() {
     return {
-      colors: [
-        '#FFFFFF',
-        '#EB7D46',
-        '#B4EB46',
-        '#46EB7D',
-        '#46B4EB',
-        '#7D46EB',
-        '#EB46B4',
-      ],
+      colors: ['#FFFFFF', '#EB7D46', '#B4EB46', '#46EB7D', '#46B4EB', '#7D46EB', '#EB46B4'],
       hex: '#000000',
       isColor: false,
       loading: false,
@@ -143,13 +115,10 @@ module.exports = {
           document.getElementById('convert-gif').src = reader.result;
         };
         document.getElementById('convert-gif').src = URL.createObjectURL(blob);
-        var dataStr = URL.createObjectURL(blob); //"data:image/gif;charset=utf-8," + encodeURIComponent(JSON.stringify(obj.lottieObject));
+        var dataStr = URL.createObjectURL(blob);
         var downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute('href', dataStr);
-        downloadAnchorNode.setAttribute(
-          'download',
-          Math.random().toString(36).substr(2, 8).toUpperCase() + '.gif',
-        );
+        downloadAnchorNode.setAttribute('download', Math.random().toString(36).substr(2, 8).toUpperCase() + '.gif');
         document.body.appendChild(downloadAnchorNode);
         downloadAnchorNode.click();
         downloadAnchorNode.remove();

@@ -44,7 +44,7 @@ var RLottieModule = (function () {
 
     obj.canvas = document.getElementById('myCanvas');
     obj.context = obj.canvas.getContext('2d');
-    obj.preview = document.getElementById('preView');
+    obj.preview = document.getElementById('pre-view');
     obj.contextPre = obj.preview.getContext('2d');
 
     obj.lottieHandle = new Module.RlottieWasm();

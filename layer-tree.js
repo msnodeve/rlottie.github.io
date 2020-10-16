@@ -220,7 +220,10 @@ function Layers(RLottieModule, jsString) {
   this.setHistoryState = function () {
     store.commit('setHasPrev', this.hasPrev());
     store.commit('setHasNext', this.hasNext());
-    EventBus.$emit('setHistoryState', { isPrev: this.hasPrev(), isNext: this.hasNext() });
+    EventBus.$emit('setHistoryState', {
+      isPrev: this.hasPrev(),
+      isNext: this.hasNext(),
+    });
   };
 
   this.hasPrev = function () {
@@ -360,7 +363,8 @@ function Layers(RLottieModule, jsString) {
 
       if (Array.isArray(layer[i])) {
         for (let j in layer[i])
-          if (layer[i][j].nm == keypath[0] || keypath[0] == '**') this.changeProperty(layer[i][j], keypath.slice(keypath[0] != '**'), property, args, flag);
+          if (layer[i][j].nm == keypath[0] || keypath[0] == '**')
+            this.changeProperty(layer[i][j], keypath.slice(keypath[0] != '**'), property, args, flag);
       }
     }
   };

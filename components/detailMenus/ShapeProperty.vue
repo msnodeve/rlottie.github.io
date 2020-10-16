@@ -48,7 +48,6 @@
             outlined
             dense
             dark
-            @input="test"
           />
         </v-col>
       </v-row>
@@ -73,7 +72,6 @@ module.exports = {
   data() {
     return {
       interval: '',
-      picker: null,
       history: [],
     };
   },
@@ -125,17 +123,27 @@ module.exports = {
   },
   mounted() {
     var self = this;
+
+    EventBus.$on('changeKeypath', ({ keypath }) => {
+      this.layerProperty = RLottieModule.layers.layerList[keypath];
+      this.setStrokeFlag = false;
+      this.setColor(this.layerProperty);
+      this.setStrokeColor(this.layerProperty);
+    });
+    this.layerProperty =
+      RLottieModule.layers.layerList[RLottieModule.originKeypath];
+    this.setColor(this.layerProperty);
+    this.setStrokeColor(this.layerProperty);
+
     this.interval = setInterval(() => {
       self.clearhistory();
     }, 500);
   },
   beforeDestroy() {
+    EventBus.$off('changeKeypath');
     clearInterval(this.interval);
   },
   methods: {
-    test(e) {
-      console.log(e);
-    },
     ...Vuex.mapActions(['setShapeColor', 'setStrokeWidth']),
     clearhistory() {
       let len = this.history.length;
