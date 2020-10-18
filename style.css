@@ -137,6 +137,9 @@ body {
   font-size: 0.75rem;
 }
 
+.text-md {
+  font-size: 15px;
+}
 .border-grey-light {
   border-color: #dae1e7;
 }
