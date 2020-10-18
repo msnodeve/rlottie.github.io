@@ -49,6 +49,7 @@
         </template>
         <span> upload New JSON File (Ctrl + O) </span>
       </v-tooltip>
+
       <v-tooltip bottom class="tooltip-btn">
         <template v-slot:activator="{ on, attrs }">
           <v-btn

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="snap-wrapper"
+    class="thumbnail-wrapper"
     :style="{ left: pointx + 'px', top: pointy + 'px' }"
   >
     <canvas id="pre-view" width="150" height="150" />
@@ -14,7 +14,7 @@ module.exports = {
 </script>
 
 <style scoped>
-.snap-wrapper {
+.thumbnail-wrapper {
   width: 150px;
   height: 150px;
   background-color: rgba(255, 255, 255, 0);

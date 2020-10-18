@@ -214,6 +214,10 @@ body {
   transform: translateY(-110px);
 }
 
+.border-left-1 {
+  border-left: 0.5px solid #242a32 !important;
+}
+
 #file-selector {
   display: none;
   cursor: pointer;

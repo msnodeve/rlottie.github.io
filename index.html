@@ -82,7 +82,7 @@
           ></loading-bar>
           <!-- thumbnail component -->
           <thumbnail-preview
-            v-show="activeSnapShot"
+            v-show="activeThumbnail"
             :pointx="pointX"
             :pointy="pointY"
           ></thumbnail-preview>
@@ -133,12 +133,12 @@
             "left-bar-detail": "url:./components/left-bar-detail.vue",
             "loading-bar": "url:./components/loading-bar.vue",
             "right-bar": "url:./components/right-bar.vue",
-            "thumbnail-preview": "url:./components/snapshot.vue",
+            "thumbnail-preview": "url:./components/thumbnail-preview.vue",
             "upper-bar": "url:./components/upper-bar.vue",
           },
           data() {
             return {
-              selectedMenu: 1,
+              selectedMenu: 0,
               canvasSize: {
                 height: 550,
                 width: 550,
@@ -148,7 +148,7 @@
               initCanvasLeft: 0,
               pointX: 0,
               pointY: 0,
-              activeSnapShot: false,
+              activeThumbnail: false,
             };
           },
           methods: {
@@ -166,7 +166,7 @@
             setPointer(pointer) {
               this.pointX = pointer.x - 75;
               this.pointY = pointer.y - 180;
-              this.activeSnapShot = pointer.isSnapShot;
+              this.activeThumbnail = pointer.isThumbnail;
             },
           },
           mounted() {

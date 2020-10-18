@@ -65,17 +65,9 @@ module.exports = {
     clickToBackgroundImage() {
       this.$refs.image.click();
     },
-    closeSidebar() {
-      this.$emit('call-close-menu-parent');
-    },
     backgroundReset() {
-      if (this.backgroundImgFlag) {
-        var parentDiv = document.querySelector('#img-background');
-        if (parentDiv.childNodes.length != 0) {
-          var childImg = document.querySelector('#background');
-          parentDiv.removeChild(childImg);
-        }
-      }
+      this.$refs.image.value = null;
+      this.checkBackgroundImg();
       this.backgroundImgFlag = false;
     },
     setBackgroundImg(event) {
@@ -83,14 +75,7 @@ module.exports = {
       if (file.length === 0) {
         return;
       }
-      if (this.backgroundImgFlag) {
-        var parentDiv = document.querySelector('#img-background');
-        if (parentDiv.childNodes.length != 0) {
-          var childImg = document.querySelector('#background');
-          parentDiv.removeChild(childImg);
-        }
-      }
-
+      this.checkBackgroundImg();
       var img = document.createElement('img');
       img.id = 'background';
       img.style = 'max-height:650px; max-width: 90%; margin-left: auto; margin-right: auto; display: block;';
@@ -106,6 +91,15 @@ module.exports = {
       document.querySelector('#img-background').appendChild(img);
       this.backgroundImgFlag = true;
     },
+    checkBackgroundImg(){
+        if (this.backgroundImgFlag) {
+          var parentDiv = document.querySelector('#img-background');
+        if (parentDiv.childNodes.length != 0) {
+          var childImg = document.querySelector('#background');
+          parentDiv.removeChild(childImg);
+        }
+      }
+    }
   },
   computed: {
     bgColor: {

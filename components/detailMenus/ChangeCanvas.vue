@@ -44,28 +44,19 @@
               <v-row class="mb-4">
                 <v-col cols="12" class="py-0">
                   <div class="my-2">
-                    <span class="pr-2">
-                      <v-btn dark fab color="#3e4145" @click="rotate(false)">
-                        <v-icon color="#BFC0C2" large>mdi-rotate-left</v-icon>
+                    <span 
+                      class="pr-2"
+                      v-for="(item, index) in canvasRotate" :key="index+'_Rotate'"
+                    >
+                      <v-btn dark fab color="#3e4145" @click="rotate(item.flag)">
+                        <v-icon color="#BFC0C2" large>{{ item.icon }}</v-icon>
                       </v-btn>
                     </span>
-                    <span class="pr-2">
-                      <v-btn dark fab color="#3e4145" @click="rotate(true)">
-                        <v-icon color="#BFC0C2" large>mdi-rotate-right</v-icon>
-                      </v-btn>
-                    </span>
-                    <span class="pr-2">
-                      <v-btn dark fab color="#3e4145" @click="flipX">
-                        <v-icon color="#BFC0C2" large
-                          >mdi-reflect-horizontal</v-icon
-                        >
-                      </v-btn>
-                    </span>
-                    <span>
-                      <v-btn dark fab color="#3e4145" @click="flipY">
-                        <v-icon class="mdi-rotate-90" color="#BFC0C2" large
-                          >mdi-reflect-horizontal</v-icon
-                        >
+                    <span class="pr-2"
+                      v-for="(item, index) in canvasFlip" :key="index+'_Flip'"
+                    >
+                      <v-btn dark fab color="#3e4145" @click="item.function">
+                        <v-icon :class="{'mdi-rotate-90': (index==1)}" color="#BFC0C2" large>{{ item.icon }}</v-icon>
                       </v-btn>
                     </span>
                   </div>
@@ -89,6 +80,8 @@ module.exports = {
       isFlipX: 1,
       isFlipY: 1,
       isTransition: false,
+      canvasFlip: [{icon: 'mdi-reflect-horizontal', function: this.flipX}, {icon: 'mdi-reflect-horizontal', function: this.flipY}],
+      canvasRotate: [{icon: 'mdi-rotate-left', flag: false}, {icon: 'mdi-rotate-right', flag: true}]
     };
   },
   props: {
@@ -98,13 +91,11 @@ module.exports = {
     this.isTransition = true;
   },
   methods: {
+    apply() {
+      document.getElementById('myCanvas').style.transform = `rotate(${this.degree}deg) scaleX(${this.isFlipX}) scaleY(${this.isFlipY})`;
+    },
     closeSidebar() {
       this.$emit('call-close-menu-parent');
-    },
-    rotate(flag) {
-      const change = flag ? 90 : -90;
-      this.degree = (this.degree + change + 360) % 360;
-      this.apply();
     },
     flipX() {
       this.isFlipX = this.isFlipX * -1;
@@ -114,22 +105,18 @@ module.exports = {
       this.isFlipY = this.isFlipY * -1;
       this.apply();
     },
-    apply() {
-      document.getElementById(
-        'myCanvas',
-      ).style.transform = `rotate(${this.degree}deg) scaleX(${this.isFlipX}) scaleY(${this.isFlipY})`;
+    rotate(flag) {
+      const change = flag ? 90 : -90;
+      this.degree = (this.degree + change + 360) % 360;
+      this.apply();
     },
   },
   watch: {
     canvasSizeInput: {
       deep: true,
       handler() {
-        document.getElementById(
-          'canvas-box',
-        ).style.height = `${this.canvasSize.height}px`;
-        document.getElementById(
-          'canvas-box',
-        ).style.width = `${this.canvasSize.width}px`;
+        document.getElementById('canvas-box').style.height = `${this.canvasSize.height}px`;
+        document.getElementById('canvas-box').style.width = `${this.canvasSize.width}px`;
       },
     },
   },

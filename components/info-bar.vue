@@ -16,13 +16,11 @@
               v-on="on"
               icon
               large
-              :color="isPrev ? 'white' : 'transparent'"
-              :style="{
-                cursor: isPrev ? 'pointer' : 'default',
-              }"
+              :color="(hasPrev) ? 'white' : 'transparent'"
+              :style="{cursor: (hasPrev) ? 'pointer' : 'default'}"
               @click="movePrev"
             >
-              <v-icon :color="isPrev ? '#54565A' : '#BFC0C2'">
+              <v-icon :color="(hasPrev) ? '#54565A' : '#BFC0C2'">
                 mdi-undo
               </v-icon>
             </v-btn>
@@ -40,13 +38,11 @@
               v-on="on"
               icon
               large
-              :color="isNext ? 'white' : 'transparent'"
-              :style="{
-                cursor: isNext ? 'pointer' : 'default',
-              }"
+              :color="(hasNext) ? 'white' : 'transparent'"
+              :style="{cursor: (hasNext) ? 'pointer' : 'default'}"
               @click="moveNext"
             >
-              <v-icon :color="isNext ? '#54565A' : '#BFC0C2'">
+              <v-icon :color="(hasNext) ? '#54565A' : '#BFC0C2'">
                 mdi-redo
               </v-icon>
             </v-btn>
@@ -63,32 +59,14 @@ module.exports = {
   name: 'info-bar',
   data() {
     return {
-      isPrev: false,
-      isNext: false,
     };
   },
   computed: {
-    ...Vuex.mapGetters(['fileName']),
+    ...Vuex.mapGetters(['fileName', 'hasPrev', 'hasNext']),
   },
   mounted() {
     var self = this;
     var setHistoryState = this.setHistoryState;
-
-    document.addEventListener(
-      'keydown',
-      function (e) {
-        if (e.ctrlKey && e.which == 83) {
-          e.preventDefault();
-        } else if (e.ctrlKey && e.which == 82) {
-          e.preventDefault();
-        } else if (e.ctrlKey && e.which == 79) {
-          e.preventDefault();
-        } else if (e.ctrlKey && e.which == 76) {
-          e.preventDefault();
-        }
-      },
-      false,
-    );
 
     // Shortcut key function binding
     document.addEventListener('keydown', function (e) {
@@ -104,16 +82,7 @@ module.exports = {
     });
   },
   methods: {
-    setHistoryState(e) {
-      this.isPrev = e.isPrev;
-      this.isNext = e.isNext;
-    },
-    movePrev() {
-      RLottieModule.layers.movePrev();
-    },
-    moveNext() {
-      RLottieModule.layers.moveNext();
-    },
+    ...Vuex.mapActions(['movePrev','moveNext']),
   },
 };
 </script>

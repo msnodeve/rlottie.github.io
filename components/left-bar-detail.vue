@@ -1,24 +1,24 @@
 <template>
   <div id="left-detail-bar" class="d-flex align-start justify-center">
     <shape-property
-      v-if="selectedmenu == 1"
+      v-if="selectedmenu == 0"
       @call-close-menu-parent="closeSideBarFromChild"
     ></shape-property>
     <transform-property
-      v-if="selectedmenu == 2"
+      v-if="selectedmenu == 1"
       @call-close-menu-parent="closeSideBarFromChild"
     ></transform-property>
     <change-bg-color
-      v-if="selectedmenu == 3"
+      v-if="selectedmenu == 2"
       @call-close-menu-parent="closeSideBarFromChild"
     ></change-bg-color>
     <change-canvas
-      v-if="selectedmenu == 4"
+      v-if="selectedmenu == 3"
       :canvas-size="canvasSize"
       @call-close-menu-parent="closeSideBarFromChild"
     ></change-canvas>
     <export-gif
-      v-if="selectedmenu == 5"
+      v-if="selectedmenu == 4"
       @call-close-menu-parent="closeSideBarFromChild"
     ></export-gif>
   </div>

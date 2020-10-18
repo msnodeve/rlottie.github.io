@@ -1,5 +1,5 @@
 <template>
-  <v-footer color="#293039" class="font-weight-medium py-0" ref="footer">
+  <v-footer color="#293039" class="font-weight-medium py-0 border-left-1" ref="footer">
     <div class="content-width-100">
       <v-row class="ma-0 pa-0">
         <v-col cols="12" class="py-0">
@@ -81,7 +81,6 @@
 <script>
 module.exports = {
   name: 'loading-bar',
-  // props: ["user"],
   data() {
     return {
       playing: true,
@@ -168,7 +167,7 @@ module.exports = {
       this.$emit('pointer', {
         x: evt.pageX,
         y: $('#snapShot').offset().top,
-        isSnapShot: flag,
+        isThumbnail: flag,
       });
     },
     playAndPause() {
