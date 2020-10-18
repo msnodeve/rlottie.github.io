@@ -1,23 +1,21 @@
+// Create rlottie layers management object
 function Layers(RLottieModule, jsString) {
   this.RLottieModule = RLottieModule;
   this.originLayers = JSON.parse(jsString);
 
+  // Managing property values for a keypath
   this.layerList = [];
+
+  // Treeview management object
   this.layerTree = [];
 
+  // Stack of Task record
   this.history = [];
   this.cur = -1;
   this.top = -1;
 
+  // Duplicate property management
   this.savedLayers = [];
-
-  function getSelectLayer() {
-    if (!this.RLottieModule.isSelectAll) {
-      return this.RLottieModule.keypath + (this.RLottieModule.keypath ? '.**' : '**');
-    } else {
-      return this.RLottieModule.keypath;
-    }
-  }
 
   function initProperty(type) {
     return {
@@ -58,6 +56,7 @@ function Layers(RLottieModule, jsString) {
     };
   }
 
+  // Parse json
   function initLayerList(layerList, layer, keypath) {
     if (layer['nm']) {
       keypath = keypath + (keypath ? '\n' : '') + layer['nm'];
@@ -84,6 +83,7 @@ function Layers(RLottieModule, jsString) {
     }
   }
 
+  // Layerlist to layertree
   function initLayerTree(layer, names, idx, depth, type) {
     if (idx == depth) {
       layer.type = type;
@@ -142,6 +142,7 @@ function Layers(RLottieModule, jsString) {
     return this.layerTree;
   };
 
+  // Set properties on the matching keypath
   this.setProperty = function (keypath, property, param) {
     switch (property) {
       case 'ShapeColor':
@@ -169,6 +170,7 @@ function Layers(RLottieModule, jsString) {
     }
   };
 
+  // Logging history
   this.insert = function (keypath, property, args) {
     while (this.cur < this.top) {
       this.history.pop();
@@ -185,6 +187,7 @@ function Layers(RLottieModule, jsString) {
     this.setHistoryState();
   };
 
+  // Reset property
   this.reload = function () {
     this.RLottieModule.reload(jsString);
 
@@ -200,6 +203,7 @@ function Layers(RLottieModule, jsString) {
     this.setHistoryState();
   };
 
+  // Highlighting selected layers
   this.highlighting = function (keypath) {
     this.RLottieModule.lottieHandle.set_fill_opacity('**', 30);
     this.RLottieModule.lottieHandle.set_stroke_opacity('**', 30);
@@ -220,19 +224,23 @@ function Layers(RLottieModule, jsString) {
     this.RLottieModule.lottieHandle.set_stroke_opacity(keypath, 100);
   };
 
+  // Undo and Redo button activation
   this.setHistoryState = function () {
     store.commit('setHasPrev', this.hasPrev());
     store.commit('setHasNext', this.hasNext());
   };
 
+  // Has previous history log?
   this.hasPrev = function () {
     return this.cur != -1;
   };
 
+  // Has next history log?
   this.hasNext = function () {
     return this.cur < this.top;
   };
 
+  // Undo
   this.movePrev = function () {
     if (!this.hasPrev()) {
       return false;
@@ -241,6 +249,7 @@ function Layers(RLottieModule, jsString) {
     store.dispatch('reloadCanvas');
   };
 
+  // Redo
   this.moveNext = function () {
     if (!this.hasNext()) {
       return false;
@@ -249,6 +258,7 @@ function Layers(RLottieModule, jsString) {
     store.dispatch('reloadCanvas');
   };
 
+  // Export color property
   changeColor = function (layer, args) {
     if (layer.c == null) {
       layer.c = {
@@ -266,6 +276,7 @@ function Layers(RLottieModule, jsString) {
     layer.o.k = args.a;
   };
 
+  // Export stroke width property
   changeWidth = function (layer, args) {
     if (layer.w == null) {
       layer.w = {
@@ -276,6 +287,7 @@ function Layers(RLottieModule, jsString) {
     layer.w.k = args.strokeWidth;
   };
 
+  // Export anchor property
   changeTrAnchor = function (layer, args) {
     // if (layer.a && layer.a.k) {
     //   layer.a.k = [parseFloat(layer.a.k[0]) + args.anchorX, parseFloat(layer.a.k[1]) + args.anchorY];
@@ -286,6 +298,7 @@ function Layers(RLottieModule, jsString) {
     }
   };
 
+  // Export position property
   changeTrPosition = function (layer, args) {
     if (layer.p && layer.p.k) {
       layer.p.k[0] = parseFloat(layer.p.k[0]) + args.positionX;
@@ -293,12 +306,14 @@ function Layers(RLottieModule, jsString) {
     }
   };
 
+  // Export rotation property
   changeTrRotation = function (layer, args) {
     if (layer.r != null && layer.r.k != null) {
       layer.r.k = (parseInt(layer.r.k) + args.rotation) % 360;
     }
   };
 
+  // Export scale property
   changeTrScale = function (layer, args) {
     if (layer.s && layer.s.k) {
       layer.s.k = [
@@ -308,6 +323,7 @@ function Layers(RLottieModule, jsString) {
     }
   };
 
+  // Export opacity property
   changeTrOpacity = function (layer, args) {
     if (layer.o && layer.o.k) {
       layer.o = {
@@ -317,6 +333,7 @@ function Layers(RLottieModule, jsString) {
     }
   };
 
+  // Export property
   this.changeProperty = function (layer, names, property, args, flag, keypath) {
     if (names.length == 0 || names[0] == '**') {
       flag = true;
@@ -389,6 +406,7 @@ function Layers(RLottieModule, jsString) {
     }
   };
 
+  // Export customizing layers
   this.exportLayers = function () {
     var saveObject = JSON.parse(jsString);
     this.savedLayers = [];
