@@ -239,7 +239,6 @@ function Layers(RLottieModule, jsString) {
     }
     this.cur--;
     store.dispatch('reloadCanvas');
-    store.dispatch('highlightingLayer');
   };
 
   this.moveNext = function () {
@@ -248,7 +247,6 @@ function Layers(RLottieModule, jsString) {
     }
     this.cur++;
     store.dispatch('reloadCanvas');
-    store.dispatch('highlightingLayer');
   };
 
   changeColor = function (layer, args) {
