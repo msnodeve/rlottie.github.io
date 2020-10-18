@@ -11,13 +11,13 @@
                   <div class="pl-3 font-white">x</div>
                 </v-col>
                 <v-col cols="4" class="py-0">
-                  <v-text-field v-model="anchorX" solo dense dark hide-details outlined></v-text-field>
+                  <v-text-field type="number" v-model="anchorX" solo dense dark hide-details outlined></v-text-field>
                 </v-col>
                 <v-col cols="8" class="text-left py-0">
                   <div class="pl-3 font-white">y</div>
                 </v-col>
                 <v-col cols="4" class="py-0">
-                  <v-text-field v-model="anchorY" solo dense dark hide-details outlined></v-text-field>
+                  <v-text-field type="number" v-model="anchorY" solo dense dark hide-details outlined></v-text-field>
                 </v-col>
               </v-row>
               <div class="text-left pt-3 font-white">Position</div>
@@ -26,13 +26,13 @@
                   <div class="pl-3 font-white">x</div>
                 </v-col>
                 <v-col cols="4" class="py-0">
-                  <v-text-field v-model="positionX" solo dense dark hide-details outlined></v-text-field>
+                  <v-text-field type="number" v-model="positionX" solo dense dark hide-details outlined></v-text-field>
                 </v-col>
                 <v-col cols="8" class="text-left py-0">
                   <div class="pl-3 font-white">y</div>
                 </v-col>
                 <v-col cols="4" class="py-0">
-                  <v-text-field v-model="positionY" solo dense dark hide-details outlined></v-text-field>
+                  <v-text-field type="number" v-model="positionY" solo dense dark hide-details outlined></v-text-field>
                 </v-col>
               </v-row>
               <div class="text-left pt-3 font-white">Scale</div>
@@ -41,13 +41,21 @@
                   <div class="pl-3 font-white">width</div>
                 </v-col>
                 <v-col cols="4" class="py-0">
-                  <v-text-field v-model="scaleWidth" solo dense dark hide-details outlined></v-text-field>
+                  <v-text-field type="number" v-model="scaleWidth" solo dense dark hide-details outlined></v-text-field>
                 </v-col>
                 <v-col cols="8" class="text-left py-0">
                   <div class="pl-3 font-white">height</div>
                 </v-col>
                 <v-col cols="4" class="py-0">
-                  <v-text-field v-model="scaleHeight" solo dense dark hide-details outlined></v-text-field>
+                  <v-text-field
+                    type="number"
+                    v-model="scaleHeight"
+                    solo
+                    dense
+                    dark
+                    hide-details
+                    outlined
+                  ></v-text-field>
                 </v-col>
               </v-row>
               <v-row class="pt-5">
@@ -253,6 +261,7 @@ module.exports = {
       },
       set(scaleWidth) {
         if (this.selectedLayer) {
+          if (!scaleWidth) scaleWidth = 0;
           this.selectedLayer.scaleWidth = scaleWidth;
           this.setTrScale({
             w: this.selectedLayer.scaleWidth,
@@ -277,6 +286,7 @@ module.exports = {
         }
       },
       set(scaleHeight) {
+        if (!scaleHeight) scaleHeight = 0;
         if (this.selectedLayer) {
           this.selectedLayer.scaleHeight = scaleHeight;
           this.setTrScale({
