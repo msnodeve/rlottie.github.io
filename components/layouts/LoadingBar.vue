@@ -129,14 +129,6 @@ module.exports = {
       } else if (e.ctrlKey && e.which == 82) {
         // Reverse and Play : Ctrl + R
         self.isReverse = !self.isReverse;
-      } else if (e.ctrlKey && e.shiftKey && e.which == 90) {
-        // Forward frame : Ctrl + Shift + Z
-        e.preventDefault();
-        self.moveNext();
-      } else if (e.ctrlKey && e.which == 90) {
-        // Backward frame : Ctrl + Z
-        e.preventDefault();
-        self.movePrev();
       } else if (e.ctrlKey && e.which == 66) {
         // canvas border line : Ctrl + B
         self.isBorder = !self.isBorder;
