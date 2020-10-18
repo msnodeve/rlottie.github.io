@@ -5,6 +5,7 @@
     class="header"
   >
     <div style="width:23rem">
+    <!-- Logo -->
     <v-row class="pl-3" align="center">
       <v-img
         class="cursor-pointer"
@@ -21,6 +22,7 @@
       </v-toolbar-title>
     </v-row>
     </div>
+    <!-- Mockup -->
     <v-spacer align="center">
       <v-btn 
         v-for="(item, index) in mockUpList" :key="index"
@@ -30,8 +32,8 @@
         <v-icon dark> {{ item }} </v-icon>
       </v-btn>
     </v-spacer>
-
-    <div style="width: 330px" align="center">
+    <!-- New file, Export -->
+    <div style="width: 245px" align="left">
       <v-tooltip bottom class="tooltip-btn">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -47,7 +49,7 @@
           </v-btn>
           <input type="file" id="file-selector" accept=".json" ref="json" />
         </template>
-        <span> upload New JSON File (Ctrl + O) </span>
+        <span> open New JSON File (Ctrl + O) </span>
       </v-tooltip>
       <v-tooltip bottom class="tooltip-btn">
         <template v-slot:activator="{ on, attrs }">
@@ -67,6 +69,65 @@
         <span> export Json File (Ctrl + S) </span>
       </v-tooltip>
     </div>
+    <!-- Shortcut -->
+    <v-dialog
+      v-model="dialog"
+      max-width="360"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-tooltip
+          bottom
+          class="tooltip-btn"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              fab
+              dark
+              height="25"
+              width="25"
+              outlined
+              v-bind="attrs"
+              v-on="on"
+              @click="dialog=true"
+            >
+              <span style="font-size:16px;">?</span>
+            </v-btn>
+          </template>
+          <span>guide for Shortcut key</span>
+        </v-tooltip>
+      </template>
+      <v-card color="rgb(240,240,240)">
+        <v-card-title class="headline">
+          Shortcut Keys
+        </v-card-title>
+        <v-card-text class="py-0">
+          <ol>
+            <li v-for="(shorCut, index) in shortCutList" :key="index">
+              <v-row>
+                <v-col class="ma-0 pa-0 px-3" style="min-width:170px;">
+                 {{shorCut.function}}
+                </v-col>
+                <v-col class="ma-0 pa-0 px-3" style="min-width:100px;">
+                  : {{shorCut.key}}
+                </v-col>
+              </v-row>
+            </li>
+          </ol>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="rgb(111,60,229)"
+            text
+            @click="dialog = false"
+          >
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app-bar>
 </template>
 
@@ -76,7 +137,17 @@ module.exports = {
   props: ['left'],
   data() {
     return {
-      mockUpList: ['mdi-square-off-outline', 'mdi-cellphone-android', 'mdi-watch']
+      mockUpList: ['mdi-square-off-outline', 'mdi-cellphone-android', 'mdi-watch'],
+      dialog: false,
+      shortCutList: [
+        { function: 'Pause and Play', key: 'Space' },
+        { function: 'Open new Json file', key: 'Ctrl + O' },
+        { function: 'Save to Json file', key: ' Ctrl + S' },
+        { function: 'Reverse and Play', key: 'Ctrl + R' },
+        { function: 'Undo', key: 'Ctrl + Z' },
+        { function: 'Redo', key: 'Ctrl + Shift + Z' },
+        { function: 'Canvas Border', key: 'Ctrl + B' },
+      ]
     };
   },
   methods: {
@@ -129,7 +200,7 @@ module.exports = {
         // Save to Json file
         self.exportJson();
       } else if (e.ctrlKey && e.which == 79) {
-        // Upload Json file
+        // Open Json file
         self.clickToUploadJson();
       }
     });
@@ -187,5 +258,9 @@ module.exports = {
 }
 .v-toolbar__content {
   height: 100% !important;
+}
+.v-card__text {
+  font-weight: 500;
+  font-size: 16px;
 }
 </style>
