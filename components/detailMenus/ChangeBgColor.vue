@@ -14,7 +14,7 @@
               flat
               dark
               width="285"
-              v-model="color"
+              v-model="bgColor"
             />
           </v-col>
         </v-row>
@@ -58,8 +58,6 @@ module.exports = {
   data() {
     return {
       backgroundImgFlag: false,
-      rgba: { r: 255, g: 255, b: 255 },
-      type: 'rgba',
       isTransition: false,
     };
   },
@@ -95,8 +93,7 @@ module.exports = {
 
       var img = document.createElement('img');
       img.id = 'background';
-      img.style =
-        'max-height:650px; max-width: 90%; margin-left: auto; margin-right: auto; display: block;';
+      img.style = 'max-height:650px; max-width: 90%; margin-left: auto; margin-right: auto; display: block;';
       var reader = new FileReader();
       reader.onload = (function (aImg) {
         return function (e) {
@@ -111,36 +108,15 @@ module.exports = {
     },
   },
   computed: {
-    color: {
+    bgColor: {
       get() {
-        return this[this.type];
+        return this.$store.getters.bgColor;
       },
-      set(v) {
-        this[this.type] = v;
-      },
-    },
-    showColor() {
-      if (typeof this.color === 'string') {
-        return this.color;
+      set(rgb){
+        this.$store.commit('setBgColor',rgb);
+        const {r,g,b} = rgb
+        document.getElementById('content').style.backgroundColor = `rgb(${r},${g},${b})`;
       }
-      return JSON.stringify(
-        Object.keys(this.color).reduce((color, key) => {
-          color[key] = Number(this.color[key].toFixed(2));
-          return color;
-        }, {}),
-        null,
-        2,
-      );
-    },
-  },
-  watch: {
-    rgba() {
-      const r = this.rgba.r;
-      const g = this.rgba.g;
-      const b = this.rgba.b;
-      document.getElementById(
-        'content',
-      ).style.backgroundColor = `rgba(${r},${g},${b})`;
     },
   },
   mounted() {
@@ -151,11 +127,6 @@ module.exports = {
     } else {
       this.backgroundImgFlag = false;
     }
-    let rgbValue = document.getElementById('content').style.backgroundColor;
-    const r = rgbValue.split(', ')[0].split('(')[1];
-    const g = rgbValue.split(', ')[1];
-    const b = rgbValue.split(', ')[2].slice(0, -1);
-    this.rgba = { r: r, g: g, b: b };
   },
 };
 </script>

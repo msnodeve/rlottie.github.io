@@ -4,74 +4,63 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width height=device-height" />
     <meta name="description" content="rlottie viewer" />
-    <meta
-      name="keywords"
-      content="lottie, rlottie, lottie viewer, rlottie viewer"
-    />
+    <meta name="keywords" content="lottie, rlottie, lottie viewer, rlottie viewer"/>
     <meta name="author" content="Subhransu" />
     <title>rlottie viewer</title>
     <link rel="stylesheet" href="style.css" />
-    <script type="text/javascript" src="dragresize.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
-      rel="stylesheet"
-    />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
-    />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
-    />
+    <script src="main.js"></script>
+    <!-- External Library -->
+    <script src="gif.js"></script>
+    <script type="text/javascript" src="dragresize.js"></script>
+    <!-- Vue, Vuex -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.5.1/vuex.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"/>
+    <!-- Vuetify -->
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"/>
   </head>
 
   <body>
     <div id="app">
       <v-app>
         <v-main class="main-window">
-          <upper-bar></upper-bar>
+          <!-- upper bar -->
+          <upper-bar class="upper-bar"></upper-bar>
+          <!-- left bar component : navigation -->
           <left-bar
-            @child-event="setHeight"
             :selectedmenu="selectedMenu"
-            @menuclicked="ChangeMenu"
-            style="height: 95%"
+            @menuclicked="changeMenu"
+            class="left-bar"
           ></left-bar>
+          <!-- left detail component : manage detail properties -->
           <left-bar-detail
-            class="setScroll"
             :canvas-size="canvasSize"
             :selectedmenu="selectedMenu"
-            v-if="activeDetailBar"
-            @close-sidebar="CloseMenuBar"
-            style="height: 95%"
+            class="left-bar-detail"
           ></left-bar-detail>
-          <right-bar style="height: 95%"></right-bar>
-          <info-bar></info-bar>
+          <!-- right bar component : manage key path -->
+          <right-bar class="right-bar"></right-bar>
+          <!-- info bar component : show file name, manage redo and undo -->
+          <info-bar class="info-bar"></info-bar>
+          <!-- main canvas -->
           <div
             id="content"
             class="content"
-            style="height: 80%; background-color: #f0f0f0"
             ref="content"
           >
-            <!-- 배경담는 div -->
             <div id="img-background"></div>
-            <!-- cnavas에 직접 drsElement와 drsMoveHandle을 주면 크기조절이 불가능해서 div로 감싸줘서 이걸 움직이도록 -->
+            <!-- wrapper box for drag -->
             <div
               v-on:mouseover.left="changeSize"
-              id="canvasBox"
+              id="canvas-box"
               class="drsElement drsMoveHandle"
               :style="{'left': initCanvasLeft+'px', 'top': initCanvasTop+'px', 'width': '550px', 'height': '550px', 'borderStyle':'none', 'background-color':'rgba(255,255,255,0)'}"
             >
@@ -86,32 +75,27 @@
               </canvas>
             </div>
           </div>
-          <v-spacer></v-spacer>
-          <loading-bar @pointer="setPointer" style="height: 10%"></loading-bar>
-          <snapshot-box
+          <!-- loading bar component -->
+          <loading-bar 
+            @pointer="setPointer"
+            class="loading-bar"
+          ></loading-bar>
+          <!-- thumbnail component -->
+          <thumbnail-preview
             v-show="activeSnapShot"
-            :pointx="pointx"
-            :pointy="pointy"
-          ></snapshot-box>
+            :pointx="pointX"
+            :pointy="pointY"
+          ></thumbnail-preview>
         </v-main>
       </v-app>
     </div>
 
-    <script src="main.js"></script>
-    <script src="gif.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
-    <script src="https://unpkg.com/http-vue-loader"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.5.1/vuex.min.js"></script>
-
     <script>
       Vue.use(httpVueLoader);
       Vue.use(Vuex);
-      var EventBus = new Vue();
 
       // Drag and Resize
-      var dragresize = new DragResize('dragresize', {
+      var dragresize = new DragResize("dragresize", {
         minWidth: 10,
         minHeight: 10,
         minLeft: 64,
@@ -120,40 +104,41 @@
         maxTop: 830,
       });
       dragresize.isElement = function (elm) {
-        if (elm.className && elm.className.indexOf('drsElement') > -1)
+        if (elm.className && elm.className.indexOf("drsElement") > -1){
           return true;
+        }
       };
       dragresize.isHandle = function (elm) {
-        if (elm.className && elm.className.indexOf('drsMoveHandle') > -1)
+        if (elm.className && elm.className.indexOf("drsMoveHandle") > -1){
           return true;
+        }
       };
       dragresize.apply(document);
 
       // Import store
-      var script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = 'store/index.js';
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "store/index.js";
       document.head.appendChild(script);
 
+      //Import Vue
       script.onload = (_) => {
         new Vue({
-          el: '#app',
+          el: "#app",
           vuetify: new Vuetify(),
           store,
           components: {
-            'loading-bar': 'url:./components/loading-bar.vue',
-            'left-bar': 'url:./components/left-bar.vue',
-            'left-bar-detail': 'url:./components/left-bar-detail.vue',
-            'info-bar': 'url:./components/info-bar.vue',
-            'right-bar': 'url:./components/right-bar.vue',
-            'snapshot-box': 'url:./components/snapshot.vue',
-            'upper-bar': 'url:./components/upper-bar.vue',
+            "info-bar": "url:./components/info-bar.vue",
+            "left-bar": "url:./components/left-bar.vue",
+            "left-bar-detail": "url:./components/left-bar-detail.vue",
+            "loading-bar": "url:./components/loading-bar.vue",
+            "right-bar": "url:./components/right-bar.vue",
+            "thumbnail-preview": "url:./components/snapshot.vue",
+            "upper-bar": "url:./components/upper-bar.vue",
           },
           data() {
             return {
-              activeDetailBar: true,
               selectedMenu: 1,
-              leftHeight: 0,
               canvasSize: {
                 height: 550,
                 width: 550,
@@ -161,42 +146,32 @@
               initialPosition: (window.innerWidth - 550) / 2,
               initCanvasTop: 0,
               initCanvasLeft: 0,
-              pointx: 0,
-              pointy: 0,
+              pointX: 0,
+              pointY: 0,
               activeSnapShot: false,
             };
           },
           methods: {
-            ChangeMenu(i) {
+            changeMenu(i) {
               this.selectedMenu = i;
-            },
-            CloseMenuBar() {
-              this.activeDetailBar = false;
-              this.selectedMenu = 0;
-            },
-            setHeight(val) {
-              this.leftHeight = val - 104;
             },
             changeSize() {
               this.canvasSize.height = Number(
-                document.getElementById('canvasBox').style.height.slice(0, -2),
+                document.getElementById("canvas-box").style.height.slice(0, -2)
               );
               this.canvasSize.width = Number(
-                document.getElementById('canvasBox').style.width.slice(0, -2),
+                document.getElementById("canvas-box").style.width.slice(0, -2)
               );
             },
             setPointer(pointer) {
-              this.pointx = pointer.x - 75;
-              this.pointy = pointer.y - 180;
+              this.pointX = pointer.x - 75;
+              this.pointY = pointer.y - 180;
               this.activeSnapShot = pointer.isSnapShot;
             },
           },
           mounted() {
             this.initCanvasLeft = (window.innerWidth - 550) / 2;
             this.initCanvasTop = (window.innerHeight - 550) / 2;
-            EventBus.$on('initLayers', ({ layers }) => {
-              store.commit('setLayers', layers);
-            });
           },
         });
       };
@@ -206,6 +181,9 @@
     .main-window {
       width: 100%;
       height: 800px;
+    }
+    #app {
+      overflow: hidden;
     }
     ::-webkit-scrollbar {
       width: 8px;
@@ -229,9 +207,6 @@
       background: rgb(41, 44, 49, 0.3);
       -webkit-border-radius: 8px;
       border-radius: 8px;
-    }
-    #app {
-      overflow: hidden;
     }
   </style>
 </html>

@@ -1,8 +1,8 @@
 <template>
-  <v-footer color="#293039" class="font-weight-medium" ref="footer">
+  <v-footer color="#293039" class="font-weight-medium py-0" ref="footer">
     <div class="content-width-100">
       <v-row class="ma-0 pa-0">
-        <v-col cols="12">
+        <v-col cols="12" class="py-0">
           <v-row class="ma-0 pa-0">
             <v-col cols="1"></v-col>
             <v-col cols="1" class="ma-0 pa-0" align="right">
@@ -186,9 +186,9 @@ module.exports = {
     },
     changeCanvasBorderColor() {
       if (!this.isBorder) {
-        document.getElementById('canvasBox').style.borderStyle = 'none';
+        document.getElementById('canvas-box').style.borderStyle = 'none';
       } else {
-        document.getElementById('canvasBox').style.border = '1px solid black';
+        document.getElementById('canvas-box').style.border = '1px solid black';
       }
     },
   },

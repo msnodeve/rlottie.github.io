@@ -73,9 +73,6 @@ module.exports = {
   mounted() {
     var self = this;
     var setHistoryState = this.setHistoryState;
-    EventBus.$on('setHistoryState', function (data) {
-      setHistoryState(data);
-    });
 
     document.addEventListener(
       'keydown',

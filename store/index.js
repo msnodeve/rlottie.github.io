@@ -13,6 +13,8 @@ var store = new Vuex.Store({
     frameRate: 1,
 
     snapShotFrame: 0,
+    fileName: '',
+    bgColor: { r: 240, g: 240, b: 240 },
   },
   getters: {
     layers(state) {
@@ -58,6 +60,12 @@ var store = new Vuex.Store({
     snapShotFrame(state) {
       return state.snapShotFrame;
     },
+    fileName(state) {
+      return state.fileName;
+    },
+    bgColor(state) {
+      return state.bgColor;
+    }
   },
   mutations: {
     setLayers(state, payload) {
@@ -87,6 +95,12 @@ var store = new Vuex.Store({
     setSnapShotFrame(state, payload) {
       state.snapShotFrame = payload;
     },
+    setFileName(state, payload) {
+      state.fileName = payload;
+    },
+    setBgColor(state, payload){
+      state.bgColor = payload;
+    }
   },
   actions: {
     reloadCanvas(context) {
