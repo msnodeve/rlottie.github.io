@@ -9,10 +9,10 @@
     <title>rlottie viewer</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="main.js"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
     <!-- External Library -->
-    <script src="gif.js"></script>
-    <script type="text/javascript" src="dragresize.js"></script>
+    <script type="text/javascript" src="./js/gif/gif.js"></script>
+    <script type="text/javascript" src="./js/dragresize/dragresize.js"></script>
     <!-- Vue, Vuex -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
@@ -128,13 +128,13 @@
           vuetify: new Vuetify(),
           store,
           components: {
-            "info-bar": "url:./components/info-bar.vue",
-            "left-bar": "url:./components/left-bar.vue",
-            "left-bar-detail": "url:./components/left-bar-detail.vue",
-            "loading-bar": "url:./components/loading-bar.vue",
-            "right-bar": "url:./components/right-bar.vue",
-            "thumbnail-preview": "url:./components/thumbnail-preview.vue",
-            "upper-bar": "url:./components/upper-bar.vue",
+            "info-bar": "url:./components/layouts/InfoBar.vue",
+            "left-bar": "url:./components/layouts/LeftBar.vue",
+            "left-bar-detail": "url:./components/layouts/LeftBarDetail.vue",
+            "loading-bar": "url:./components/layouts/LoadingBar.vue",
+            "right-bar": "url:./components/layouts/RightBar.vue",
+            "thumbnail-preview": "url:./components/utils/ThumbnailPreview.vue",
+            "upper-bar": "url:./components/layouts/UpperBar.vue",
           },
           data() {
             return {

@@ -28,11 +28,11 @@
 module.exports = {
   name: 'left-bar-detail',
   components: {
-    'change-bg-color': 'url:./detailMenus/ChangeBgColor.vue',
-    'change-canvas': 'url:./detailMenus/ChangeCanvas.vue',
-    'export-gif': 'url:./detailMenus/ExportGif.vue',
-    'shape-property': 'url:./detailMenus/ShapeProperty.vue',
-    'transform-property': 'url:./detailMenus/TransformProperty.vue',
+    'change-bg-color': 'url:../detailMenus/ChangeBgColor.vue',
+    'change-canvas': 'url:../detailMenus/ChangeCanvas.vue',
+    'export-gif': 'url:../detailMenus/ExportGif.vue',
+    'shape-property': 'url:../detailMenus/ShapeProperty.vue',
+    'transform-property': 'url:../detailMenus/TransformProperty.vue',
   },
   props: {
     selectedmenu: Number,

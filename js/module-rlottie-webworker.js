@@ -16,9 +16,7 @@ var RLottieModule = (function () {
     obj.pendingFrame = false;
 
     obj.setAttribute = function (frameCount) {
-      // console.log(`set Attribute called ${frameCount}`);
       obj.frameCount = frameCount;
-      // console.log(obj.frameCount);
     }
     obj.result = function (width, height, data) {
       if (width == obj.canvas.width &&
@@ -39,7 +37,6 @@ var RLottieModule = (function () {
         mainLoop();
     }
     obj.renderRequest = function () {
-         //console.log(obj.curFrame);
          obj.pendingFrame = false;
          rlottie_worker.sendQuery('render', obj.curFrame, obj.canvas.width, obj.canvas.height);
     }

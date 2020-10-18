@@ -196,7 +196,6 @@ function Layers(RLottieModule, jsString) {
       let key = this.history[i]['keypath'];
       let prop = this.history[i]['property'];
       let args = this.history[i]['args'];
-      console.log(key, prop, args);
       this.setProperty(key, prop, args);
     }
 
@@ -376,7 +375,6 @@ function Layers(RLottieModule, jsString) {
           break;
         case 'TrRotation':
           if (layer.ty == 'tr') {
-            console.log(keypath);
             changeTrRotation(layer, args);
           }
           break;

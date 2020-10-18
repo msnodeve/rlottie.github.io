@@ -2,7 +2,7 @@ function setup() {
   var head = document.head;
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src = 'rlottie-wasm.js';
+  script.src = './js/rlottie-wasm.js';
   head.appendChild(script);
 
   script.onload = (_) => {

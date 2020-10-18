@@ -1,4 +1,4 @@
-importScripts('rlottie-wasm.js');
+importScripts('./js/rlottie-wasm.js');
 
 var RLottieWasm = (function () {
     // create a object;
