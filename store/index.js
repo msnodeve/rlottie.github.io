@@ -134,12 +134,7 @@ var store = new Vuex.Store({
     setTrPosition(context, payload) {
       const { layers, selectedKeypath } = context.getters;
       const { x, y } = payload;
-      console.log(x, y);
-      layers.RLottieModule.trPosition(
-        selectedKeypath,
-        parseInt(x),
-        parseInt(y),
-      );
+      layers.RLottieModule.trPosition(selectedKeypath, parseInt(x), parseInt(y));
     },
 
     setTrScale(context, payload) {

@@ -9,13 +9,7 @@
             </v-col>
           </v-row>
           <v-row align="center" justify="center">
-            <v-color-picker
-              class="bg-transparent"
-              v-model="color"
-              flat
-              dark
-              width="285"
-            />
+            <v-color-picker class="bg-transparent" v-model="color" flat dark width="285" />
           </v-row>
           <v-row class="pt-5 px-5" align="center">
             <v-col cols="8" class="py-0">

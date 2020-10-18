@@ -28,14 +28,14 @@ function Layers(RLottieModule, jsString) {
         hexa: '#FFFFFFFF',
         hsla: {
           h: 0,
-          s: 0,
-          l: 0,
+          s: 1,
+          l: 1,
           a: 1,
         },
         hsva: {
           h: 0,
           s: 0,
-          v: 0,
+          v: 1,
           a: 1,
         },
         hue: 0,
@@ -193,6 +193,7 @@ function Layers(RLottieModule, jsString) {
       let key = this.history[i]['keypath'];
       let prop = this.history[i]['property'];
       let args = this.history[i]['args'];
+      console.log(key, prop, args);
       this.setProperty(key, prop, args);
     }
 
@@ -254,14 +255,14 @@ function Layers(RLottieModule, jsString) {
     store.dispatch('highlightingLayer');
   };
 
-  this.changeColor = function (layer, args) {
-    if (!layer.c) {
+  changeColor = function (layer, args) {
+    if (layer.c == null) {
       layer.c = {
         a: 0,
         k: [args.r, args.g, args.b, 1],
       };
     }
-    if (!layer.o) {
+    if (layer.o == null) {
       layer.o = {
         a: 0,
         k: args.a,
@@ -271,8 +272,8 @@ function Layers(RLottieModule, jsString) {
     layer.o.k = args.a;
   };
 
-  this.changeWidth = function (layer, args) {
-    if (!layer.w) {
+  changeWidth = function (layer, args) {
+    if (layer.w == null) {
       layer.w = {
         a: 0,
         k: args.strokeWidth,
@@ -281,31 +282,39 @@ function Layers(RLottieModule, jsString) {
     layer.w.k = args.strokeWidth;
   };
 
-  this.changeTrAnchor = function (layer, args) {
+  changeTrAnchor = function (layer, args) {
+    // if (layer.a && layer.a.k) {
+    //   layer.a.k = [parseFloat(layer.a.k[0]) + args.anchorX, parseFloat(layer.a.k[1]) + args.anchorY];
+    // }
     if (layer.a && layer.a.k) {
-      layer.a.k = [parseInt(layer.a.k[0]) + args.anchorX, parseInt(layer.a.k[1]) + args.anchorY];
+      layer.a.k[0] = parseFloat(layer.a.k[0]) + args.anchorX;
+      layer.a.k[1] = parseFloat(layer.a.k[1]) + args.anchorY;
     }
   };
 
-  this.changeTrPosition = function (layer, args) {
+  changeTrPosition = function (layer, args) {
     if (layer.p && layer.p.k) {
-      layer.p.k = [parseInt(layer.a.k[0]) + args.positionX, parseInt(layer.a.k[1]) + args.positionY];
+      layer.p.k[0] = parseFloat(layer.p.k[0]) + args.positionX;
+      layer.p.k[1] = parseFloat(layer.p.k[1]) + args.positionY;
     }
   };
 
-  this.changeTrRotation = function (layer, args) {
-    if (layer.r && layer.r.k) {
+  changeTrRotation = function (layer, args) {
+    if (layer.r != null && layer.r.k != null) {
       layer.r.k = (parseInt(layer.r.k) + args.rotation) % 360;
     }
   };
 
-  this.changeTrScale = function (layer, args) {
+  changeTrScale = function (layer, args) {
     if (layer.s && layer.s.k) {
-      layer.s.k = [(parseInt(layer.s.k[0]) * args.scaleWidth) / 100, (parseInt(layer.s.k[1]) * args.scaleHeight) / 100];
+      layer.s.k = [
+        (parseFloat(layer.s.k[0]) * args.scaleWidth) / 100,
+        (parseFloat(layer.s.k[1]) * args.scaleHeight) / 100,
+      ];
     }
   };
 
-  this.changeTrOpacity = function (layer, args) {
+  changeTrOpacity = function (layer, args) {
     if (layer.o && layer.o.k) {
       layer.o = {
         a: 0,
@@ -314,59 +323,74 @@ function Layers(RLottieModule, jsString) {
     }
   };
 
-  this.changeProperty = function (layer, keypath, property, args, flag) {
-    if (keypath.length == 0 || keypath[0] == '**') {
+  this.changeProperty = function (layer, names, property, args, flag, keypath) {
+    if (names.length == 0 || names[0] == '**') {
       flag = true;
     }
 
-    if (flag) {
+    if (layer.nm) {
+      if (keypath) {
+        keypath = keypath + '.' + layer.nm;
+      } else {
+        keypath = layer.nm;
+      }
+    }
+
+    if (this.savedLayers[keypath] == null) {
+      this.savedLayers[keypath] = [];
+    }
+
+    if (flag && this.savedLayers[keypath][property] == null) {
+      this.savedLayers[keypath][property] = 1;
       switch (property) {
         case 'ShapeColor':
           if (layer.ty == 'fl' || layer.ty == 'st') {
-            this.changeColor(layer, args);
+            changeColor(layer, args);
           }
           break;
         case 'StrokeWidth':
           if (layer.ty == 'st') {
-            this.changeWidth(layer, args);
+            changeWidth(layer, args);
           }
           break;
         case 'TrAnchor':
           if (layer.ty == 'tr') {
-            this.changeTrAnchor(layer, args);
+            changeTrAnchor(layer, args);
           }
           break;
         case 'TrPosition':
           if (layer.ty == 'tr') {
-            this.changeTrPosition(layer, args);
+            changeTrPosition(layer, args);
           }
           break;
         case 'TrRotation':
           if (layer.ty == 'tr') {
-            this.changeTrRotation(layer, args);
+            console.log(keypath);
+            changeTrRotation(layer, args);
           }
           break;
         case 'TrScale':
           if (layer.ty == 'tr') {
-            this.changeTrScale(layer, args);
+            changeTrScale(layer, args);
           }
           break;
         case 'TrOpacity':
           if (layer.ty == 'tr') {
-            this.changeTrOpacity(layer, args);
+            changeTrOpacity(layer, args);
           }
           break;
       }
     }
+
     for (let i in layer) {
-      if (layer[i].nm && (keypath[0] == '**' || layer[i] == keypath[0])) {
-        this.changeProperty(layer[i], keypath.slice(keypath[0] != '**'), property, args, flag);
+      if (layer[i].nm && (names[0] == '**' || layer[i] == names[0])) {
+        this.changeProperty(layer[i], names.slice(names[0] != '**'), property, args, flag, keypath);
       }
 
       if (Array.isArray(layer[i])) {
         for (let j in layer[i])
-          if (layer[i][j].nm == keypath[0] || keypath[0] == '**')
-            this.changeProperty(layer[i][j], keypath.slice(keypath[0] != '**'), property, args, flag);
+          if (layer[i][j].nm == names[0] || names[0] == '**')
+            this.changeProperty(layer[i][j], names.slice(names[0] != '**'), property, args, flag, keypath);
       }
     }
   };
@@ -376,7 +400,7 @@ function Layers(RLottieModule, jsString) {
     this.savedLayers = [];
     for (let i = this.cur; i >= 0; i--) {
       var { keypath, property, args } = this.history[i];
-      this.changeProperty(saveObject, keypath.split('.'), property, args, false);
+      this.changeProperty(saveObject, keypath.split('.'), property, args, false, '');
     }
 
     var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(saveObject));
