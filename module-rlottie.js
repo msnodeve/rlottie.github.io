@@ -52,6 +52,7 @@ var RLottieModule = (function () {
     obj.layers = new Layers(this, obj.lottieHandle.get_basic_resource());
     store.commit('setLayers', obj.layers);
     store.commit('setFrameCount', obj.frameCount);
+    store.commit('setFileName', obj.fileName);
     mainLoop();
   };
 
@@ -212,6 +213,7 @@ function handleFiles(files) {
 
       read.onload = function (e) {
         RLottieModule.fileName = e.target.fileName;
+        store.commit('setFileName', RLottieModule.fileName);
       };
 
       read.readAsText(f);

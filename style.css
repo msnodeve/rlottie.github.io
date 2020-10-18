@@ -267,3 +267,30 @@ body {
 .text-center {
   text-align: center;
 }
+
+.upload-btn {
+  border-bottom: 1px solid grey;
+  align-content: center;
+}
+
+.activate-btn {
+  border-left: 4px solid #01c3cc;
+}
+
+.tooltip-btn {
+  z-index: 100;
+}
+
+.card-title {
+  color: #2b2b2b;
+}
+
+.card-gif {
+  position: absolute;
+  transform: translateY(-110px);
+}
+
+#file-selector {
+  display: none;
+  cursor: pointer;
+}

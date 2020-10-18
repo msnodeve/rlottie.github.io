@@ -31,7 +31,7 @@
     />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
     />
     <meta
       name="viewport"
@@ -43,11 +43,12 @@
     <div id="app">
       <v-app>
         <v-main class="main-window">
-          <upper-bar :left="initCanvasLeft"></upper-bar>
+          <upper-bar></upper-bar>
           <left-bar
             @child-event="setHeight"
             :selectedmenu="selectedMenu"
             @menuclicked="ChangeMenu"
+            style="height: 95%"
           ></left-bar>
           <left-bar-detail
             class="setScroll"
@@ -55,13 +56,14 @@
             :selectedmenu="selectedMenu"
             v-if="activeDetailBar"
             @close-sidebar="CloseMenuBar"
-            :height="leftHeight"
+            style="height: 95%"
           ></left-bar-detail>
-          <right-bar :height="leftHeight"></right-bar>
+          <right-bar style="height: 95%"></right-bar>
+          <info-bar></info-bar>
           <div
             id="content"
             class="content"
-            style="height: 90%; background-color: #fafafa"
+            style="height: 80%; background-color: #f0f0f0"
             ref="content"
           >
             <!-- 배경담는 div -->
@@ -71,7 +73,7 @@
               v-on:mouseover.left="changeSize"
               id="canvasBox"
               class="drsElement drsMoveHandle"
-              :style="{'left': initCanvasLeft+'px', 'top': initCanvasTop+'px', 'width': '550px', 'height': '550px', 'border-style': '10px solid red', 'background-color':'rgba(255,255,255,0)'}"
+              :style="{'left': initCanvasLeft+'px', 'top': initCanvasTop+'px', 'width': '550px', 'height': '550px', 'borderStyle':'none', 'background-color':'rgba(255,255,255,0)'}"
             >
               <canvas
                 id="myCanvas"
@@ -85,12 +87,12 @@
             </div>
           </div>
           <v-spacer></v-spacer>
-          <loading-bar @pointer="setPointer"></loading-bar>
-          <snapshot
+          <loading-bar @pointer="setPointer" style="height: 10%"></loading-bar>
+          <snapshot-box
             v-show="activeSnapShot"
             :pointx="pointx"
             :pointy="pointy"
-          ></snapshot>
+          ></snapshot-box>
         </v-main>
       </v-app>
     </div>
@@ -142,12 +144,10 @@
             'loading-bar': 'url:./components/loading-bar.vue',
             'left-bar': 'url:./components/left-bar.vue',
             'left-bar-detail': 'url:./components/left-bar-detail.vue',
+            'info-bar': 'url:./components/info-bar.vue',
             'right-bar': 'url:./components/right-bar.vue',
-            snapshot: 'url:./components/snapshot.vue',
+            'snapshot-box': 'url:./components/snapshot.vue',
             'upper-bar': 'url:./components/upper-bar.vue',
-          },
-          computed: {
-            ...Vuex.mapGetters(['getLayers']),
           },
           data() {
             return {
@@ -168,13 +168,7 @@
           },
           methods: {
             ChangeMenu(i) {
-              if (this.selectedMenu == i) {
-                this.activeDetailBar = false;
-                this.selectedMenu = 0;
-              } else {
-                this.activeDetailBar = true;
-                this.selectedMenu = i;
-              }
+              this.selectedMenu = i;
             },
             CloseMenuBar() {
               this.activeDetailBar = false;
@@ -198,8 +192,8 @@
             },
           },
           mounted() {
-            this.initCanvasLeft = (this.$refs.content.clientWidth - 550) / 2;
-            this.initCanvasTop = (this.$refs.content.clientHeight - 550) / 2;
+            this.initCanvasLeft = (window.innerWidth - 550) / 2;
+            this.initCanvasTop = (window.innerHeight - 550) / 2;
             EventBus.$on('initLayers', ({ layers }) => {
               store.commit('setLayers', layers);
             });
@@ -211,8 +205,7 @@
   <style>
     .main-window {
       width: 100%;
-      height: 100%;
-      background-color: #171719;
+      height: 800px;
     }
     ::-webkit-scrollbar {
       width: 8px;
