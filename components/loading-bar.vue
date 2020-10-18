@@ -1,116 +1,47 @@
 <template>
-  <v-footer absolute color="#292c31" class="font-weight-medium" ref="footer">
-    <div class="content-width-100 px-16">
-      <v-row
-        id="snapShot"
-        class="ma-0 pa-0"
-        @mousemove="snapShotFrame($event, true)"
-        @mouseleave="snapShotFrame($event, false)"
-      >
-        <v-slider
-          class="v-slider--active v-slider--focused"
-          :value="curFrame"
-          :min="0"
-          :max="frameCount"
-          @change="gotoFrame"
-          hide-details
-        />
-      </v-row>
-    </div>
-    <div class="content-width-100 px-14">
-      <v-row class="ma-0 pa-0" align="center">
-        <v-col class="py-0 px-2" cols="5">
-          <v-row class="ma-0 pa-0" align="center">
-            <v-btn dark depressed icon large @click="playAndPause">
-              <v-icon color="#ffffff" v-if="playing"> mdi-pause </v-icon>
-              <v-icon color="#ffffff" v-else> mdi-play </v-icon>
-            </v-btn>
-            <v-switch
-              class="ml-12"
-              v-model="isReverse"
-              inset
-              label="Reverse"
-              dark
+  <v-footer color="#293039" class="font-weight-medium" ref="footer">
+    <div class="content-width-100">
+      <v-row class="ma-0 pa-0">
+        <v-col cols="12">
+          <v-row class="ma-0 pa-0">
+            <v-col cols="1"></v-col>
+            <v-col cols="1" class="ma-0 pa-0" align="right">
+              <v-btn dark depressed icon @click="playAndPause">
+                <v-icon color="#ffffff" v-if="playing"> mdi-pause </v-icon>
+                <v-icon color="#ffffff" v-else> mdi-play </v-icon>
+              </v-btn>
+            </v-col>
+            <v-col
+              cols="8"
+              id="snapShot"
+              class="ma-0 pa-0"
+              @mousemove="snapShotFrame($event, true)"
+              @mouseleave="snapShotFrame($event, false)"
+              style="padding-top: 2px !important"
             >
-            </v-switch>
-          </v-row>
-        </v-col>
-        <v-col class="pa-0" cols="7">
-          <v-row class="px-5">
-            <v-col align="end" class="pa-0">
+              <v-slider
+                class="v-slider--active v-slider--focused"
+                :value="curFrame"
+                :min="0"
+                :max="frameCount"
+                @change="gotoFrame"
+                track-color="#f0f0f0"
+                color="grey"
+                hide-details
+              />
+            </v-col>
+            <v-col cols="2" class="ma-0 pa-0" align="center">
               <v-tooltip top open-on-hover close-delay="100">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    class="mr-3"
-                    dark
-                    v-bind="attrs"
-                    v-on="on"
-                    icon
-                    large
-                    :color="isPrev ? 'white' : 'transparent'"
-                    :style="{
-                      cursor: isPrev ? 'pointer' : 'default',
-                    }"
-                    @click="movePrev"
-                  >
-                    <v-icon :color="isPrev ? '#BFC0C2' : '#54565A'" large>
-                      mdi-undo
-                    </v-icon>
+                  <v-btn dark v-bind="attrs" v-on="on" icon @click="isReverse = !isReverse">
+                    <v-icon :color="'white'" dark size="30"> mdi-swap-horizontal </v-icon>
                   </v-btn>
                 </template>
-                <div>
-                  <span>Undo (Ctrl + Z)</span>
-                </div>
+                <span>Reverse(Ctrl + R)</span>
               </v-tooltip>
-              <v-tooltip top open-on-hover close-delay="100">
+              <v-menu top :offset-y="true">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    class="mr-9"
-                    dark
-                    v-bind="attrs"
-                    v-on="on"
-                    icon
-                    large
-                    :color="isNext ? 'white' : 'transparent'"
-                    :style="{
-                      cursor: isNext ? 'pointer' : 'default',
-                    }"
-                    @click="moveNext"
-                  >
-                    <v-icon :color="isNext ? '#BFC0C2' : '#54565A'" large>
-                      mdi-redo
-                    </v-icon>
-                  </v-btn>
-                </template>
-                <span>Redo (Ctrl + Shift + Z)</span>
-              </v-tooltip>
-              <v-tooltip top open-on-hover close-delay="100">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    class="mr-0 mt-1"
-                    dark
-                    v-bind="attrs"
-                    v-on="on"
-                    icon
-                    @click="exportJson()"
-                  >
-                    <v-icon dark size="30">mdi-download</v-icon>
-                  </v-btn>
-                </template>
-                <span>Export JSON(Ctrl + S)</span>
-              </v-tooltip>
-
-              <v-menu top :offset-y="true" :offset-x="true" :left="true">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    dark
-                    :outlined="false"
-                    :depressed="true"
-                    icon
-                    size="30"
-                    v-bind="attrs"
-                    v-on="on"
-                  >
+                  <v-btn dark :outlined="false" :depressed="true" icon size="30" v-bind="attrs" v-on="on">
                     <v-icon dark> mdi-cog </v-icon>
                   </v-btn>
                 </template>
@@ -125,34 +56,17 @@
                     "
                   >
                     <v-list-item-title>
-                      <v-icon
-                        v-if="index === rateSelected"
-                        color="rgba(255,255,255,1)"
-                      >
-                        mdi-check
-                      </v-icon>
-                      <v-icon v-else color="rgba(33, 33, 33, 0)">
-                        mdi-check
-                      </v-icon>
-                      <span style="color: rgba(255, 255, 255, 1)">
-                        &nbsp;&nbsp;{{ item }}
-                      </span>
+                      <v-icon v-if="index === rateSelected" color="rgba(255,255,255,1)"> mdi-check </v-icon>
+                      <v-icon v-else color="rgba(33, 33, 33, 0)"> mdi-check </v-icon>
+                      <span style="color: rgba(255, 255, 255, 1)"> &nbsp;&nbsp;{{ item }} </span>
                     </v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
               <v-tooltip top open-on-hover close-delay="100">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    dark
-                    v-bind="attrs"
-                    v-on="on"
-                    icon
-                    @click="isBorder = !isBorder"
-                  >
-                    <v-icon :color="isBorder ? 'white' : 'grey'" dark size="30">
-                      mdi-crop-square
-                    </v-icon>
+                  <v-btn dark v-bind="attrs" v-on="on" icon @click="isBorder = !isBorder">
+                    <v-icon :color="'white'" dark size="30"> mdi-crop-square </v-icon>
                   </v-btn>
                 </template>
                 <span>Border(Ctrl + B)</span>
@@ -177,7 +91,7 @@ module.exports = {
       speedRates: [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0],
       isPrev: false,
       isNext: false,
-      isBorder: true,
+      isBorder: false,
     };
   },
   watch: {
@@ -193,18 +107,11 @@ module.exports = {
   },
   mounted() {
     var self = this;
-    var setHistoryState = this.setHistoryState;
-
-    EventBus.$on('setHistoryState', function (data) {
-      setHistoryState(data);
-    });
 
     document.addEventListener(
       'keydown',
       function (e) {
-        if (e.ctrlKey && e.which == 83) {
-          e.preventDefault();
-        } else if (e.ctrlKey && e.which == 82) {
+        if (e.ctrlKey && e.which == 82) {
           e.preventDefault();
         } else if (e.ctrlKey && e.which == 79) {
           e.preventDefault();
@@ -220,9 +127,6 @@ module.exports = {
       if (e.which == 32) {
         // Pause and Play : Space
         self.playAndPause();
-      } else if (e.ctrlKey && e.which == 83) {
-        // Save to Json file
-        self.exportJson();
       } else if (e.ctrlKey && e.which == 82) {
         // Reverse and Play : Ctrl + R
         self.isReverse = !self.isReverse;
@@ -280,25 +184,12 @@ module.exports = {
       }
       this.setFrameRate(curFrameRate);
     },
-    setHistoryState(e) {
-      this.isPrev = e.isPrev;
-      this.isNext = e.isNext;
-    },
-    movePrev() {
-      RLottieModule.layers.movePrev();
-    },
-    moveNext() {
-      RLottieModule.layers.moveNext();
-    },
     changeCanvasBorderColor() {
       if (!this.isBorder) {
         document.getElementById('canvasBox').style.borderStyle = 'none';
       } else {
         document.getElementById('canvasBox').style.border = '1px solid black';
       }
-    },
-    exportJson() {
-      RLottieModule.layers.exportLayers();
     },
   },
 };
@@ -326,7 +217,7 @@ module.exports = {
   cursor: pointer;
 }
 .v-footer {
-  min-width: 745px;
+  min-width: 755px;
   z-index: 100;
 }
 .v-row {
