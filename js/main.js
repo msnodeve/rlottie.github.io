@@ -1,5 +1,5 @@
 (function () {
-  var srcs = ['module-rlottie.js', 'layer-tree.js'];
+  var srcs = ['./js/module-rlottie.js', './js/layer-tree.js'];
 
   srcs.forEach((src) => {
     const script = document.createElement('script');
