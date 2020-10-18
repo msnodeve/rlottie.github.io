@@ -223,10 +223,6 @@ function Layers(RLottieModule, jsString) {
   this.setHistoryState = function () {
     store.commit('setHasPrev', this.hasPrev());
     store.commit('setHasNext', this.hasNext());
-    EventBus.$emit('setHistoryState', {
-      isPrev: this.hasPrev(),
-      isNext: this.hasNext(),
-    });
   };
 
   this.hasPrev = function () {
