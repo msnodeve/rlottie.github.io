@@ -96,7 +96,8 @@ var store = new Vuex.Store({
       onSliderDrag(curFrame);
     },
     highlightingLayer(context) {
-      if (context.getters.layers) context.getters.layers.highlighting(context.getters.selectedAllKeypath);
+      const { layers, selectedAllKeypath } = context.getters;
+      if (layers) layers.highlighting(selectedAllKeypath);
     },
     renderSnapShot(context) {
       RLottieModule.renderSnapShot(context.getters.snapShotFrame);
@@ -112,6 +113,46 @@ var store = new Vuex.Store({
       const { layers, selectedKeypath } = context.getters;
 
       layers.RLottieModule.strokeWidth(selectedKeypath, parseInt(payload));
+    },
+
+    setTrAnchor(context, payload) {
+      const { layers, selectedKeypath } = context.getters;
+      const { x, y } = payload;
+
+      layers.RLottieModule.trAnchor(selectedKeypath, parseInt(x), parseInt(y));
+    },
+
+    setTrPosition(context, payload) {
+      const { layers, selectedKeypath } = context.getters;
+      const { x, y } = payload;
+      console.log(x, y);
+      layers.RLottieModule.trPosition(selectedKeypath, parseInt(x), parseInt(y));
+    },
+
+    setTrScale(context, payload) {
+      const { layers, selectedKeypath } = context.getters;
+      const { w, h } = payload;
+
+      layers.RLottieModule.trScale(selectedKeypath, parseInt(w), parseInt(h));
+    },
+
+    setTrRotation(context, payload) {
+      const { layers, selectedKeypath } = context.getters;
+
+      layers.RLottieModule.trRotation(selectedKeypath, parseInt(payload));
+    },
+
+    setTrOpacity(context, payload) {
+      const { layers, selectedKeypath } = context.getters;
+
+      layers.RLottieModule.trOpacity(selectedKeypath, parseInt(payload));
+    },
+
+    pushHistory(context, payload) {
+      const { layers, selectedKeypath } = context.getters;
+      const { property, args } = payload;
+
+      layers.insert(selectedKeypath, property, args);
     },
   },
 });

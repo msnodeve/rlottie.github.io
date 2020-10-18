@@ -19,7 +19,7 @@
         </v-col>
       </v-row>
       <v-row align="center" justify="center">
-        <v-color-picker class="bg-transparent" v-model="color" flat dark width="285" />
+        <v-color-picker ref="picker" class="bg-transparent" v-model="color" flat dark width="285" />
       </v-row>
       <v-row class="pt-5 px-5" align="center">
         <v-col cols="8" class="py-0">
@@ -58,15 +58,21 @@ module.exports = {
   },
   computed: {
     ...Vuex.mapGetters(['layerList', 'keypath']),
+    selectedLayer: {
+      get() {
+        return this.layerList[this.keypath];
+      },
+    },
     color: {
       get() {
-        if (this.layerList[this.keypath]) {
-          return this.layerList[this.keypath].color;
+        if (this.selectedLayer) {
+          // console.log(this.$refs.picker);
+          return this.selectedLayer.color;
         }
       },
       set(color) {
-        if (this.layerList[this.keypath]) {
-          this.layerList[this.keypath].color = color;
+        if (this.selectedLayer) {
+          this.selectedLayer.color = color;
           color = {
             r: color.rgba.r / 255,
             g: color.rgba.g / 255,
@@ -85,13 +91,13 @@ module.exports = {
 
     strokeWidth: {
       get() {
-        if (this.layerList[this.keypath]) {
-          return this.layerList[this.keypath].strokeWidth;
+        if (this.selectedLayer) {
+          return this.selectedLayer.strokeWidth;
         }
       },
       set(width) {
-        if (this.layerList[this.keypath]) {
-          this.layerList[this.keypath].strokeWidth = width;
+        if (this.selectedLayer) {
+          this.selectedLayer.strokeWidth = width;
           this.setStrokeWidth(width);
 
           this.history.push({
@@ -105,20 +111,20 @@ module.exports = {
   mounted() {
     var self = this;
     this.interval = setInterval(() => {
-      self.clearhistory();
+      self.clearHistory();
     }, 500);
   },
   beforeDestroy() {
     clearInterval(this.interval);
   },
   methods: {
-    ...Vuex.mapActions(['setShapeColor', 'setStrokeWidth']),
-    clearhistory() {
+    ...Vuex.mapActions(['setShapeColor', 'setStrokeWidth', 'pushHistory']),
+    clearHistory() {
       let len = this.history.length;
       if (!len) return;
 
       let top = this.history.pop();
-      RLottieModule.layers.insert(RLottieModule.keypath, top.property, top.args);
+      this.pushHistory(top);
       this.history = [];
     },
     closeSidebar() {
