@@ -1,66 +1,77 @@
 <template>
-  <v-container fluid class="pa-0" id="upper-wrapper">
-    <v-row class="pa-0">
-      <v-col cols="4" offset="4" class="pa-0">
-        <v-row
-          class="pa-0 test"
-          @mouseenter="changeScrollB(true)"
-          @mouseleave="changeScrollB(false)"
+  <v-app-bar
+    dense
+    dark
+    style="background: linear-gradient(90deg, #00c4cc, #7d2ae8); height: 6%"
+  >
+    <v-img
+      src="./assets/logo.png"
+      max-height="25"
+      max-width="25"
+      style="cursor: pointer"
+      @click="reloadWindow"
+    ></v-img>
+    <div style="width: 23rem">
+      <v-row class="ma-0 pa-0">
+        <v-toolbar-title
+          class="pl-1"
+          style="cursor: pointer"
+          @click="reloadWindow"
+          >Prettie</v-toolbar-title
         >
-          <v-col cols="12" class="pa-0">
-            <v-expand-transition>
-              <v-col
-                v-if="scrollBottom"
-                cols="6"
-                offset="3"
-                class="pa-0 text-center"
-              >
-                <div id="upper-nav">
-                  <v-btn
-                    color="rgba( 41, 44, 49, 0.9 )"
-                    class="white--text height-100-percent"
-                    @click="button1"
-                  >
-                    <v-icon dark> mdi-square-off-outline </v-icon>
-                  </v-btn>
-                  <v-btn
-                    color="rgba( 41, 44, 49, 0.9 )"
-                    class="white--text height-100-percent"
-                    @click="button2(0)"
-                  >
-                    <v-icon dark> mdi-cellphone-android </v-icon>
-                  </v-btn>
-                  <v-btn
-                    color="rgba( 41, 44, 49, 0.9 )"
-                    class="white--text height-100-percent"
-                    @click="button2(1)"
-                  >
-                    <v-icon dark> mdi-watch </v-icon>
-                  </v-btn>
-                </div>
-              </v-col>
-            </v-expand-transition>
-          </v-col>
-          <v-col cols="12" class="pa-0">
-            <v-col cols="4" offset="4" class="pa-0 text-center">
-              <v-img
-                v-if="!scrollBottom"
-                src="./assets/upperbar_down.png"
-                max-width="500"
-                max-height="300"
-              ></v-img>
-              <v-img
-                v-else
-                src="./assets/upperbar_up.png"
-                max-width="500"
-                max-height="300"
-              ></v-img>
-            </v-col>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
+      </v-row>
+    </div>
+
+    <v-spacer align="center">
+      <v-btn text class="white--text height-100-percent" @click="buttonRemove">
+        <v-icon dark> mdi-square-off-outline </v-icon>
+      </v-btn>
+      <v-btn
+        text
+        class="white--text height-100-percent"
+        @click="buttonMockup(0)"
+      >
+        <v-icon dark> mdi-cellphone-android </v-icon>
+      </v-btn>
+      <v-btn
+        text
+        class="white--text height-100-percent"
+        @click="buttonMockup(1)"
+      >
+        <v-icon dark> mdi-watch </v-icon>
+      </v-btn>
+    </v-spacer>
+
+    <div style="width: 330px" align="center">
+      <v-tooltip bottom class="tooltip-btn">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="rgba(255, 255, 255, 1)"
+            style="text-transform: none; font-weight: 400"
+            depressed
+            outlined
+            v-bind="attrs"
+            v-on="on"
+            @click="clickToUploadJson"
+          >
+            New File
+          </v-btn>
+          <input type="file" id="file-selector" accept=".json" ref="json" />
+        </template>
+        <span> upload New JSON File (Ctrl + O) </span>
+      </v-tooltip>
+      <v-btn
+        class="mx-3"
+        color="rgba(255, 255, 255, 1)"
+        style="text-transform: none; font-weight: 400"
+        depressed
+        outlined
+        @click="exportJson"
+      >
+        Export
+      </v-btn>
+    </div>
+  </v-app-bar>
 </template>
 
 <script>
@@ -77,14 +88,14 @@ module.exports = {
     changeScrollB(flag) {
       this.scrollBottom = flag;
     },
-    button1() {
+    buttonRemove() {
       var parentDiv = document.querySelector('#img-background');
       if (parentDiv.childNodes.length != 0) {
         var childImg = document.querySelector('#background');
         parentDiv.removeChild(childImg);
       }
     },
-    button2(flag) {
+    buttonMockup(flag) {
       var parentDiv = document.querySelector('#img-background');
       if (parentDiv.childNodes.length != 0) {
         var childImg = document.querySelector('#background');
@@ -99,8 +110,39 @@ module.exports = {
         flag == 0 ? './assets/mock_up_phone.png' : './assets/mock_up_watch.png';
       document.querySelector('#img-background').appendChild(img);
     },
+    clickToUploadJson() {
+      this.$refs.json.click();
+    },
+    exportJson() {
+      RLottieModule.layers.exportLayers();
+    },
+    reloadWindow() {
+      location.reload();
+    },
   },
-  mounted() {},
+  mounted() {
+    var self = this;
+    document.addEventListener(
+      'keydown',
+      function (e) {
+        if (e.ctrlKey && e.which == 83) {
+          e.preventDefault();
+        } else if (e.ctrlKey && e.which == 79) {
+          e.preventDefault();
+        }
+      },
+      false,
+    );
+    // Shortcut key function binding
+    document.addEventListener('keyup', function (e) {
+      if (e.ctrlKey && e.which == 83) {
+        // Save to Json file
+        self.exportJson();
+      } else if (e.ctrlKey && e.which == 79) {
+        self.clickToUploadJson();
+      }
+    });
+  },
 };
 </script>
 
@@ -151,5 +193,8 @@ module.exports = {
   border-radius: 0px 0px 15px 15px;
   height: 50px;
   vertical-align: middle;
+}
+.v-toolbar__content {
+  height: 100% !important;
 }
 </style>
