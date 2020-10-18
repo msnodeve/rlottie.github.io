@@ -13,6 +13,8 @@ var store = new Vuex.Store({
     frameRate: 1,
 
     snapShotFrame: 0,
+
+    fileName: '',
   },
   getters: {
     layers(state) {
@@ -58,6 +60,9 @@ var store = new Vuex.Store({
     snapShotFrame(state) {
       return state.snapShotFrame;
     },
+    fileName(state) {
+      return state.fileName;
+    },
   },
   mutations: {
     setLayers(state, payload) {
@@ -87,6 +92,9 @@ var store = new Vuex.Store({
     setSnapShotFrame(state, payload) {
       state.snapShotFrame = payload;
     },
+    setFileName(state, payload) {
+      state.fileName = payload;
+    },
   },
   actions: {
     reloadCanvas(context) {
@@ -99,6 +107,7 @@ var store = new Vuex.Store({
       const { layers, selectedAllKeypath } = context.getters;
       if (layers) layers.highlighting(selectedAllKeypath);
     },
+
     renderSnapShot(context) {
       RLottieModule.renderSnapShot(context.getters.snapShotFrame);
     },
@@ -126,7 +135,11 @@ var store = new Vuex.Store({
       const { layers, selectedKeypath } = context.getters;
       const { x, y } = payload;
       console.log(x, y);
-      layers.RLottieModule.trPosition(selectedKeypath, parseInt(x), parseInt(y));
+      layers.RLottieModule.trPosition(
+        selectedKeypath,
+        parseInt(x),
+        parseInt(y),
+      );
     },
 
     setTrScale(context, payload) {
