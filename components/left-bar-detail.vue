@@ -1,9 +1,5 @@
 <template>
-  <div
-    id="left-detail-bar"
-    class="d-flex align-start justify-center"
-    :style="{ height: height + 'px' }"
-  >
+  <div id="left-detail-bar" class="d-flex align-start justify-center">
     <shape-property
       v-if="selectedmenu == 1"
       @call-close-menu-parent="closeSideBarFromChild"
@@ -57,12 +53,11 @@ module.exports = {
 <style scoped>
 #left-detail-bar {
   height: 100%;
-  background-color: #292c31;
+  background-color: #293039;
   width: 20rem;
   z-index: 99;
   left: 4rem;
-  border-left: 3px solid black;
-  position: absolute;
+  float: left;
   overflow-x: hidden;
   overflow-y: auto;
 }

@@ -1,54 +1,59 @@
 <template>
-  <div class="text-center width-100-percent">
-    <div class="upload-btn py-3">
-      <v-row align="center" justify="center">
-        <v-col class="pa-0" offset="2" cols="8">
-          <h3 class="font-white">GIF</h3>
-        </v-col>
-        <v-col class="pa-0 pr-4" cols="2">
-          <v-btn color="rgba(0, 153, 204, 0)" :outlined="false" :depressed="true" fab x-small @click="closeSidebar()">
-            <v-icon color="#ffffff"> mdi-close </v-icon>
-          </v-btn>
-        </v-col>
-      </v-row>
-    </div>
-    <div class="mt-4">
-      <v-row class="pb-3 px-5 mt-4" align="center">
-        <v-col cols="12" class="py-0 mt-8">
-          <div class="text-left font-white">Background Color</div>
-        </v-col>
-      </v-row>
-      <v-row class="mb-4 pl-5" align="center" justify="center">
-        <v-btn
-          class="ml-1"
-          v-for="(color, idx) in colors"
-          fab
-          :color="color"
-          x-small
-          :key="`${idx}_color`"
-          @click="selectColor(color, true)"
-        >
-        </v-btn>
-        <div class="v-color-picker__dot ml-1 picker-dot" @click="selectColor('#000000', false)"></div>
-      </v-row>
-      <v-row align="center" justify="center">
-        <v-color-picker
-          class="bg-transparent"
-          v-show="isColor"
-          v-model="picker"
-          flat
-          hide-mode-switch
-          dark
-          width="280"
-        />
-      </v-row>
-      <v-row align="center" justify="center" class="pa-0 ma-0 width-100-percent">
-        <img id="convert-gif" src="" class="width-90-percent" />
-      </v-row>
-      <v-row align="center" justify="center" class="pa-0 ma-0 mt-4 width-100-percent">
-        <v-btn @click="convertGIF" :loading="loading" id="convert-btn"> Convert to GIF </v-btn>
-      </v-row>
-    </div>
+  <div class="width-100-percent">
+    <v-scroll-y-reverse-transition>
+      <div v-show="isTransition">
+        <div>
+          <v-row class="pb-3 px-5" align="center">
+            <v-col cols="12" class="py-0 mt-4">
+              <div class="text-left font-white">Background Color</div>
+            </v-col>
+          </v-row>
+          <v-row class="mb-4 pl-5" align="center" justify="center">
+            <v-btn
+              class="ml-1"
+              v-for="(color, idx) in colors"
+              fab
+              :color="color"
+              x-small
+              :key="`${idx}_color`"
+              @click="selectColor(color, true)"
+            >
+            </v-btn>
+            <div
+              class="v-color-picker__dot ml-1 picker-dot"
+              @click="selectColor('#000000', false)"
+            ></div>
+          </v-row>
+          <v-row align="center" justify="center">
+            <v-color-picker
+              class="bg-transparent"
+              v-show="isColor"
+              v-model="picker"
+              flat
+              hide-mode-switch
+              dark
+              width="280"
+            />
+          </v-row>
+          <v-row
+            align="center"
+            justify="center"
+            class="pa-0 ma-0 width-100-percent"
+          >
+            <img id="convert-gif" src="" class="width-90-percent" />
+          </v-row>
+          <v-row
+            align="center"
+            justify="center"
+            class="pa-0 ma-0 mt-4 width-100-percent"
+          >
+            <v-btn @click="convertGIF" :loading="loading" id="convert-btn">
+              Convert to GIF
+            </v-btn>
+          </v-row>
+        </div>
+      </div>
+    </v-scroll-y-reverse-transition>
   </div>
 </template>
 
@@ -57,12 +62,24 @@ module.exports = {
   name: 'export-gif',
   data() {
     return {
-      colors: ['#FFFFFF', '#EB7D46', '#B4EB46', '#46EB7D', '#46B4EB', '#7D46EB', '#EB46B4'],
+      colors: [
+        '#FFFFFF',
+        '#EB7D46',
+        '#B4EB46',
+        '#46EB7D',
+        '#46B4EB',
+        '#7D46EB',
+        '#EB46B4',
+      ],
       hex: '#000000',
       isColor: false,
       loading: false,
       type: 'hex',
+      isTransition: false,
     };
+  },
+  mounted() {
+    this.isTransition = true;
   },
   computed: {
     picker: {
@@ -118,7 +135,10 @@ module.exports = {
         var dataStr = URL.createObjectURL(blob);
         var downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute('href', dataStr);
-        downloadAnchorNode.setAttribute('download', Math.random().toString(36).substr(2, 8).toUpperCase() + '.gif');
+        downloadAnchorNode.setAttribute(
+          'download',
+          Math.random().toString(36).substr(2, 8).toUpperCase() + '.gif',
+        );
         document.body.appendChild(downloadAnchorNode);
         downloadAnchorNode.click();
         downloadAnchorNode.remove();

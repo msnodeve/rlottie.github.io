@@ -1,47 +1,30 @@
 <template>
   <div id="l-bar" ref="leftBar">
-    <div class="upload-btn">
-      <v-tooltip right class="tooltip-btn">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            tile
-            class="py-7"
-            text
-            color="white"
-            v-bind="attrs"
-            v-on="on"
-            @click="clickToUploadJson"
-          >
-            <v-icon>fas fa-cloud-upload-alt</v-icon>
-          </v-btn>
-          <input type="file" id="file-selector" accept=".json" ref="json" />
-        </template>
-        <span> upload New JSON File (Ctrl + O) </span>
-      </v-tooltip>
-    </div>
-    <div id="tool-wrapper" class="d-flex align-center">
+    <div id="tool-wrapper" class="d-flex">
       <div id="tool-nav" class="text-center">
         <v-tooltip right class="tooltip-btn" color="transparent">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               tile
-              class="mt-5"
               text
+              height="60"
+              class="ma-0 px-0 width-100-percent"
               :color="activateColor(1)"
               v-bind:class="{ 'activate-btn': isActivate(1) }"
               @click="clickMenu(1)"
               v-bind="attrs"
               v-on="on"
             >
-              <v-icon large>mdi-format-color-fill</v-icon>
+              <v-icon>fas fa-fill-drip</v-icon>
+              <div style="padding-top: 6px">Shape</div>
             </v-btn>
           </template>
 
           <span>
-            <v-card class="ma-0" max-width="400">
+            <v-card class="ma-0" max-width="290">
               <v-img
                 class="white--text align-end"
-                height="200px"
+                height="145px"
                 src="./assets/change_shape.jpg"
               >
                 <v-card-title class="card-title">
@@ -62,7 +45,8 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               tile
-              class="mt-5"
+              height="60"
+              class="ma-0 px-0 width-100-percent"
               text
               :color="activateColor(2)"
               v-bind:class="{ 'activate-btn': isActivate(2) }"
@@ -71,13 +55,14 @@
               v-on="on"
             >
               <v-icon>fas fa-crop</v-icon>
+              <div style="padding-top: 6px">Transform</div>
             </v-btn>
           </template>
           <span>
-            <v-card class="ma-0" max-width="400">
+            <v-card class="ma-0" max-width="290">
               <v-img
                 class="white--text align-end"
-                height="200px"
+                height="145px"
                 src="./assets/change_transform.jpg"
               >
                 <v-card-title class="card-title">Change Transform</v-card-title>
@@ -97,7 +82,8 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               tile
-              class="mt-5"
+              height="60"
+              class="ma-0 px-0 width-100-percent"
               v-bind:class="{ 'activate-btn': isActivate(3) }"
               text
               :color="activateColor(3)"
@@ -106,13 +92,14 @@
               v-on="on"
             >
               <v-icon>fas fa-image</v-icon>
+              <div style="padding-top: 6px">Bkground</div>
             </v-btn>
           </template>
           <span>
-            <v-card class="ma-0" max-width="400">
+            <v-card class="ma-0" max-width="290">
               <v-img
                 class="white--text align-end"
-                height="200px"
+                height="145px"
                 src="./assets/change_bg.jpg"
               >
                 <v-card-title class="card-title"
@@ -133,7 +120,8 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               tile
-              class="mt-5"
+              height="60"
+              class="ma-0 px-0 width-100-percent"
               v-bind:class="{ 'activate-btn': isActivate(4) }"
               text
               :color="activateColor(4)"
@@ -142,13 +130,14 @@
               v-on="on"
             >
               <v-icon>fas fa-palette</v-icon>
+              <div style="padding-top: 6px">Canvas</div>
             </v-btn>
           </template>
           <span>
-            <v-card class="ma-0" max-width="400">
+            <v-card class="ma-0" max-width="290">
               <v-img
                 class="white--text align-end"
-                height="200px"
+                height="145px"
                 src="./assets/change_canvas.jpg"
               >
                 <v-card-title class="card-title">Change Canvas</v-card-title>
@@ -167,7 +156,8 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               tile
-              class="mt-5"
+              height="60"
+              class="ma-0 px-0 width-100-percent"
               text
               :color="activateColor(5)"
               v-bind:class="{ 'activate-btn': isActivate(5) }"
@@ -175,16 +165,17 @@
               v-bind="attrs"
               v-on="on"
             >
-              <v-icon large>mdi-gif</v-icon>
+              <v-icon>fas fa-photo-video</v-icon>
+              <div style="padding-top: 6px">Gif</div>
             </v-btn>
           </template>
 
           <span>
-            <v-card class="ma-0" max-width="400">
+            <v-card class="ma-0" max-width="290">
               <img
                 class="white--text align-end"
-                height="200px"
-                width="400px"
+                height="145px"
+                width="290px"
                 src="./assets/change_gif.gif"
               />
               <v-card-subtitle class="pb-4">
@@ -218,9 +209,6 @@ module.exports = {
         return false;
       }
     },
-    clickToUploadJson() {
-      this.$refs.json.click();
-    },
   },
   computed: {
     activateColor() {
@@ -235,18 +223,6 @@ module.exports = {
   },
   mounted() {
     var self = this;
-    self.$emit('child-event', this.$refs.leftBar.clientHeight);
-    window.addEventListener('resize', function (e) {
-      self.$emit('child-event', e.target.innerHeight);
-    });
-
-    // Shortcut key function binding
-    document.addEventListener('keydown', function (e) {
-      if (e.ctrlKey && e.which == 79) {
-        // Pause and Play : Space
-        self.clickToUploadJson();
-      }
-    });
 
     //gif pre-loading
     let img = new Image();
@@ -255,38 +231,24 @@ module.exports = {
 };
 </script>
 
-<style>
+<style scoped>
 #l-bar {
   height: 100%;
-  width: 4rem;
-  background-color: #292c31;
+  width: 4.5rem;
+  background-color: #0e1318;
   float: left;
-}
-#file-selector {
-  display: none;
-  cursor: pointer;
-}
-.upload-btn {
-  border-bottom: 2px solid grey;
-  align-content: center;
-}
-.activate-btn {
-  border-left: 4px solid #0099cc;
-}
-.tooltip-btn {
-  z-index: 100;
-}
-.card-title {
-  color: #2b2b2b;
-}
-.card-gif {
-  position: absolute;
-  transform: translateY(-110px);
 }
 #tool-wrapper {
   height: 93%;
 }
 #tool-nav {
   width: 100%;
+}
+.v-btn__content {
+  display: block;
+}
+.v-btn.v-size--default {
+  font-size: 10px;
+  text-transform: none;
 }
 </style>

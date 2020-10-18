@@ -1,112 +1,162 @@
 <template>
-  <div class="text-center width-100-percent">
-    <div class="upload-btn py-3">
-      <v-row align="center" justify="center">
-        <v-col class="pa-0" offset="2" cols="8">
-          <h3 class="font-white">Transform</h3>
-        </v-col>
-        <v-col class="pa-0 pr-4" cols="2">
-          <v-btn color="rgba(0, 153, 204, 0)" :outlined="false" :depressed="true" fab x-small @click="closeSidebar()">
-            <v-icon color="#ffffff"> mdi-close </v-icon>
-          </v-btn>
-        </v-col>
-      </v-row>
-    </div>
-    <div class="text-center mt-4">
-      <v-row class="px-5">
-        <v-col cols="12" class="justify-center mt-5">
-          <div class="text-left font-white">Anchor</div>
-          <v-row class="pd-0 pt-2">
-            <v-col cols="8" class="text-left py-0">
-              <div class="pl-3 font-white">x</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field v-model="anchorX" solo dense dark hide-details outlined></v-text-field>
-            </v-col>
-            <v-col cols="8" class="text-left py-0">
-              <div class="pl-3 font-white">y</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field v-model="anchorY" solo dense dark hide-details outlined></v-text-field>
+  <div class="width-100-percent">
+    <v-scroll-y-reverse-transition>
+      <div v-show="isTransition">
+        <div class="text-center">
+          <v-row class="px-5">
+            <v-col cols="12" class="justify-center pt-4">
+              <div class="text-left font-white">Anchor</div>
+              <v-row class="pd-0 pt-2">
+                <v-col cols="8" class="text-left py-0">
+                  <div class="pl-3 font-white">x</div>
+                </v-col>
+                <v-col cols="4" class="py-0">
+                  <v-text-field
+                    v-model="anchorX"
+                    solo
+                    dense
+                    dark
+                    hide-details
+                    outlined
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="8" class="text-left py-0">
+                  <div class="pl-3 font-white">y</div>
+                </v-col>
+                <v-col cols="4" class="py-0">
+                  <v-text-field
+                    v-model="anchorY"
+                    solo
+                    dense
+                    dark
+                    hide-details
+                    outlined
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <div class="text-left pt-3 font-white">Position</div>
+              <v-row class="pd-0 pt-2">
+                <v-col cols="8" class="text-left py-0">
+                  <div class="pl-3 font-white">x</div>
+                </v-col>
+                <v-col cols="4" class="py-0">
+                  <v-text-field
+                    v-model="positionX"
+                    solo
+                    dense
+                    dark
+                    hide-details
+                    outlined
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="8" class="text-left py-0">
+                  <div class="pl-3 font-white">y</div>
+                </v-col>
+                <v-col cols="4" class="py-0">
+                  <v-text-field
+                    v-model="positionY"
+                    solo
+                    dense
+                    dark
+                    hide-details
+                    outlined
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <div class="text-left pt-3 font-white">Scale</div>
+              <v-row class="pd-0 pt-2">
+                <v-col cols="8" class="text-left py-0">
+                  <div class="pl-3 font-white">width</div>
+                </v-col>
+                <v-col cols="4" class="py-0">
+                  <v-text-field
+                    v-model="scaleWidth"
+                    solo
+                    dense
+                    dark
+                    hide-details
+                    outlined
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="8" class="text-left py-0">
+                  <div class="pl-3 font-white">height</div>
+                </v-col>
+                <v-col cols="4" class="py-0">
+                  <v-text-field
+                    v-model="scaleHeight"
+                    solo
+                    dense
+                    dark
+                    hide-details
+                    outlined
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row class="pt-5">
+                <v-col cols="8" class="py-0">
+                  <div class="text-left font-white">Rotation</div>
+                </v-col>
+                <v-col cols="4" class="py-0">
+                  <v-text-field
+                    v-model="rotation"
+                    class="mt-0 pt-0"
+                    hide-details
+                    type="number"
+                    solo
+                    outlined
+                    dense
+                    dark
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row class="mb-4">
+                <v-col cols="12" class="py-0">
+                  <v-slider
+                    v-model="rotation"
+                    class="align-center"
+                    max="360"
+                    min="0"
+                    hide-details
+                    track-color="#f0f0f0"
+                    color="grey"
+                  ></v-slider>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="8" class="py-0">
+                  <div class="text-left font-white">Opacity</div>
+                </v-col>
+                <v-col cols="4" class="py-0">
+                  <v-text-field
+                    v-model="opacity"
+                    class="mt-0 pt-0"
+                    hide-details
+                    type="number"
+                    solo
+                    outlined
+                    dense
+                    dark
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" class="py-0">
+                  <v-slider
+                    v-model="opacity"
+                    class="align-center"
+                    max="100"
+                    min="0"
+                    hide-details
+                    track-color="#f0f0f0"
+                    color="grey"
+                  ></v-slider>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
-          <div class="text-left pt-3 font-white">Position</div>
-          <v-row class="pd-0 pt-2">
-            <v-col cols="8" class="text-left py-0">
-              <div class="pl-3 font-white">x</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field v-model="positionX" solo dense dark hide-details outlined></v-text-field>
-            </v-col>
-            <v-col cols="8" class="text-left py-0">
-              <div class="pl-3 font-white">y</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field v-model="positionY" solo dense dark hide-details outlined></v-text-field>
-            </v-col>
-          </v-row>
-          <div class="text-left pt-3 font-white">Scale</div>
-          <v-row class="pd-0 pt-2">
-            <v-col cols="8" class="text-left py-0">
-              <div class="pl-3 font-white">width</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field v-model="scaleWidth" solo dense dark hide-details outlined></v-text-field>
-            </v-col>
-            <v-col cols="8" class="text-left py-0">
-              <div class="pl-3 font-white">height</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field v-model="scaleHeight" solo dense dark hide-details outlined></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row class="pt-5">
-            <v-col cols="8" class="py-0">
-              <div class="text-left font-white">Rotation</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field
-                v-model="rotation"
-                class="mt-0 pt-0"
-                hide-details
-                type="number"
-                solo
-                outlined
-                dense
-                dark
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row class="mb-4">
-            <v-col cols="12" class="py-0">
-              <v-slider v-model="rotation" class="align-center" max="360" min="0" hide-details></v-slider>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="8" class="py-0">
-              <div class="text-left font-white">Opacity</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field
-                v-model="opacity"
-                class="mt-0 pt-0"
-                hide-details
-                type="number"
-                solo
-                outlined
-                dense
-                dark
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" class="py-0">
-              <v-slider v-model="opacity" class="align-center" max="100" min="0" hide-details></v-slider>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </div>
+        </div>
+      </div>
+    </v-scroll-y-reverse-transition>
   </div>
 </template>
 
@@ -117,10 +167,12 @@ module.exports = {
     return {
       history: [],
       layer: {},
+      isTransition: false,
     };
   },
   mounted() {
     var self = this;
+    this.isTransition = true;
     this.interval = setInterval(() => {
       self.clearHistory();
     }, 500);
@@ -328,7 +380,14 @@ module.exports = {
     },
   },
   methods: {
-    ...Vuex.mapActions(['setTrAnchor', 'setTrPosition', 'setTrScale', 'setTrRotation', 'setTrOpacity', 'pushHistory']),
+    ...Vuex.mapActions([
+      'setTrAnchor',
+      'setTrPosition',
+      'setTrScale',
+      'setTrRotation',
+      'setTrOpacity',
+      'pushHistory',
+    ]),
     closeSidebar() {
       this.$emit('call-close-menu-parent');
     },

@@ -1,94 +1,81 @@
 <template>
-  <div class="text-center width-100-percent">
-    <div class="upload-btn py-3">
-      <v-row align="center" justify="center">
-        <v-col class="pa-0" offset="2" cols="8">
-          <h3 class="font-white">Canvas</h3>
-        </v-col>
-        <v-col class="pa-0 pr-4" cols="2">
-          <v-btn
-            color="rgba(0, 153, 204, 0)"
-            :outlined="false"
-            :depressed="true"
-            fab
-            x-small
-            @click="closeSidebar()"
-          >
-            <v-icon color="#ffffff">mdi-close </v-icon>
-          </v-btn>
-        </v-col>
-      </v-row>
-    </div>
-    <div class="text-center mt-4">
-      <v-row class="px-5">
-        <v-col cols="12" class="justify-center mt-5">
-          <div class="text-left font-white">Canvas Size</div>
-          <v-row class="pd-0 pt-2">
-            <v-col cols="8" class="text-left py-0">
-              <div class="pl-3 font-white">width</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field
-                v-model="canvasSizeInput.width"
-                solo
-                dense
-                dark
-                hide-details
-                outlined
-                suffix="px"
-              />
-            </v-col>
-            <v-col cols="8" class="text-left py-0">
-              <div class="pl-3 font-white">height</div>
-            </v-col>
-            <v-col cols="4" class="py-0">
-              <v-text-field
-                v-model="canvasSizeInput.height"
-                solo
-                dense
-                dark
-                hide-details
-                outlined
-                suffix="px"
-              />
-            </v-col>
-          </v-row>
-          <v-row class="pt-5">
-            <v-col cols="12" class="py-0">
-              <div class="text-left font-white">Rotation & Flip</div>
-            </v-col>
-          </v-row>
-          <v-row class="mb-4">
-            <v-col cols="12" class="py-0">
-              <div class="my-2">
-                <span class="pr-2">
-                  <v-btn dark fab color="#3e4145" @click="rotate(false)">
-                    <v-icon color="#BFC0C2" large>mdi-rotate-left</v-icon>
-                  </v-btn>
-                </span>
-                <span class="pr-2">
-                  <v-btn dark fab color="#3e4145" @click="rotate(true)">
-                    <v-icon color="#BFC0C2" large>mdi-rotate-right</v-icon>
-                  </v-btn>
-                </span>
-                <span class="pr-2">
-                  <v-btn dark fab color="#3e4145" @click="flipX">
-                    <v-icon color="#BFC0C2" large>mdi-reflect-horizontal</v-icon>
-                  </v-btn>
-                </span>
-                <span>
-                  <v-btn dark fab color="#3e4145" @click="flipY">
-                    <v-icon class="mdi-rotate-90" color="#BFC0C2" large
-                      >mdi-reflect-horizontal</v-icon
-                    >
-                  </v-btn>
-                </span>
-              </div>
+  <div class="width-100-percent">
+    <v-scroll-y-reverse-transition>
+      <div v-show="isTransition">
+        <div class="text-center">
+          <v-row class="px-5">
+            <v-col cols="12" class="justify-center pt-4">
+              <div class="text-left font-white">Canvas Size</div>
+              <v-row class="pd-0 pt-2">
+                <v-col cols="8" class="text-left py-0">
+                  <div class="pl-3 font-white">width</div>
+                </v-col>
+                <v-col cols="4" class="py-0">
+                  <v-text-field
+                    v-model="canvasSizeInput.width"
+                    solo
+                    dense
+                    dark
+                    hide-details
+                    outlined
+                    suffix="px"
+                  />
+                </v-col>
+                <v-col cols="8" class="text-left py-0">
+                  <div class="pl-3 font-white">height</div>
+                </v-col>
+                <v-col cols="4" class="py-0">
+                  <v-text-field
+                    v-model="canvasSizeInput.height"
+                    solo
+                    dense
+                    dark
+                    hide-details
+                    outlined
+                    suffix="px"
+                  />
+                </v-col>
+              </v-row>
+              <v-row class="pt-5">
+                <v-col cols="12" class="py-0">
+                  <div class="text-left font-white">Rotation & Flip</div>
+                </v-col>
+              </v-row>
+              <v-row class="mb-4">
+                <v-col cols="12" class="py-0">
+                  <div class="my-2">
+                    <span class="pr-2">
+                      <v-btn dark fab color="#3e4145" @click="rotate(false)">
+                        <v-icon color="#BFC0C2" large>mdi-rotate-left</v-icon>
+                      </v-btn>
+                    </span>
+                    <span class="pr-2">
+                      <v-btn dark fab color="#3e4145" @click="rotate(true)">
+                        <v-icon color="#BFC0C2" large>mdi-rotate-right</v-icon>
+                      </v-btn>
+                    </span>
+                    <span class="pr-2">
+                      <v-btn dark fab color="#3e4145" @click="flipX">
+                        <v-icon color="#BFC0C2" large
+                          >mdi-reflect-horizontal</v-icon
+                        >
+                      </v-btn>
+                    </span>
+                    <span>
+                      <v-btn dark fab color="#3e4145" @click="flipY">
+                        <v-icon class="mdi-rotate-90" color="#BFC0C2" large
+                          >mdi-reflect-horizontal</v-icon
+                        >
+                      </v-btn>
+                    </span>
+                  </div>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
-        </v-col>
-      </v-row>
-    </div>
+        </div>
+      </div>
+    </v-scroll-y-reverse-transition>
   </div>
 </template>
 
@@ -101,10 +88,14 @@ module.exports = {
       degree: 0,
       isFlipX: 1,
       isFlipY: 1,
+      isTransition: false,
     };
   },
   props: {
     canvasSize: Object,
+  },
+  mounted() {
+    this.isTransition = true;
   },
   methods: {
     closeSidebar() {
@@ -133,8 +124,12 @@ module.exports = {
     canvasSizeInput: {
       deep: true,
       handler() {
-        document.getElementById('canvasBox').style.height = `${this.canvasSize.height}px`;
-        document.getElementById('canvasBox').style.width = `${this.canvasSize.width}px`;
+        document.getElementById(
+          'canvasBox',
+        ).style.height = `${this.canvasSize.height}px`;
+        document.getElementById(
+          'canvasBox',
+        ).style.width = `${this.canvasSize.width}px`;
       },
     },
   },

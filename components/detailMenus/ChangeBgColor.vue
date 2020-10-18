@@ -1,69 +1,54 @@
 <template>
-  <div class="text-center width-100-percent">
-    <div class="upload-btn py-3">
-      <v-row align="center" justify="center">
-        <v-col class="pa-0" offset="2" cols="8">
-          <h3 class="font-white">Background</h3>
-        </v-col>
-        <v-col class="pa-0 pr-4" cols="2">
+  <div class="width-100-percent">
+    <v-scroll-y-reverse-transition>
+      <div v-show="isTransition">
+        <v-row class="pb-3 px-5" align="center">
+          <v-col cols="12" class="py-0 mt-4">
+            <div class="text-left font-white">Color</div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="d-flex justify-center pa-0">
+            <v-color-picker
+              class="bg-transparent"
+              flat
+              dark
+              width="285"
+              v-model="color"
+            />
+          </v-col>
+        </v-row>
+        <div class="text-center mt-0">
+          <v-row class="px-5" align="center">
+            <v-col cols="7" class="justify-center pt-0 pr-0">
+              <div class="text-left font-white">Background Image</div>
+            </v-col>
+          </v-row>
+        </div>
+        <div id="upload-wrapper" align="center">
           <v-btn
-            color="rgba(0, 153, 204, 0)"
-            :outlined="false"
-            :depressed="true"
-            fab
-            x-small
-            @click="closeSidebar()"
+            tile
+            class="py-7"
+            text
+            color="white"
+            id="bg-btn"
+            @click="clickToBackgroundImage"
           >
-            <v-icon color="#ffffff">mdi-close </v-icon>
+            <v-icon id="bg-icon">mdi-image-plus</v-icon>
           </v-btn>
-        </v-col>
-      </v-row>
-    </div>
-    <v-row class="pb-3 px-5 mt-4" align="center">
-      <v-col cols="12" class="py-0 mt-8">
-        <div class="text-left font-white">Color</div>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="d-flex justify-center pa-0">
-        <v-color-picker
-          class="bg-transparent"
-          flat
-          dark
-          width="285"
-          v-model="color"
-        />
-      </v-col>
-    </v-row>
-    <div class="text-center mt-0">
-      <v-row class="px-5" align="center">
-        <v-col cols="7" class="justify-center pt-0 pr-0">
-          <div class="text-left font-white">Background Image</div>
-        </v-col>
-      </v-row>
-    </div>
-    <div id="upload-wrapper">
-      <v-btn
-        tile
-        class="py-7"
-        text
-        color="white"
-        id="bg-btn"
-        @click="clickToBackgroundImage"
-      >
-        <v-icon id="bg-icon">mdi-image-plus</v-icon>
-      </v-btn>
-      <input
-        ref="image"
-        type="file"
-        id="background-img"
-        accept="image/*"
-        @change="setBackgroundImg"
-      />
-    </div>
-    <v-btn class="mx-4 mt-4" @click="backgroundReset" id="delete-btn">
-      Delete Background Image
-    </v-btn>
+          <input
+            ref="image"
+            type="file"
+            id="background-img"
+            accept="image/*"
+            @change="setBackgroundImg"
+          />
+        </div>
+        <v-btn class="mx-4 mt-4" @click="backgroundReset" id="delete-btn">
+          Delete Background Image
+        </v-btn>
+      </div>
+    </v-scroll-y-reverse-transition>
   </div>
 </template>
 
@@ -75,6 +60,7 @@ module.exports = {
       backgroundImgFlag: false,
       rgba: { r: 255, g: 255, b: 255 },
       type: 'rgba',
+      isTransition: false,
     };
   },
   methods: {
@@ -158,6 +144,7 @@ module.exports = {
     },
   },
   mounted() {
+    this.isTransition = true;
     var childImg = document.querySelector('#background');
     if (childImg) {
       this.backgroundImgFlag = true;
