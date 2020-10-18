@@ -125,10 +125,10 @@ module.exports = {
       deep: true,
       handler() {
         document.getElementById(
-          'canvasBox',
+          'canvas-box',
         ).style.height = `${this.canvasSize.height}px`;
         document.getElementById(
-          'canvasBox',
+          'canvas-box',
         ).style.width = `${this.canvasSize.width}px`;
       },
     },

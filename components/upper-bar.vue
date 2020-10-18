@@ -2,43 +2,32 @@
   <v-app-bar
     dense
     dark
-    style="background: linear-gradient(90deg, #00c4cc, #7d2ae8); height: 6%"
+    class="header"
   >
-    <v-img
-      src="./assets/logo.png"
-      max-height="25"
-      max-width="25"
-      style="cursor: pointer"
-      @click="reloadWindow"
-    ></v-img>
-    <div style="width: 23rem">
-      <v-row class="ma-0 pa-0">
-        <v-toolbar-title
-          class="pl-1"
-          style="cursor: pointer"
-          @click="reloadWindow"
-          >Prettie</v-toolbar-title
-        >
-      </v-row>
+    <div style="width:23rem">
+    <v-row class="pl-3" align="center">
+      <v-img
+        class="cursor-pointer"
+        src="./assets/logo.png"
+        max-height="25"
+        max-width="25"
+        @click="reloadWindow"
+      ></v-img>
+      <v-toolbar-title
+        class="pl-1 cursor-pointer"
+        @click="reloadWindow"
+      >
+        Prettie
+      </v-toolbar-title>
+    </v-row>
     </div>
-
     <v-spacer align="center">
-      <v-btn text class="white--text height-100-percent" @click="buttonRemove">
-        <v-icon dark> mdi-square-off-outline </v-icon>
-      </v-btn>
-      <v-btn
-        text
+      <v-btn 
+        v-for="(item, index) in mockUpList" :key="index"
+        text 
         class="white--text height-100-percent"
-        @click="buttonMockup(0)"
-      >
-        <v-icon dark> mdi-cellphone-android </v-icon>
-      </v-btn>
-      <v-btn
-        text
-        class="white--text height-100-percent"
-        @click="buttonMockup(1)"
-      >
-        <v-icon dark> mdi-watch </v-icon>
+        @click="(index==0) ? buttonRemove() : buttonMockup(index);">
+        <v-icon dark> {{ item }} </v-icon>
       </v-btn>
     </v-spacer>
 
@@ -60,16 +49,23 @@
         </template>
         <span> upload New JSON File (Ctrl + O) </span>
       </v-tooltip>
-      <v-btn
-        class="mx-3"
-        color="rgba(255, 255, 255, 1)"
-        style="text-transform: none; font-weight: 400"
-        depressed
-        outlined
-        @click="exportJson"
-      >
-        Export
-      </v-btn>
+      <v-tooltip bottom class="tooltip-btn">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            class="mx-3"
+            color="rgba(255, 255, 255, 1)"
+            style="text-transform: none; font-weight: 400"
+            depressed
+            outlined
+            v-bind="attrs"
+            v-on="on"
+            @click="exportJson"
+          >
+            Export
+          </v-btn>
+        </template>
+        <span> export Json File (Ctrl + S) </span>
+      </v-tooltip>
     </div>
   </v-app-bar>
 </template>
@@ -80,14 +76,10 @@ module.exports = {
   props: ['left'],
   data() {
     return {
-      scrollBottom: false,
-      scrollTop: false,
+      mockUpList: ['mdi-square-off-outline', 'mdi-cellphone-android', 'mdi-watch']
     };
   },
   methods: {
-    changeScrollB(flag) {
-      this.scrollBottom = flag;
-    },
     buttonRemove() {
       var parentDiv = document.querySelector('#img-background');
       if (parentDiv.childNodes.length != 0) {
@@ -95,7 +87,7 @@ module.exports = {
         parentDiv.removeChild(childImg);
       }
     },
-    buttonMockup(flag) {
+    buttonMockup(buttonNo) {
       var parentDiv = document.querySelector('#img-background');
       if (parentDiv.childNodes.length != 0) {
         var childImg = document.querySelector('#background');
@@ -104,10 +96,8 @@ module.exports = {
 
       var img = document.createElement('img');
       img.id = 'background';
-      img.style =
-        'max-height:650px; max-width: 90%; margin-left: auto; margin-right: auto; display: block;';
-      img.src =
-        flag == 0 ? './assets/mock_up_phone.png' : './assets/mock_up_watch.png';
+      img.style = 'max-height:650px; max-width: 90%; margin-left: auto; margin-right: auto; display: block;';
+      img.src = (buttonNo == 1) ? './assets/mock_up_phone.png' : './assets/mock_up_watch.png';
       document.querySelector('#img-background').appendChild(img);
     },
     clickToUploadJson() {
@@ -139,6 +129,7 @@ module.exports = {
         // Save to Json file
         self.exportJson();
       } else if (e.ctrlKey && e.which == 79) {
+        // Upload Json file
         self.clickToUploadJson();
       }
     });

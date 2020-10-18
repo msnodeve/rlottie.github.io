@@ -13,8 +13,8 @@ var store = new Vuex.Store({
     frameRate: 1,
 
     snapShotFrame: 0,
-
     fileName: '',
+    bgColor: { r: 240, g: 240, b: 240 },
   },
   getters: {
     layers(state) {
@@ -63,6 +63,9 @@ var store = new Vuex.Store({
     fileName(state) {
       return state.fileName;
     },
+    bgColor(state) {
+      return state.bgColor;
+    }
   },
   mutations: {
     setLayers(state, payload) {
@@ -95,6 +98,9 @@ var store = new Vuex.Store({
     setFileName(state, payload) {
       state.fileName = payload;
     },
+    setBgColor(state, payload){
+      state.bgColor = payload;
+    }
   },
   actions: {
     reloadCanvas(context) {
@@ -103,23 +109,29 @@ var store = new Vuex.Store({
       context.commit('setCurFrame', curFrame);
       onSliderDrag(curFrame);
     },
+    reloadLayer(context) {
+      const { keypath } = context.getters;
+      context.commit('setKeypath', '  ');
+      context.commit('setKeypath', keypath);
+    },
     highlightingLayer(context) {
       const { layers, selectedAllKeypath } = context.getters;
       if (layers) layers.highlighting(selectedAllKeypath);
     },
-
     renderSnapShot(context) {
       RLottieModule.renderSnapShot(context.getters.snapShotFrame);
     },
     setShapeColor(context, payload) {
       const { layers, selectedKeypath } = context.getters;
       const { r, g, b, a } = payload;
+      context.dispatch('reloadLayer');
 
       layers.RLottieModule.strokeColors(selectedKeypath, r, g, b, a);
       layers.RLottieModule.fillColors(selectedKeypath, r, g, b, a);
     },
     setStrokeWidth(context, payload) {
       const { layers, selectedKeypath } = context.getters;
+      context.dispatch('reloadLayer');
 
       layers.RLottieModule.strokeWidth(selectedKeypath, parseInt(payload));
     },
@@ -127,6 +139,7 @@ var store = new Vuex.Store({
     setTrAnchor(context, payload) {
       const { layers, selectedKeypath } = context.getters;
       const { x, y } = payload;
+      context.dispatch('reloadLayer');
 
       layers.RLottieModule.trAnchor(selectedKeypath, parseInt(x), parseInt(y));
     },
@@ -134,24 +147,29 @@ var store = new Vuex.Store({
     setTrPosition(context, payload) {
       const { layers, selectedKeypath } = context.getters;
       const { x, y } = payload;
+      context.dispatch('reloadLayer');
+
       layers.RLottieModule.trPosition(selectedKeypath, parseInt(x), parseInt(y));
     },
 
     setTrScale(context, payload) {
       const { layers, selectedKeypath } = context.getters;
       const { w, h } = payload;
+      context.dispatch('reloadLayer');
 
       layers.RLottieModule.trScale(selectedKeypath, parseInt(w), parseInt(h));
     },
 
     setTrRotation(context, payload) {
       const { layers, selectedKeypath } = context.getters;
+      context.dispatch('reloadLayer');
 
       layers.RLottieModule.trRotation(selectedKeypath, parseInt(payload));
     },
 
     setTrOpacity(context, payload) {
       const { layers, selectedKeypath } = context.getters;
+      context.dispatch('reloadLayer');
 
       layers.RLottieModule.trOpacity(selectedKeypath, parseInt(payload));
     },

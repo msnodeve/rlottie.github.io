@@ -99,11 +99,15 @@ module.exports = {
         if (this.selectedLayer) {
           this.selectedLayer.strokeWidth = width;
           this.setStrokeWidth(width);
-
+          this.$forceUpdate();
           this.history.push({
             property: 'StrokeWidth',
             args: { strokeWidth: parseInt(width) },
           });
+
+          // const { keypath } = this.$store.getters;
+          // this.$store.commit('setKeypath', '  ');
+          // this.$store.commit('setKeypath', keypath);
         }
       },
     },

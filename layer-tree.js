@@ -223,10 +223,6 @@ function Layers(RLottieModule, jsString) {
   this.setHistoryState = function () {
     store.commit('setHasPrev', this.hasPrev());
     store.commit('setHasNext', this.hasNext());
-    EventBus.$emit('setHistoryState', {
-      isPrev: this.hasPrev(),
-      isNext: this.hasNext(),
-    });
   };
 
   this.hasPrev = function () {
@@ -243,7 +239,6 @@ function Layers(RLottieModule, jsString) {
     }
     this.cur--;
     store.dispatch('reloadCanvas');
-    store.dispatch('highlightingLayer');
   };
 
   this.moveNext = function () {
@@ -252,7 +247,6 @@ function Layers(RLottieModule, jsString) {
     }
     this.cur++;
     store.dispatch('reloadCanvas');
-    store.dispatch('highlightingLayer');
   };
 
   changeColor = function (layer, args) {
