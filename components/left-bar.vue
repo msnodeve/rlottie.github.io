@@ -3,15 +3,7 @@
     <div class="upload-btn">
       <v-tooltip right class="tooltip-btn">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            tile
-            class="py-7"
-            text
-            color="white"
-            v-bind="attrs"
-            v-on="on"
-            @click="clickToUploadJson"
-          >
+          <v-btn tile class="py-7" text color="white" v-bind="attrs" v-on="on" @click="clickToUploadJson">
             <v-icon>fas fa-cloud-upload-alt</v-icon>
           </v-btn>
           <input type="file" id="file-selector" accept=".json" ref="json" />
@@ -39,18 +31,10 @@
 
           <span>
             <v-card class="ma-0" max-width="400">
-              <v-img
-                class="white--text align-end"
-                height="200px"
-                src="./assets/change_shape.jpg"
-              >
-                <v-card-title class="card-title">
-                  Change Fill and Stroke
-                </v-card-title>
+              <v-img class="white--text align-end" height="200px" src="./assets/change_shape.jpg">
+                <v-card-title class="card-title"> Change Fill and Stroke </v-card-title>
               </v-img>
-              <v-card-subtitle class="pb-0">
-                Change 3 properties
-              </v-card-subtitle>
+              <v-card-subtitle class="pb-0"> Change 3 properties </v-card-subtitle>
               <v-card-text class="text--primary">
                 <div>Color, Opacity, Width</div>
               </v-card-text>
@@ -75,16 +59,10 @@
           </template>
           <span>
             <v-card class="ma-0" max-width="400">
-              <v-img
-                class="white--text align-end"
-                height="200px"
-                src="./assets/change_transform.jpg"
-              >
+              <v-img class="white--text align-end" height="200px" src="./assets/change_transform.jpg">
                 <v-card-title class="card-title">Change Transform</v-card-title>
               </v-img>
-              <v-card-subtitle class="pb-0">
-                Change 5 properties
-              </v-card-subtitle>
+              <v-card-subtitle class="pb-0"> Change 5 properties </v-card-subtitle>
               <v-card-text class="text--primary">
                 <div>Anchor, Position,</div>
                 <div>Scale, Rotation, Opacity</div>
@@ -92,7 +70,6 @@
             </v-card>
           </span>
         </v-tooltip>
-
         <v-tooltip right class="tooltip-btn" color="transparent">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -110,18 +87,10 @@
           </template>
           <span>
             <v-card class="ma-0" max-width="400">
-              <v-img
-                class="white--text align-end"
-                height="200px"
-                src="./assets/change_bg.jpg"
-              >
-                <v-card-title class="card-title"
-                  >Change Background</v-card-title
-                >
+              <v-img class="white--text align-end" height="200px" src="./assets/change_bg.jpg">
+                <v-card-title class="card-title">Change Background</v-card-title>
               </v-img>
-              <v-card-subtitle class="pb-0">
-                Change 3 properties
-              </v-card-subtitle>
+              <v-card-subtitle class="pb-0"> Change 3 properties </v-card-subtitle>
               <v-card-text class="text--primary">
                 <div>Color, Image, Canvas Size</div>
               </v-card-text>
@@ -146,16 +115,10 @@
           </template>
           <span>
             <v-card class="ma-0" max-width="400">
-              <v-img
-                class="white--text align-end"
-                height="200px"
-                src="./assets/change_canvas.jpg"
-              >
+              <v-img class="white--text align-end" height="200px" src="./assets/change_canvas.jpg">
                 <v-card-title class="card-title">Change Canvas</v-card-title>
               </v-img>
-              <v-card-subtitle class="pb-0">
-                Change states of canvas
-              </v-card-subtitle>
+              <v-card-subtitle class="pb-0"> Change states of canvas </v-card-subtitle>
               <v-card-text class="text--primary">
                 <div>resize, rotation, flip</div>
               </v-card-text>
@@ -181,18 +144,9 @@
 
           <span>
             <v-card class="ma-0" max-width="400">
-              <img
-                class="white--text align-end"
-                height="200px"
-                width="400px"
-                src="./assets/change_gif.gif"
-              />
-              <v-card-subtitle class="pb-4">
-                Download .gif file
-              </v-card-subtitle>
-              <v-card-title class="card-title card-gif">
-                Download GIF
-              </v-card-title>
+              <img class="white--text align-end" height="200px" width="400px" src="./assets/change_gif.gif" />
+              <v-card-subtitle class="pb-4"> Download .gif file </v-card-subtitle>
+              <v-card-title class="card-title card-gif"> Download GIF </v-card-title>
             </v-card>
           </span>
         </v-tooltip>
