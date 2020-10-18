@@ -49,17 +49,20 @@ var RLottieModule = (function () {
 
     obj.lottieHandle = new Module.RlottieWasm();
     obj.frameCount = obj.lottieHandle.frames();
+
+    // Create rlottie layers management object
     obj.layers = new Layers(this, obj.lottieHandle.get_basic_resource());
     store.commit('setLayers', obj.layers);
     store.commit('setFrameCount', obj.frameCount);
     store.commit('setFileName', obj.fileName);
+
     mainLoop();
   };
 
   obj.render = function () {
     if (obj.canvas.width == 0 || obj.canvas.height == 0) return;
 
-    obj.curFrame = obj.curFrame + store.getters.frameRate;
+    obj.curFrame = obj.curFrame + store.getters.frameRate; // "frameRate" : Speed and Direction
     if (obj.curFrame > obj.frameCount) obj.curFrame = 0;
     if (obj.curFrame < 0) obj.curFrame = obj.frameCount;
 
@@ -71,6 +74,7 @@ var RLottieModule = (function () {
     store.commit('setCurFrame', obj.curFrame);
   };
 
+  // Get specific frame snapshot
   obj.renderSnapShot = function (frame) {
     if (obj.preview.width == 0 || obj.preview.height == 0) return;
 
@@ -107,6 +111,7 @@ var RLottieModule = (function () {
     return obj.playing;
   };
 
+  // Set property
   obj.fillColors = function (keypath, r, g, b, opacity) {
     obj.lottieHandle.set_fill_color(keypath, r, g, b);
     obj.lottieHandle.set_fill_opacity(keypath, opacity);
