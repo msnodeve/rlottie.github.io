@@ -1,9 +1,6 @@
 <template>
-  <div id="right-bar">
-    <v-btn class="comp-r-0" fixed fab icon color="transparent" @click="isNavigation = !isNavigation">
-      <v-icon :color="isNavigation ? 'white' : 'grey'"> mdi-key-variant mdi-flip-h </v-icon>
-    </v-btn>
-    <v-navigation-drawer v-model="isNavigation" right absolute color="#292c31" width="350" :height="height">
+  <div id="right-bar" style="height: 100%; overflow-y: hidden">
+    <v-navigation-drawer v-model="isNavigation" right hide-overlay permanent color="#293039" :width="'350px'">
       <v-switch
         class="ml-4"
         v-model="isSelectAll"
@@ -61,6 +58,7 @@ module.exports = {
     return {
       isNavigation: true,
       search: '',
+      openFolder: ['root'],
     };
   },
   computed: {
@@ -111,9 +109,10 @@ module.exports = {
   display: none; /* Chrome, Safari, Opera*/
 }
 #right-bar {
-  position: relative;
   z-index: 99;
-  /* float:left */
+  float: right;
+  height: 100%;
+  background-color: #293039;
 }
 .comp-r-0 {
   right: 0;
