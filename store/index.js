@@ -26,10 +26,10 @@ var store = new Vuex.Store({
     frameCount(state) {
       return state.frameCount;
     },
-    hasPrev(sate) {
+    hasPrev(state) {
       return state.hasPrev;
     },
-    hasNext(sate) {
+    hasNext(state) {
       return state.hasNext;
     },
     keypath(state) {
@@ -180,5 +180,13 @@ var store = new Vuex.Store({
 
       layers.insert(selectedKeypath, property, args);
     },
+    movePrev(context){
+      const { layers } = context.getters;
+      layers.movePrev();
+    },
+    moveNext(context){
+      const { layers } = context.getters;
+      layers.moveNext();
+    }
   },
 });
