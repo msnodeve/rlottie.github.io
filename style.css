@@ -16,14 +16,6 @@ body {
 }
 
 .header {
-  /* height: 10%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; */
-}
-
-.header {
   background: linear-gradient(90deg, #00c4cc, #7d2ae8);
 }
 
