@@ -3,12 +3,22 @@
     <v-scroll-y-reverse-transition>
       <div v-show="isTransition">
         <div>
-          <v-row class="pb-3 px-5" align="center">
-            <v-col cols="12" class="py-0 mt-4">
+          <v-row
+            class="pb-3 px-5"
+            align="center"
+          >
+            <v-col
+              cols="12"
+              class="py-0 mt-4"
+            >
               <div class="text-left font-white">Background Color</div>
             </v-col>
           </v-row>
-          <v-row class="mb-4 pl-5" align="center" justify="center">
+          <v-row
+            class="mb-4 pl-5"
+            align="center"
+            justify="center"
+          >
             <v-btn
               class="ml-1"
               v-for="(color, idx) in colors"
@@ -24,7 +34,10 @@
               @click="selectColor('#000000', false)"
             ></div>
           </v-row>
-          <v-row align="center" justify="center">
+          <v-row
+            align="center"
+            justify="center"
+          >
             <v-color-picker
               class="bg-transparent"
               v-show="isColor"
@@ -40,14 +53,22 @@
             justify="center"
             class="pa-0 ma-0 width-100-percent"
           >
-            <img id="convert-gif" src="" class="width-90-percent" />
+            <img
+              id="convert-gif"
+              src=""
+              class="width-90-percent"
+            />
           </v-row>
           <v-row
             align="center"
             justify="center"
             class="pa-0 ma-0 mt-4 width-100-percent"
           >
-            <v-btn @click="convertGIF" :loading="loading" id="convert-btn">
+            <v-btn
+              @click="convertGIF"
+              :loading="loading"
+              id="convert-btn"
+            >
               Convert to GIF
             </v-btn>
           </v-row>
@@ -159,10 +180,12 @@ module.exports = {
 span {
   color: white !important;
 }
+
 .picker-dot {
   background-color: hsla(0, 0%, 100%, 0.12);
   cursor: pointer;
 }
+
 #convert-btn {
   background-color: rgba(0, 153, 204, 1);
   width: 90%;

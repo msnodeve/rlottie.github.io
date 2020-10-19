@@ -1,7 +1,16 @@
 <template>
-  <div id="l-bar" ref="leftBar">
-    <div id="tool-wrapper" class="d-flex">
-      <div id="tool-nav" class="text-center">
+  <div 
+    id="l-bar" 
+    ref="leftBar"
+  >
+    <div
+      id="tool-wrapper"
+      class="d-flex"
+    >
+      <div
+        id="tool-nav"
+        class="text-center"
+      >
         <v-tooltip 
           v-for="(item, index) in navList" :key="index"
           right
@@ -26,8 +35,15 @@
           </template>
 
           <span v-if="index != 4">
-            <v-card class="ma-0" max-width="290">
-              <v-img class="white--text align-end" height="145px" :src="item.src">
+            <v-card
+              class="ma-0"
+              max-width="290"
+            >
+              <v-img
+                class="white--text align-end"
+                height="145px"
+                :src="item.src"
+              >
                 <v-card-title class="card-title"> {{ item.title }} </v-card-title>
               </v-img>
               <v-card-subtitle class="pb-0"> {{ item.subTitle }} </v-card-subtitle>
@@ -37,8 +53,16 @@
             </v-card>
           </span>
           <span v-else>
-            <v-card class="ma-0" max-width="290">
-              <img class="white--text align-end" height="145px" width="290px" :src="item.src" />
+            <v-card
+              class="ma-0"
+              max-width="290"
+            >
+              <img
+                class="white--text align-end"
+                height="145px"
+                width="290px"
+                :src="item.src"
+              />
               <v-card-subtitle class="pb-4"> {{ item.subTitle }} </v-card-subtitle>
               <v-card-title class="card-title card-gif"> {{ item.title }} </v-card-title>
             </v-card>
@@ -106,15 +130,19 @@ module.exports = {
   background-color: #0e1318;
   float: left;
 }
+
 #tool-wrapper {
   height: 93%;
 }
+
 #tool-nav {
   width: 100%;
 }
+
 .v-btn__content {
   display: block;
 }
+
 .v-btn.v-size--default {
   font-size: 10px;
   text-transform: none;

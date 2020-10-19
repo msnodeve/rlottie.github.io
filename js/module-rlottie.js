@@ -51,7 +51,7 @@ var RLottieModule = (function () {
     obj.frameCount = obj.lottieHandle.frames();
 
     // Create rlottie layers management object
-    obj.layers = new Layers(this, obj.lottieHandle.get_basic_resource());
+    obj.layers = new Layers(this, obj.lottieHandle.getBasicResource());
     store.commit('setLayers', obj.layers);
     store.commit('setFrameCount', obj.frameCount);
     store.commit('setFileName', obj.fileName);
@@ -113,37 +113,37 @@ var RLottieModule = (function () {
 
   // Set property
   obj.fillColors = function (keypath, r, g, b, opacity) {
-    obj.lottieHandle.set_fill_color(keypath, r, g, b);
-    obj.lottieHandle.set_fill_opacity(keypath, opacity);
+    obj.lottieHandle.setFillColor(keypath, r, g, b);
+    obj.lottieHandle.setFillOpacity(keypath, opacity);
   };
 
   obj.strokeColors = function (keypath, r, g, b, opacity) {
-    obj.lottieHandle.set_stroke_color(keypath, r, g, b);
-    obj.lottieHandle.set_stroke_opacity(keypath, opacity);
+    obj.lottieHandle.setStrokeColor(keypath, r, g, b);
+    obj.lottieHandle.setStrokeOpacity(keypath, opacity);
   };
 
   obj.strokeWidth = function (keypath, width) {
-    obj.lottieHandle.set_stroke_width(keypath, width);
+    obj.lottieHandle.setStrokeWidth(keypath, width);
   };
 
   obj.trAnchor = function (keypath, x, y) {
-    obj.lottieHandle.set_tr_anchor(keypath, x, y);
+    obj.lottieHandle.setTrAnchor(keypath, x, y);
   };
 
   obj.trPosition = function (keypath, x, y) {
-    obj.lottieHandle.set_tr_position(keypath, x, y);
+    obj.lottieHandle.setTrPosition(keypath, x, y);
   };
 
   obj.trScale = function (keypath, w, h) {
-    obj.lottieHandle.set_tr_scale(keypath, w, h);
+    obj.lottieHandle.setTrScale(keypath, w, h);
   };
 
   obj.trRotation = function (keypath, degree) {
-    obj.lottieHandle.set_tr_rotation(keypath, degree);
+    obj.lottieHandle.setTrRotation(keypath, degree);
   };
 
   obj.trOpacity = function (keypath, opacity) {
-    obj.lottieHandle.set_tr_opacity(keypath, opacity);
+    obj.lottieHandle.setTrOpacity(keypath, opacity);
   };
 
   obj.seek = function (value) {

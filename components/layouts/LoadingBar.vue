@@ -1,14 +1,40 @@
 <template>
-  <v-footer color="#293039" class="font-weight-medium py-0 border-left-1" ref="footer">
+  <v-footer
+    color="#293039"
+    class="font-weight-medium py-0 border-left-1"
+    ref="footer"
+  >
     <div class="content-width-100">
       <v-row class="ma-0 pa-0">
-        <v-col cols="12" class="py-0">
+        <v-col 
+          cols="12"
+          class="py-0"
+        >
           <v-row class="ma-0 pa-0">
             <v-col cols="1"></v-col>
-            <v-col cols="1" class="ma-0 pa-0" align="right">
-              <v-btn dark depressed icon @click="playAndPause">
-                <v-icon color="#ffffff" v-if="playing"> mdi-pause </v-icon>
-                <v-icon color="#ffffff" v-else> mdi-play </v-icon>
+            <v-col
+              cols="1"
+              class="ma-0 pa-0"
+              align="right"
+            >
+              <v-btn
+                dark
+                depressed
+                icon
+                @click="playAndPause"
+              >
+                <v-icon
+                  color="#ffffff"
+                  v-if="playing"
+                > 
+                  mdi-pause
+                </v-icon>
+                <v-icon
+                  color="#ffffff"
+                  v-else
+                >
+                  mdi-play
+                </v-icon>
               </v-btn>
             </v-col>
             <v-col
@@ -30,18 +56,46 @@
                 hide-details
               />
             </v-col>
-            <v-col cols="2" class="ma-0 pa-0" align="center">
-              <v-tooltip top open-on-hover close-delay="100">
+            <v-col
+              cols="2"
+              class="ma-0 pa-0"
+              align="center"
+            >
+              <v-tooltip
+                top
+                open-on-hover
+                close-delay="100"
+              >
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn dark v-bind="attrs" v-on="on" icon @click="isReverse = !isReverse">
-                    <v-icon :color="'white'" dark size="30"> mdi-swap-horizontal </v-icon>
+                  <v-btn
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    icon
+                    @click="isReverse = !isReverse"
+                  >
+                    <v-icon 
+                      :color="'white'"
+                      dark
+                      size="30"
+                    > 
+                      mdi-swap-horizontal
+                    </v-icon>
                   </v-btn>
                 </template>
                 <span>Reverse(Ctrl + R)</span>
               </v-tooltip>
               <v-menu top :offset-y="true">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn dark :outlined="false" :depressed="true" icon size="30" v-bind="attrs" v-on="on">
+                  <v-btn
+                    dark
+                    :outlined="false"
+                    :depressed="true"
+                    icon
+                    size="30"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
                     <v-icon dark> mdi-cog </v-icon>
                   </v-btn>
                 </template>
@@ -50,23 +104,46 @@
                   <v-list-item
                     v-for="(item, index) in speedRates"
                     :key="index"
-                    @click="
-                      rateSelected = index;
-                      calcFrameRate(item);
-                    "
+                    @click="rateSelected = index; calcFrameRate(item);"
                   >
                     <v-list-item-title>
-                      <v-icon v-if="index === rateSelected" color="rgba(255,255,255,1)"> mdi-check </v-icon>
-                      <v-icon v-else color="rgba(33, 33, 33, 0)"> mdi-check </v-icon>
+                      <v-icon
+                        v-if="index === rateSelected"
+                        color="rgba(255,255,255,1)"
+                      >
+                        mdi-check
+                      </v-icon>
+                      <v-icon
+                        v-else
+                        color="rgba(33, 33, 33, 0)"
+                      >
+                        mdi-check
+                      </v-icon>
                       <span style="color: rgba(255, 255, 255, 1)"> &nbsp;&nbsp;{{ item }} </span>
                     </v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-tooltip top open-on-hover close-delay="100">
+              <v-tooltip
+                top
+                open-on-hover
+                close-delay="100"
+              >
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn dark v-bind="attrs" v-on="on" icon @click="isBorder = !isBorder">
-                    <v-icon :color="'white'" dark size="30"> mdi-crop-square </v-icon>
+                  <v-btn
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    icon
+                    @click="isBorder = !isBorder"
+                  >
+                    <v-icon
+                      :color="'white'"
+                      dark
+                      size="30"
+                    > 
+                      mdi-crop-square
+                    </v-icon>
                   </v-btn>
                 </template>
                 <span>Border(Ctrl + B)</span>
@@ -187,9 +264,7 @@ module.exports = {
 </script>
 
 <style scoped>
-.v-slider__thumb-container,
-.v-slider__track-background,
-.v-slider__track-fill {
+.v-slider__thumb-container, .v-slider__track-background, .v-slider__track-fill {
   transition: none;
 }
 
@@ -204,13 +279,16 @@ module.exports = {
 .v-label.theme--light {
   color: #ffffff;
 }
+
 .v-slider--horizontal {
   cursor: pointer;
 }
+
 .v-footer {
   min-width: 755px;
   z-index: 100;
 }
+
 .v-row {
   width: 100%;
 }

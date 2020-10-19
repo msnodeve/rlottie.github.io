@@ -4,13 +4,22 @@
       <div v-show="isTransition">
         <div class="text-center">
           <v-row class="px-5">
-            <v-col cols="12" class="justify-center pt-4">
+            <v-col 
+              cols="12"
+              class="justify-center pt-4"
+            >
               <div class="text-left font-white">Canvas Size</div>
               <v-row class="pd-0 pt-2">
-                <v-col cols="8" class="text-left py-0">
+                <v-col
+                  cols="8"
+                  class="text-left py-0"
+                >
                   <div class="pl-3 font-white">width</div>
                 </v-col>
-                <v-col cols="4" class="py-0">
+                <v-col
+                  cols="4"
+                  class="py-0"
+                >
                   <v-text-field
                     v-model="canvasSizeInput.width"
                     solo
@@ -21,10 +30,16 @@
                     suffix="px"
                   />
                 </v-col>
-                <v-col cols="8" class="text-left py-0">
+                <v-col
+                  cols="8"
+                  class="text-left py-0"
+                >
                   <div class="pl-3 font-white">height</div>
                 </v-col>
-                <v-col cols="4" class="py-0">
+                <v-col
+                  cols="4"
+                  class="py-0"
+                >
                   <v-text-field
                     v-model="canvasSizeInput.height"
                     solo
@@ -37,26 +52,53 @@
                 </v-col>
               </v-row>
               <v-row class="pt-5">
-                <v-col cols="12" class="py-0">
+                <v-col
+                  cols="12"
+                  class="py-0"
+                >
                   <div class="text-left font-white">Rotation & Flip</div>
                 </v-col>
               </v-row>
               <v-row class="mb-4">
-                <v-col cols="12" class="py-0">
+                <v-col
+                  cols="12"
+                  class="py-0"
+                >
                   <div class="my-2">
                     <span 
                       class="pr-2"
                       v-for="(item, index) in canvasRotate" :key="index+'_Rotate'"
                     >
-                      <v-btn dark fab color="#3e4145" @click="rotate(item.flag)">
-                        <v-icon color="#BFC0C2" large>{{ item.icon }}</v-icon>
+                      <v-btn
+                        dark
+                        fab
+                        color="#3e4145"
+                        @click="rotate(item.flag)"
+                      >
+                        <v-icon
+                          color="#BFC0C2"
+                          large
+                        >
+                          {{ item.icon }}
+                        </v-icon>
                       </v-btn>
                     </span>
-                    <span class="pr-2"
+                    <span 
+                      class="pr-2"
                       v-for="(item, index) in canvasFlip" :key="index+'_Flip'"
                     >
-                      <v-btn dark fab color="#3e4145" @click="item.function">
-                        <v-icon :class="{'mdi-rotate-90': (index==1)}" color="#BFC0C2" large>{{ item.icon }}</v-icon>
+                      <v-btn
+                        dark
+                        fab
+                        color="#3e4145"
+                        @click="item.function"
+                      >
+                        <v-icon 
+                          :class="{'mdi-rotate-90': (index==1)}" color="#BFC0C2"
+                          large
+                        >
+                          {{ item.icon }}
+                        </v-icon>
                       </v-btn>
                     </span>
                   </div>
@@ -127,6 +169,7 @@ module.exports = {
 span {
   color: white !important;
 }
+
 .v-text-field .v-input__control .v-input__slot {
   min-height: 20px !important;
   display: flex !important;
