@@ -3,7 +3,11 @@
     class="thumbnail-wrapper"
     :style="{ left: pointx + 'px', top: pointy + 'px' }"
   >
-    <canvas id="pre-view" width="150" height="150" />
+    <canvas
+      id="pre-view"
+      width="150"
+      height="150"
+    />
   </div>
 </template>
 
@@ -21,6 +25,7 @@ module.exports = {
   position: fixed;
   z-index: 100;
 }
+
 #pre-view {
   width: 100%;
   height: 100%;

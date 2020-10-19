@@ -3,11 +3,18 @@
     <v-row class="pa-0">
       <div class="pt-3">
         <v-icon class="pl-5">mdi-file-outline</v-icon>
-        <span v-text="fileName" style="font-weight: 600"></span>
+        <span 
+          v-text="fileName"
+          style="font-weight: 600"
+        ></span>
       </div>
       <v-spacer></v-spacer>
       <div>
-        <v-tooltip bottom open-on-hover close-delay="100">
+        <v-tooltip
+          bottom
+          open-on-hover
+          close-delay="100"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               class="mr-1"
@@ -29,7 +36,11 @@
             <span>Undo (Ctrl + Z)</span>
           </div>
         </v-tooltip>
-        <v-tooltip bottom open-on-hover close-delay="100">
+        <v-tooltip
+          bottom
+          open-on-hover
+          close-delay="100"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               class="mr-5"

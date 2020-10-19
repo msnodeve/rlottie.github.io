@@ -204,8 +204,8 @@ function Layers(RLottieModule, jsString) {
 
   // Highlighting selected layers
   this.highlighting = function (keypath) {
-    this.RLottieModule.lottieHandle.set_fill_opacity('**', 30);
-    this.RLottieModule.lottieHandle.set_stroke_opacity('**', 30);
+    this.RLottieModule.lottieHandle.setFillOpacity('**', 30);
+    this.RLottieModule.lottieHandle.setStrokeOpacity('**', 30);
     for (let i = 0; i <= this.cur; i++) {
       let key = this.history[i]['keypath'];
       let prop = this.history[i]['property'];
@@ -219,8 +219,8 @@ function Layers(RLottieModule, jsString) {
         this.setProperty(key, prop, params);
       }
     }
-    this.RLottieModule.lottieHandle.set_fill_opacity(keypath, 100);
-    this.RLottieModule.lottieHandle.set_stroke_opacity(keypath, 100);
+    this.RLottieModule.lottieHandle.setFillOpacity(keypath, 100);
+    this.RLottieModule.lottieHandle.setStrokeOpacity(keypath, 100);
   };
 
   // Undo and Redo button activation
