@@ -1,5 +1,4 @@
-html,
-body {
+html, body {
   height: 100%;
   width: 100%;
   margin: 0;
@@ -95,9 +94,6 @@ body {
   font-size: 15px;
 }
 
-.text-md {
-  font-size: 15px;
-}
 .border-grey-light {
   border-color: #dae1e7;
 }
