@@ -1,6 +1,13 @@
 <template>
-  <div id="right-bar" style="height: 100%; overflow-y: hidden">
-    <v-navigation-drawer v-model="isNavigation" right hide-overlay permanent color="#293039" :width="'350px'">
+  <div id="right-bar">
+    <v-navigation-drawer
+      v-model="isNavigation"
+      right
+      hide-overlay
+      permanent
+      color="#293039"
+      :width="'350px'"
+    >
       <v-switch
         class="ml-4"
         v-model="isSelectAll"
@@ -108,12 +115,16 @@ module.exports = {
 .v-navigation-drawer__content::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
+
 #right-bar {
   z-index: 99;
   float: right;
   height: 100%;
   background-color: #293039;
+  overflow-y: hidden !important;
+
 }
+
 .comp-r-0 {
   right: 0;
 }

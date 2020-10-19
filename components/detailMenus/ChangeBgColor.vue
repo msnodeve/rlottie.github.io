@@ -2,8 +2,14 @@
   <div class="width-100-percent">
     <v-scroll-y-reverse-transition>
       <div v-show="isTransition">
-        <v-row class="pb-3 px-5" align="center">
-          <v-col cols="12" class="py-0 mt-4">
+        <v-row 
+          class="pb-3 px-5"
+          align="center"
+        >
+          <v-col
+            cols="12"
+            class="py-0 mt-4"
+          >
             <div class="text-left font-white">Color</div>
           </v-col>
         </v-row>
@@ -19,13 +25,22 @@
           </v-col>
         </v-row>
         <div class="text-center mt-0">
-          <v-row class="px-5" align="center">
-            <v-col cols="7" class="justify-center pt-0 pr-0">
+          <v-row 
+            class="px-5"
+            align="center"
+          >
+            <v-col
+              cols="7"
+              class="justify-center pt-0 pr-0"
+            >
               <div class="text-left font-white">Background Image</div>
             </v-col>
           </v-row>
         </div>
-        <div id="upload-wrapper" align="center">
+        <div
+          id="upload-wrapper"
+          align="center"
+        >
           <v-btn
             tile
             class="py-7"
@@ -44,7 +59,11 @@
             @change="setBackgroundImg"
           />
         </div>
-        <v-btn class="mx-4 mt-4" @click="backgroundReset" id="delete-btn">
+        <v-btn
+          class="mx-4 mt-4"
+          @click="backgroundReset"
+          id="delete-btn"
+        >
           Delete Background Image
         </v-btn>
       </div>
@@ -129,21 +148,26 @@ module.exports = {
 span {
   color: white !important;
 }
+
 input {
   color: white !important;
 }
+
 .v-text-field .v-input__control .v-input__slot {
   min-height: 20px !important;
   display: flex !important;
   align-items: center !important;
 }
+
 #background-img {
   display: none;
   cursor: pointer;
 }
+
 #upload-wrapper {
   align-content: center;
 }
+
 #bg-btn {
   width: 90%;
   height: 200px;
@@ -151,9 +175,11 @@ input {
   border-radius: 20px;
   background-color: rgba(100, 100, 100, 0.2);
 }
+
 #bg-icon {
   font-size: 30px;
 }
+
 #delete-btn {
   background-color: rgba(0, 153, 204, 1);
   width: 90%;

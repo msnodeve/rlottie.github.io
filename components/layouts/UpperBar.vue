@@ -6,7 +6,10 @@
   >
     <div style="width:23rem">
     <!-- Logo -->
-    <v-row class="pl-3" align="center">
+    <v-row
+      class="pl-3"
+      align="center"
+    >
       <v-img
         class="cursor-pointer"
         src="./assets/logo.png"
@@ -33,8 +36,14 @@
       </v-btn>
     </v-spacer>
     <!-- New file, Export -->
-    <div style="width: 245px" align="left">
-      <v-tooltip bottom class="tooltip-btn">
+    <div
+      style="width: 245px"
+      align="left"
+    >
+      <v-tooltip
+        bottom
+        class="tooltip-btn"
+      >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             color="rgba(255, 255, 255, 1)"
@@ -47,11 +56,19 @@
           >
             New File
           </v-btn>
-          <input type="file" id="file-selector" accept=".json" ref="json" />
+          <input
+            type="file"
+            id="file-selector"
+            accept=".json"
+            ref="json" 
+          />
         </template>
         <span> open New JSON File (Ctrl + O) </span>
       </v-tooltip>
-      <v-tooltip bottom class="tooltip-btn">
+      <v-tooltip
+        bottom
+        class="tooltip-btn"
+      >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             class="mx-3"
@@ -106,10 +123,16 @@
           <ol>
             <li v-for="(shorCut, index) in shortCutList" :key="index">
               <v-row>
-                <v-col class="ma-0 pa-0 px-3" style="min-width:170px;">
-                 {{shorCut.function}}
+                <v-col
+                  class="ma-0 pa-0 px-3"
+                  style="min-width:170px;"
+                >
+                  {{shorCut.function}}
                 </v-col>
-                <v-col class="ma-0 pa-0 px-3" style="min-width:100px;">
+                <v-col
+                  class="ma-0 pa-0 px-3"
+                  style="min-width:100px;"
+                >
                   : {{shorCut.key}}
                 </v-col>
               </v-row>
@@ -220,12 +243,13 @@ module.exports = {
   outline: none;
   border-radius: 0px 0px 20px 20px;
 }
+
 .pretap:hover {
   background: #fff;
   color: #dedede;
 }
-.pretap:before,
-.pretap:after {
+
+.pretap:before, .pretap:after {
   content: '';
   position: absolute;
   top: 0;
@@ -235,20 +259,23 @@ module.exports = {
   background: #dedede;
   transition: 400ms ease all;
 }
+
 .pretap:after {
   right: inherit;
   top: inherit;
   left: 0;
   bottom: 0;
 }
-.pretap:hover:before,
-.pretap:hover:after {
+
+.pretap:hover:before, .pretap:hover:after {
   width: 100%;
   transition: 800ms ease all;
 }
+
 #upper-wrapper {
   position: absolute;
 }
+
 #upper-nav {
   width: 100%;
   background-color: rgba(41, 44, 49, 1);
@@ -256,9 +283,11 @@ module.exports = {
   height: 50px;
   vertical-align: middle;
 }
+
 .v-toolbar__content {
   height: 100% !important;
 }
+
 .v-card__text {
   font-weight: 500;
   font-size: 16px;
