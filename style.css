@@ -16,11 +16,7 @@ body {
 }
 
 .header {
-  height: 10%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  background: linear-gradient(90deg, #00c4cc, #7d2ae8);
 }
 
 .content {
@@ -32,7 +28,7 @@ body {
 }
 
 .upper-bar {
-  height: 6%;
+  height: 6% !important;
 }
 
 .info-bar {
@@ -52,7 +48,7 @@ body {
 }
 
 .loading-bar {
-  height: 10%;
+  height: 9%;
 }
 
 /*
@@ -66,10 +62,6 @@ body {
   align-items: center;
   width: 300px;
   height: 50px;
-}
-
-.header {
-  background: linear-gradient(90deg, #00c4cc, #7d2ae8);
 }
 
 .bg_color_container {
