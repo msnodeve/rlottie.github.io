@@ -123,10 +123,16 @@
           <ol>
             <li v-for="(shorCut, index) in shortCutList" :key="index">
               <v-row>
-                <v-col class="ma-0 pa-0 px-3" style="min-width:170px;">
+                <v-col
+                  class="ma-0 pa-0 px-3"
+                  style="min-width:170px;"
+                >
                   {{shorCut.function}}
                 </v-col>
-                <v-col class="ma-0 pa-0 px-3" style="min-width:100px;">
+                <v-col
+                  class="ma-0 pa-0 px-3"
+                  style="min-width:100px;"
+                >
                   : {{shorCut.key}}
                 </v-col>
               </v-row>
