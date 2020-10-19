@@ -1,5 +1,9 @@
 <template>
-  <div id="right-bar">
+  <div
+    id="right-bar"
+    ref="right"
+    :style="{'height' : height+'px'}"
+  >
     <v-navigation-drawer
       v-model="isNavigation"
       right
@@ -60,12 +64,12 @@
 <script>
 module.exports = {
   name: 'right-bar',
-  props: ['height'],
   data() {
     return {
       isNavigation: true,
       search: '',
       openFolder: ['root'],
+      height: 100
     };
   },
   computed: {
@@ -80,12 +84,17 @@ module.exports = {
     },
   },
   mounted() {
+    this.height = window.innerHeight * 0.94;
+    var self = this;
     // Shortcut key function binding
     document.addEventListener('keydown', function (e) {
       if (e.ctrlKey && e.which == 76) {
         // Hide and show layer list : Ctrl + L
         self.isNavigation = !self.isNavigation;
       }
+    });
+    window.addEventListener('resize', function (e) {
+      self.height = window.innerHeight * 0.94;
     });
   },
   methods: {
@@ -119,10 +128,8 @@ module.exports = {
 #right-bar {
   z-index: 99;
   float: right;
-  height: 100%;
   background-color: #293039;
   overflow-y: hidden !important;
-
 }
 
 .comp-r-0 {
